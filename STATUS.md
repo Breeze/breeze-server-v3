@@ -74,8 +74,6 @@ into a real application.**
   `Breeze.Core/Query/DataType.cs` (2), `Breeze.Core/TypeFns.cs` (1),
   `Breeze.Persistence.EFCore/MetadataBuilder.cs` (3). Dropping net5/6/7 makes every one
   unconditional and deletes the 10-line `MetaTypeEqualityComparer` fallback outright.
-- **Add CORS to the test server.** The client suite is moving to Vitest browser mode;
-  browser-origin requests to `localhost:34377` will fail without it.
 - Seed `UnusualDate.DateOnly` / `TimeOnly`. `Add_DateOnly_TimeOnly.sql` added the columns
   but never populated them, so all 10 rows are NULL and the client's
   `where dateOnly & timeOnly` test cannot pass.
