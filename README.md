@@ -20,6 +20,16 @@ A typical EF Core application installs the first two.
 
 **Version 8.0 targets .NET 8, 9 and 10.** For .NET 5, 6 or 7 - all out of support - use 7.5.2 from the old repo.
 
+## Documentation
+
+| | |
+|---|---|
+| [UPGRADE.md](./UPGRADE.md) | **Upgrading an app from 7.x** - every consumer-facing change |
+| [CHANGES-DEV.md](./CHANGES-DEV.md) | Structural changes, for people working on Breeze itself |
+| [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
+
+General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).
+
 ## Layout
 
 ```
