@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Breeze.Core</AssemblyName>
+    <Product>Breeze Server - Core dll</Product>
+    <Description>Core functionality for any Breeze Server using .NET.
+Please review the Breeze documentation at http://breeze.github.io/doc-main/</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="[13.0.1,14)" />
+  </ItemGroup>
+
+</Project>

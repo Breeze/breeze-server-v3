@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);EFCORE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Test against the code in this repo, not the published NuGet packages. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Breeze.AspNetCore.NetCore\Breeze.AspNetCore.NetCore.csproj" />
+    <ProjectReference Include="..\..\src\Breeze.Persistence.EFCore\Breeze.Persistence.EFCore.csproj" />
+    <ProjectReference Include="..\Model_Inheritance.EFCore\Model_Inheritance.EFCore.csproj" />
+    <ProjectReference Include="..\Model_NorthwindIB_CF.EFCore\Model_NorthwindIB_CF.EFCore.csproj" />
+    <ProjectReference Include="..\Model_ProduceTPH_CF.EFCore\Model_ProduceTPH_CF.EFCore.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Breeze.Persistence.NH</AssemblyName>
+    <Product>Breeze Server - Persistence for NHibernate</Product>
+    <Description>NHibernate persistence for any Breeze Server using .NET.
+Please review the Breeze documentation at http://breeze.github.io/doc-main/</Description>
+    <PackageTags>$(PackageTags) NHibernate</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="[13.0.1,14)" />
+    <PackageReference Include="NHibernate" Version="5.*" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Breeze.Persistence\Breeze.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

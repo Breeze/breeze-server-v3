@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Breeze.AspNetCore.NetCore/Breeze.AspNetCore.NetCore.csproj" />
+    <Project Path="src/Breeze.Core/Breeze.Core.csproj" />
+    <Project Path="src/Breeze.Persistence.EFCore/Breeze.Persistence.EFCore.csproj" />
+    <Project Path="src/Breeze.Persistence.NH/Breeze.Persistence.NH.csproj" />
+    <Project Path="src/Breeze.Persistence/Breeze.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Model_Inheritance.EFCore/Model_Inheritance.EFCore.csproj" />
+    <Project Path="tests/Model_Inheritance_NH/Model_Inheritance_NH.csproj" />
+    <Project Path="tests/Model_NorthwindIB_CF.EFCore/Model_NorthwindIB_CF.EFCore.csproj" />
+    <Project Path="tests/Model_NorthwindIB_NH/Model_NorthwindIB_NH.csproj" />
+    <Project Path="tests/Model_ProduceTPH_CF.EFCore/Model_ProduceTPH_CF.EFCore.csproj" />
+    <Project Path="tests/Model_Produce_NH/Model_Produce_NH.csproj" />
+    <Project Path="tests/Test.AspNetCore.EFCore/Test.AspNetCore.EFCore.csproj" />
+  </Folder>
+  <Folder Name="/tests/Test.AspNetCore.EFCore/">
+    <Project Path="tests/Test.AspNetCore.EFCore/Test.AspNetCore.NH.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/DbScripter/DbScripter.csproj" />
+  </Folder>
+</Solution>

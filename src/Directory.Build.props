@@ -1,0 +1,58 @@
+<Project>
+
+  <!-- Chain to the repo-root props; MSBuild imports only the nearest file. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+  <!-- Shared settings for every shipping Breeze package.
+       Per-project files carry only what actually differs: assembly name,
+       product/description, and their own references. -->
+
+  <PropertyGroup>
+    <!-- net5.0/6.0/7.0 are out of support; 7.5.2 remains available for them. -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- Enabled per project as each one is modernized. -->
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Signing">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Breeze.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Version">
+    <Version>8.0.0</Version>
+    <AssemblyVersion>8.0.0</AssemblyVersion>
+    <FileVersion>8.0.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Packaging">
+    <IsPackable>true</IsPackable>
+    <!-- Pack explicitly via `dotnet pack`, not on every build. -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591 = missing XML comment on a public member. Hundreds are missing;
+         filling them in is its own task. Other doc warnings stay visible because
+         they indicate malformed docs rather than absent ones. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <Authors>Jay Traband, IdeaBlade</Authors>
+    <Company>IdeaBlade</Company>
+    <Copyright>Copyright © IdeaBlade 2012-2026</Copyright>
+    <PackageProjectUrl>http://breeze.github.io</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Breeze/breeze-server-v3</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>BreezeLogo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Breeze BreezeJs AspNetCore DotNet Net8 Net9 Net10 JavaScript</PackageTags>
+    <PackageReleaseNotes>Version 8.0 targets .NET 8, 9 and 10. See http://breeze.github.io/doc-net/release-notes.html</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)BreezeLogo.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

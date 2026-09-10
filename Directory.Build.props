@@ -1,0 +1,12 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- All build output goes to a single artifacts/ tree at the repo root.
+         Two host projects share tests/Test.AspNetCore.EFCore/; with output under
+         the project directory, each one globs the other's generated AssemblyInfo
+         and the build fails with duplicate assembly attributes. -->
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+  </PropertyGroup>
+
+</Project>

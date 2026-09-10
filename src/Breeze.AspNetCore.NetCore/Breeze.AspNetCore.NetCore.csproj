@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Breeze.AspNetCore.NetCore</AssemblyName>
+    <Product>Breeze Server - ASP.NET Core Provider</Product>
+    <Description>ASP.NET Core support for any Breeze Server using .NET.
+Please review the Breeze documentation at http://breeze.github.io/doc-main/</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Breeze.Core\Breeze.Core.csproj" />
+    <ProjectReference Include="..\Breeze.Persistence\Breeze.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

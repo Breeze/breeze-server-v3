@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Breeze.Persistence.EFCore</AssemblyName>
+    <Product>Breeze Server - Persistence for EF Core Provider</Product>
+    <Description>Entity Framework Core persistence for any Breeze Server using .NET.
+Please review the Breeze documentation at http://breeze.github.io/doc-main/</Description>
+    <PackageTags>$(PackageTags) EFCore EntityFramework</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- EF Core major version is pinned to the matching runtime. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[8.0.10,9)"  Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[9.0.10,10)" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[10.0.0,11)" Condition="'$(TargetFramework)' == 'net10.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Breeze.Core\Breeze.Core.csproj" />
+    <ProjectReference Include="..\Breeze.Persistence\Breeze.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Breeze.Persistence</AssemblyName>
+    <Product>Breeze Server - Persistence for .NET</Product>
+    <Description>Basic persistence functionality for any Breeze Server using .NET.
+Please review the Breeze documentation at http://breeze.github.io/doc-main/</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Breeze.Core\Breeze.Core.csproj" />
+  </ItemGroup>
+
+</Project>

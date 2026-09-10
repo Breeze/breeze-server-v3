@@ -1,0 +1,19 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+TestResults/
+_ReSharper*/
+artifacts/
+*.nupkg
+*.snupkg
+
+# local test-server scaffolding
+breezeTests/
+
+# SQL Server data files - the test database is built from tests/Databases/BreezeTestDb.sql
+*.mdf
+*.ldf
+artifacts:
