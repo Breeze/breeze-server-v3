@@ -53,7 +53,7 @@ Console.WriteLine($"  schema statements: {schema.Count}");
 var data = new Scripter(server) { Options = dataOpts }.EnumScript(urns).ToList();
 Console.WriteLine($"  data statements:   {data.Count}");
 
-using var w = new StreamWriter(outPath, false, new System.Text.UTF8Encoding(false));
+using var w = new StreamWriter(outPath, false, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
 w.WriteLine("-- BreezeTestDb - complete schema and seed data for the Breeze test suite.");
 w.WriteLine("--");
 w.WriteLine("-- Regenerate with:");
@@ -61,7 +61,7 @@ w.WriteLine("--   dotnet run --project tools/DbScripter -- tests/Databases/Breez
 w.WriteLine("--");
 w.WriteLine("-- Apply to a fresh database:");
 w.WriteLine("--   sqlcmd -S . -E -Q \"CREATE DATABASE BreezeTestDb\"");
-w.WriteLine("--   sqlcmd -S . -E -d BreezeTestDb -i tests/Databases/BreezeTestDb.sql");
+w.WriteLine("--   sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql");
 w.WriteLine();
 w.WriteLine("SET NOCOUNT ON;");
 w.WriteLine("GO");

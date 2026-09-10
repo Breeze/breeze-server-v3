@@ -57,7 +57,7 @@ The test suite is driven from the client repo
 
    ```
    sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
-   sqlcmd -S . -E -d BreezeTestDb -i tests/Databases/BreezeTestDb.sql
+   sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
    ```
 
 2. Start the server:

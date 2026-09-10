@@ -62,7 +62,7 @@ files are replaced by `tests/Databases/BreezeTestDb.sql`. Create it with:
 
 ```bash
 sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
-sqlcmd -S . -E -d BreezeTestDb -i tests/Databases/BreezeTestDb.sql
+sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
 ```
 
 No attach step, no file-permission workaround, and no one-way file upgrade.

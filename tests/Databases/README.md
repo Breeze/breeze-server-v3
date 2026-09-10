@@ -73,3 +73,21 @@ One entry, in `Tests/Test.AspNetCore.EFCore/appsettings.json`:
   "BreezeTestDb": "Data Source=.;Initial Catalog=BreezeTestDb;Integrated Security=True;Encrypt=False;MultipleActiveResultSets=True"
 }
 ```
+
+## Encoding — use `-f 65001`
+
+`BreezeTestDb.sql` is UTF-8 and the Northwind data contains accented characters
+(`México D.F.`, `San Cristóbal`, `Bergulfsen`). **Always apply it with `sqlcmd -f 65001`.**
+
+Without that flag sqlcmd decodes the file as the system ANSI codepage and silently mangles
+every non-ASCII value — `México` becomes `MÃ©xico`. Nothing fails at the time. The damage
+only becomes visible if you then regenerate the script from that database, because the
+corruption compounds on each round trip until values overflow their columns:
+
+```
+Msg 2628 ... String or binary data would be truncated in table 'Customer', column 'City'.
+Truncated value: 'San CristÃƒÂ³ba'.
+```
+
+The generated file also carries a UTF-8 BOM so that a plain `sqlcmd -i` decodes it
+correctly, but pass the flag anyway — it is what the tooling and CI do.

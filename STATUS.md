@@ -99,7 +99,7 @@ Create the test database:
 
 ```bash
 sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
-sqlcmd -S . -E -d BreezeTestDb -i tests/Databases/BreezeTestDb.sql
+sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
 ```
 
 Run the server (it reseeds the inheritance tables on startup):
