@@ -41,7 +41,24 @@ namespace Test.AspNetCore {
 
 
     // This method gets called by the runtime. Use this method to add services to the container.
+    /// <summary>Named CORS policy used by the browser-based client test runner.</summary>
+    public const string TestCorsPolicy = "BreezeTestCors";
+
     public void ConfigureServices(IServiceCollection services) {
+      // The client suite runs in a browser (Vitest browser mode) served from a
+      // different origin, so every request here is cross-origin.
+      // AllowAnyOrigin cannot be used: the breeze fetch adapter sends
+      // credentials: 'include', and browsers reject a wildcard
+      // Access-Control-Allow-Origin on a credentialed request. Reflecting the
+      // caller's origin is the way to allow both.
+      // This is a TEST server. Do not copy this policy into a real application.
+      services.AddCors(options => options.AddPolicy(TestCorsPolicy, policy => policy
+        .SetIsOriginAllowed(_ => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithExposedHeaders("X-HTTP-Method-Override")));
+
       services.AddMvc(option => option.EnableEndpointRouting = false);
       var mvcBuilder = services.AddMvc();
       // Tests use string enums
@@ -114,6 +131,9 @@ namespace Test.AspNetCore {
       // allows use of html startup file.
       // This code assumes that the 'breezeTests' dir has all of the breeze test files and a copy of the breeze.debug.js file in a breeze subdir.
       var path = Path.Combine(Directory.GetCurrentDirectory(), @"breezeTests");
+      // Must come before UseMvc so preflight requests are answered.
+      app.UseCors(TestCorsPolicy);
+
       app.UseStaticFiles(new StaticFileOptions() {
         FileProvider = new PhysicalFileProvider(path),
         RequestPath = new PathString("")

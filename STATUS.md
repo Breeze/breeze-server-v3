@@ -53,6 +53,20 @@ SSMS artifact, deliberately excluded.
 Because SQL Server creates the database itself, there is no attach step, no file
 permission workaround, and no silent v904 → v957 file upgrade.
 
+## CORS (done)
+
+`Startup.cs` registers a `BreezeTestCors` policy and applies it before MVC, so the
+browser-based client test runner can reach the server cross-origin.
+
+It reflects the caller's origin rather than using `AllowAnyOrigin`. That is deliberate:
+the breeze fetch adapter sends `credentials: 'include'`, and browsers reject a wildcard
+`Access-Control-Allow-Origin` on a credentialed request. Verified: an `OPTIONS` preflight
+returns 204 with `Access-Control-Allow-Origin` echoing the request origin and
+`Access-Control-Allow-Credentials: true`.
+
+**This is a test server. The policy is deliberately permissive and must not be copied
+into a real application.**
+
 ## Remaining work
 
 - `<Nullable>enable</Nullable>` per project, and delete the now-dead version conditionals.
