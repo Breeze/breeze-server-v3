@@ -26,7 +26,8 @@ namespace Breeze.Persistence.EFCore {
         // TODO: this isn't quite right - we only want to ApplyAsNoTracking if the result of the select includes an 'owned' type
         // but currently the code just checks for any non system type, so we are applying 'noTracking' more than we should.
         // but we need to apply the AsNoTracking before the select ( much simpler that way).
-        var areAllSystemTypes = eq.SelectClause.Properties.All(p => p.ReturnType.FullName.StartsWith("System."));
+        // A property of a closed entity type has a closed type, which always has a FullName.
+        var areAllSystemTypes = eq.SelectClause.Properties.All(p => p.ReturnType.FullName!.StartsWith("System."));
         if (!areAllSystemTypes) {
           queryable = EFQueryBuilder.ApplyAsNoTracking(queryable, eleType);
         }

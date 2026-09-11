@@ -678,13 +678,13 @@ namespace Breeze.Persistence {
 
   /// <summary> For server-generated keys.  Maps temporary key (from the client) to the real key (generated on the server) </summary>
   public class KeyMapping {
-    // All three are set by the persistence manager that creates the mapping.
     /// <summary> Entity type (Name:#Namespace) </summary>
+    // Set by the persistence manager that creates the mapping.
     public String EntityTypeName = null!;
     /// <summary> Temporary key value (from the client) </summary>
-    public Object TempValue = null!;
+    public Object? TempValue;
     /// <summary> Real key value (generated on the server or in the database) </summary>
-    public Object RealValue = null!;
+    public Object? RealValue;
   }
 
   /// <summary> Unique identifier for an entity </summary>
