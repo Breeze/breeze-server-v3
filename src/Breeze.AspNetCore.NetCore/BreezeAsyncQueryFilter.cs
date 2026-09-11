@@ -74,13 +74,15 @@ namespace Breeze.AspNetCore {
       var qs = QueryFns.ExtractAndDecodeQueryString(executedContext, UsePost);
       var queryable = QueryFns.ExtractQueryable(executedContext);
 
-      if (!EntityQuery.NeedsExecution(qs, queryable) && !BreezeQueryFilterAttribute.NeedsMaxTake(queryable, MaxTake)) {
+      // Both checks are false for a null queryable, so testing it here changes nothing at
+      // runtime - it is what tells the compiler queryable is non-null from here on.
+      if (queryable == null || (!EntityQuery.NeedsExecution(qs, queryable) && !BreezeQueryFilterAttribute.NeedsMaxTake(queryable, MaxTake))) {
         base.OnActionExecuted(executedContext);
         return;
       }
 
       var eq = new EntityQuery(qs);
-      var eleType = TypeFns.GetElementType(queryable.GetType());
+      var eleType = TypeFns.GetElementType(queryable.GetType())!;   // a queryable has an element type
       eq.Validate(eleType);
 
       var msg = BreezeQueryFilterAttribute.CheckMaxDepth(eq, MaxDepth);

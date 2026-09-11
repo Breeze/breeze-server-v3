@@ -11,7 +11,7 @@ namespace Breeze.Core {
   public class AnyAllPredicate : BasePredicate {
 
     public Object ExprSource { get; private set; }
-    public PropBlock NavPropBlock { get; private set; } // calculated as a result of validate;
+    public PropBlock? NavPropBlock { get; private set; } // calculated as a result of validate; null before that
     public BasePredicate Predicate { get; private set; } 
 
 
@@ -37,8 +37,9 @@ namespace Breeze.Core {
     }
 
     public override Expression ToExpression(ParameterExpression paramExpr) {
-      var navExpr = NavPropBlock.ToExpression(paramExpr);
-      var elementType = NavPropBlock.Property.ElementType;
+      // Validate() must run first: it sets NavPropBlock and rejects a null ElementType.
+      var navExpr = NavPropBlock!.ToExpression(paramExpr);
+      var elementType = NavPropBlock.Property.ElementType!;
       MethodInfo mi;
       if (Operator == Operator.Any) {
         mi = TypeFns.GetMethodByExample((IEnumerable<String> list) => list.Any(x => x != null), elementType);

@@ -18,14 +18,14 @@ namespace Breeze.AspNetCore {
     public static readonly string skipFlag = "SkipBreezeQueryFilter";
 
     /// <summary> Get the IQueryable from the context.Result </summary>
-    public static IQueryable ExtractQueryable(ActionExecutedContext context, bool throwOnError = false) {
+    public static IQueryable? ExtractQueryable(ActionExecutedContext context, bool throwOnError = false) {
       var objResult = context.Result as ObjectResult;
       if (objResult == null) {
         return null;
       }
 
       var result = objResult.Value;
-      IQueryable queryable = null;
+      IQueryable? queryable = null;
       if (result is IQueryable) {
         queryable = (IQueryable)result;
       } else if (result is IEnumerable) {
@@ -43,18 +43,19 @@ namespace Breeze.AspNetCore {
     /// <summary> Get the query string OR request body from the HttpRequest </summary>
     /// <param name="context">Contains HttpContext</param>
     /// <param name="usePost">If true and request is POST, then attempt to extract the Breeze query from the request body.</param>
-    public static string ExtractAndDecodeQueryString(ActionContext context, bool usePost = false) {
+    public static string? ExtractAndDecodeQueryString(ActionContext context, bool usePost = false) {
       if (usePost && context.HttpContext.Request.Method == WebRequestMethods.Http.Post) {
         var bqs = ExtractRequestBody(context);
         if (bqs != null) { return bqs; }
       }
       var qs = context.HttpContext.Request.QueryString;
-      var q = WebUtility.UrlDecode(qs.Value);
-      if (q.Length == 0) {
+      // QueryString.Value is null for a request with no query string at all.
+      string? q = WebUtility.UrlDecode(qs.Value);
+      if (string.IsNullOrEmpty(q)) {
         return null;
       }
       if (BreezeConfig.Instance.QueryParamName != null) {
-        var nvc = HttpUtility.ParseQueryString(qs.Value);
+        var nvc = HttpUtility.ParseQueryString(qs.Value ?? "");
         var ar = nvc.GetValues(BreezeConfig.Instance.QueryParamName);
         q = ar != null && ar.Length > 0 ? ar[0] : null;
       } else {
@@ -81,7 +82,7 @@ namespace Breeze.AspNetCore {
     }
 
     /// <summary> Get the request body from the HttpRequest </summary>
-    public static string ExtractRequestBody(ActionContext context) {
+    public static string? ExtractRequestBody(ActionContext context) {
       var request = context.HttpContext.Request;
 
       // Allow synchronous read of body; should be non-blocking if body < 30kb
@@ -112,11 +113,13 @@ namespace Breeze.AspNetCore {
       eq.Validate(typeof(T));
 
       // Apply EntityQuery to filter the IQueryable before query execution
-      queryable = eq.ApplyWhere(queryable, typeof(T)) as IQueryable<T>;
-      queryable = EntityQuery.ApplyCustomLogic(eq, queryable, typeof(T)) as IQueryable<T>;
-      queryable = eq.ApplyOrderBy(queryable, typeof(T)) as IQueryable<T>;
-      queryable = eq.ApplySkip(queryable, typeof(T)) as IQueryable<T>;
-      queryable = eq.ApplyTake(queryable, typeof(T)) as IQueryable<T>;
+      // Each step returns a query over the same element type, so cast rather than "as": a
+      // mismatch should fail here, not as a null three lines later.
+      queryable = (IQueryable<T>)eq.ApplyWhere(queryable, typeof(T));
+      queryable = (IQueryable<T>)EntityQuery.ApplyCustomLogic(eq, queryable, typeof(T));
+      queryable = (IQueryable<T>)eq.ApplyOrderBy(queryable, typeof(T));
+      queryable = (IQueryable<T>)eq.ApplySkip(queryable, typeof(T));
+      queryable = (IQueryable<T>)eq.ApplyTake(queryable, typeof(T));
       return queryable;
     }
 
@@ -151,7 +154,7 @@ namespace Breeze.AspNetCore {
       eq.Validate(typeof(T));
 
       // Apply EntityQuery Where clause to filter the IQueryable before query execution
-      queryable = eq.ApplyWhere(queryable, typeof(T)) as IQueryable<T>;
+      queryable = (IQueryable<T>)eq.ApplyWhere(queryable, typeof(T));
       return queryable;
     }
 

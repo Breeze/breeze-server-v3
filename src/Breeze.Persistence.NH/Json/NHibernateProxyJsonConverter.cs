@@ -10,18 +10,20 @@ namespace Breeze.Persistence.NH {
   /// </summary>
   /// <see cref="http://james.newtonking.com/projects/json/help/html/T_Newtonsoft_Json_JsonConverter.htm"/>
   public class NHibernateProxyJsonConverter : JsonConverter {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
       if (NHibernateUtil.IsInitialized(value)) {
         var proxy = value as INHibernateProxy;
         if (proxy != null) {
           value = proxy.HibernateLazyInitializer.GetImplementation();
         }
 
-        var resolver = serializer.ReferenceResolver;
-        if (resolver.IsReferenced(serializer, value)) {
+        // JsonSerializer creates a default resolver the first time this is read; it is never null.
+        var resolver = serializer.ReferenceResolver!;
+        // IsInitialized(null) is false, so value is non-null by here.
+        if (resolver.IsReferenced(serializer, value!)) {
           // we've already written the object once; this time, just write the reference
           // We have to do this manually because we have our own JsonConverter.
-          var valueRef = resolver.GetReference(serializer, value);
+          var valueRef = resolver.GetReference(serializer, value!);
           writer.WriteStartObject();
           writer.WritePropertyName("$ref");
           writer.WriteValue(valueRef);
@@ -34,7 +36,7 @@ namespace Breeze.Persistence.NH {
       }
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
       throw new NotImplementedException();
     }
 

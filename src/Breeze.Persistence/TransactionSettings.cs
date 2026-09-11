@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Transactions;
 
 namespace Breeze.Persistence {
@@ -11,7 +12,9 @@ namespace Breeze.Persistence {
     /// The <b>Default</b> provides default transaction settings for all SaveChanges actions.  
     /// Override BreezeConfig to return a different TransactionSettings value.
     /// You can supply settings for a particular save with the TransactionSettings passed in the SaveChanges call. 
+    /// Setting it to null restores the default settings.
     /// </remarks>
+    [AllowNull]
     public static TransactionSettings Default {
       get {
         lock (_default) {
@@ -120,9 +123,9 @@ namespace Breeze.Persistence {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override bool Equals(Object obj) {
+    public override bool Equals(Object? obj) {
       if (obj == null) return false;
-      TransactionSettings other = obj as TransactionSettings;
+      TransactionSettings? other = obj as TransactionSettings;
       if (other == null) return false;
       return other.IsolationLevel.Equals(this.IsolationLevel)
         && other.Timeout.Equals(this.Timeout)

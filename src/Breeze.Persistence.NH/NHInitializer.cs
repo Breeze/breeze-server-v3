@@ -55,7 +55,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="parent">Top-level object</param>
     /// <param name="map">Map of properties to initialize for each type</param>
     /// <param name="remainingDepth">How deep to follow the tree; prevents infinite looping</param>
-    public static void InitializeWithCascade(object parent, IDictionary<Type, List<String>> map, int remainingDepth) {
+    public static void InitializeWithCascade(object? parent, IDictionary<Type, List<String>> map, int remainingDepth) {
       if (remainingDepth < 0 || parent == null) return;
       remainingDepth--;
       var type = parent.GetType();
@@ -73,8 +73,9 @@ namespace Breeze.Persistence.NH {
 
       foreach (var name in propNames) {
         // Get the child object for the property name
-        var propInfo = type.GetProperty(name);
-        var methInfo = propInfo.GetGetMethod();
+        // The map holds property names read off this very type, and each is a readable property.
+        var propInfo = type.GetProperty(name)!;
+        var methInfo = propInfo.GetGetMethod()!;
         var child = methInfo.Invoke(parent, null);
 
         var collection = child as System.Collections.ICollection;

@@ -15,8 +15,9 @@ namespace Breeze.Persistence.NH {
   /// Excludes association properties by default, unless explicitly included.
   /// </summary>
   public class NHIncludingContractResolver : DefaultContractResolver {
-    private HashSet<string> includedMembers;
-    private IDictionary<Type, List<string>> includedTypeMembers;
+    // Each constructor sets one of these and leaves the other null; IsIncluded checks both.
+    private HashSet<string>? includedMembers;
+    private IDictionary<Type, List<string>>? includedTypeMembers;
     private ISessionFactory sessionFactory;
 
     /// <summary>

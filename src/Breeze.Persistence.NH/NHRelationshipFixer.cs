@@ -20,8 +20,9 @@ namespace Breeze.Persistence.NH {
     private Dictionary<Type, List<EntityInfo>> saveMap;
     private IDictionary<string, string> fkMap;
     private ISession session;
-    private List<EntityInfo> saveOrder;
-    private List<EntityInfo> deleteOrder;
+    // Both are replaced by SortDependencies, which every public entry point runs first.
+    private List<EntityInfo> saveOrder = new List<EntityInfo>();
+    private List<EntityInfo> deleteOrder = new List<EntityInfo>();
     private Dictionary<EntityInfo, List<EntityInfo>> dependencyGraph;
     private bool removeMode;
 
@@ -65,8 +66,8 @@ namespace Breeze.Persistence.NH {
     /// </summary>
     /// <param name="child">Entity that depends on parent (e.g. has a many-to-one relationship to parent)</param>
     /// <param name="parent">Entity that child depends on (e.g. one parent has one-to-many children)</param>
-    private void AddToGraph(EntityInfo child, EntityInfo parent) {
-      List<EntityInfo> list;
+    private void AddToGraph(EntityInfo child, EntityInfo? parent) {
+      List<EntityInfo>? list;
       if (!dependencyGraph.TryGetValue(child, out list)) {
         list = new List<EntityInfo>(5);
         dependencyGraph.Add(child, list);
@@ -166,8 +167,8 @@ namespace Breeze.Persistence.NH {
     private void FixupComponentRelationships(string propName, ComponentType compType, EntityInfo entityInfo, IClassMetadata meta) {
       var compPropNames = compType.PropertyNames;
       var compPropTypes = compType.Subtypes;
-      object component = null;
-      object[] compValues = null;
+      object? component = null;
+      object[]? compValues = null;
       bool isChanged = false;
       for (int j = 0; j < compPropNames.Length; j++) {
         var compPropType = compPropTypes[j];
@@ -186,7 +187,8 @@ namespace Breeze.Persistence.NH {
             }
           } else if (removeMode) {
             // remove the relationship
-            compValues[j] = null;
+            // Clearing the navigation is the point here; the array is NHibernate's own object[].
+            compValues[j] = null!;
             isChanged = true;
           }
         }
@@ -210,10 +212,10 @@ namespace Breeze.Persistence.NH {
         meta.SetPropertyValue(entity, propName, null);
         return;
       }
-      object relatedEntity = GetPropertyValue(meta, entity, propName);
+      object? relatedEntity = GetPropertyValue(meta, entity, propName);
       if (relatedEntity != null) {
         // entities are already connected - still need to add to dependency graph
-        EntityInfo relatedEntityInfo = FindInSaveMapByEntity(propType.ReturnedClass, relatedEntity);
+        EntityInfo? relatedEntityInfo = FindInSaveMapByEntity(propType.ReturnedClass, relatedEntity);
         MaybeAddToGraph(entityInfo, relatedEntityInfo, propType);
         return;
       }
@@ -235,13 +237,13 @@ namespace Breeze.Persistence.NH {
     /// <param name="entityInfo">Breeze EntityInfo</param>
     /// <param name="meta">Metadata for the entity class</param>
     /// <returns></returns>
-    private object GetRelatedEntity(string propName, EntityType propType, EntityInfo entityInfo, IClassMetadata meta) {
-      object relatedEntity = null;
+    private object? GetRelatedEntity(string propName, EntityType propType, EntityInfo entityInfo, IClassMetadata meta) {
+      object? relatedEntity = null;
       string foreignKeyName = FindForeignKey(propName, meta);
-      object id = GetForeignKeyValue(entityInfo, meta, foreignKeyName);
+      object? id = GetForeignKeyValue(entityInfo, meta, foreignKeyName);
 
       if (id != null) {
-        EntityInfo relatedEntityInfo = FindInSaveMapById(propType.ReturnedClass, id);
+        EntityInfo? relatedEntityInfo = FindInSaveMapById(propType.ReturnedClass, id);
 
         if (relatedEntityInfo == null) {
           var state = entityInfo.EntityState;
@@ -258,7 +260,7 @@ namespace Breeze.Persistence.NH {
     }
 
     /// <summary>Add the parent-child relationship for certain propType conditions</summary>
-    private void MaybeAddToGraph(EntityInfo child, EntityInfo parent, EntityType propType) {
+    private void MaybeAddToGraph(EntityInfo child, EntityInfo? parent, EntityType propType) {
       if (!(propType.IsOneToOne && propType.UseLHSPrimaryKey && (propType.ForeignKeyDirection == ForeignKeyDirection.ForeignKeyToParent))) {
         AddToGraph(child, parent);
       }
@@ -292,16 +294,17 @@ namespace Breeze.Persistence.NH {
     /// <param name="meta">Metadata for the entity class</param>
     /// <param name="foreignKeyName">Name of the foreign key property of the entity, e.g. "CustomerID"</param>
     /// <returns></returns>
-    private object GetForeignKeyValue(EntityInfo entityInfo, IClassMetadata meta, string foreignKeyName) {
+    private object? GetForeignKeyValue(EntityInfo entityInfo, IClassMetadata meta, string foreignKeyName) {
       var entity = entityInfo.Entity;
-      object id = null;
+      object? id = null;
       if (foreignKeyName == meta.IdentifierPropertyName)
         id = meta.GetIdentifier(entity);
       else if (meta.PropertyNames.Contains(foreignKeyName))
         id = meta.GetPropertyValue(entity, foreignKeyName);
       else if (meta.IdentifierType.IsComponentType) {
         // compound key
-        var compType = meta.IdentifierType as ComponentType;
+        // IsComponentType, tested just above, means the identifier type is a ComponentType.
+        var compType = (ComponentType)meta.IdentifierType;
         var idComp = meta.GetIdentifier(entity);
         string joinedNames = string.Join(",", compType.PropertyNames);
         if (joinedNames == foreignKeyName) {
@@ -315,7 +318,8 @@ namespace Breeze.Persistence.NH {
       }
 
       if (id == null && entityInfo.EntityState == EntityState.Deleted) {
-        entityInfo.OriginalValuesMap.TryGetValue(foreignKeyName, out id);
+        // A deleted entity normally carries its original values; without them there is no key to find.
+        entityInfo.OriginalValuesMap?.TryGetValue(foreignKeyName, out id);
       }
       return id;
     }
@@ -327,7 +331,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="entity"></param>
     /// <param name="propName">If null, the identifier property will be returned.</param>
     /// <returns></returns>
-    private object GetPropertyValue(IClassMetadata meta, object entity, string propName) {
+    private object? GetPropertyValue(IClassMetadata meta, object entity, string propName) {
       if (propName == null || propName == meta.IdentifierPropertyName)
         return meta.GetIdentifier(entity);
       else
@@ -341,10 +345,10 @@ namespace Breeze.Persistence.NH {
     /// <param name="entityType">Type of entity, e.g. Order.  The saveMap will be searched for this type and its subtypes.</param>
     /// <param name="entityId">Key value of the entity</param>
     /// <returns>The EntityInfo, or null if not found</returns>
-    private EntityInfo FindInSaveMapById(Type entityType, object entityId) {
+    private EntityInfo? FindInSaveMapById(Type entityType, object entityId) {
       List<EntityInfo> entityInfoList = saveMap.Where(p => entityType.IsAssignableFrom(p.Key)).SelectMany(p => p.Value).ToList();
       if (entityInfoList != null && entityInfoList.Count != 0) {
-        var entityIdString = entityId.ToString();
+        var entityIdString = entityId.ToString()!;   // key values always render
         var meta = session.SessionFactory.GetClassMetadata(entityType);
         foreach (var entityInfo in entityInfoList) {
           var entity = entityInfo.Entity;
@@ -362,7 +366,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="entityType">Type of entity, e.g. Order.  The saveMap will be searched for this type and its subtypes.</param>
     /// <param name="entityId">The entity being found</param>
     /// <returns>The EntityInfo, or null if not found</returns>
-    private EntityInfo FindInSaveMapByEntity(Type entityType, object entity) {
+    private EntityInfo? FindInSaveMapByEntity(Type entityType, object entity) {
       List<EntityInfo> entityInfoList = saveMap.Where(p => entityType.IsAssignableFrom(p.Key)).SelectMany(p => p.Value).ToList();
       return entityInfoList.Where(info => info.Entity == entity).FirstOrDefault();
     }

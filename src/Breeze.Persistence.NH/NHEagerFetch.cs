@@ -68,7 +68,7 @@ namespace Breeze.Persistence.NH {
         var segments = expand.Split('/', '.');
         expandMap.Deepen(segments.Length);
         foreach (string seg in segments) {
-          if (expandMap != null && !expandMap.map.ContainsKey(currentType))
+          if (!expandMap.map.ContainsKey(currentType))
             expandMap.map.Add(currentType, new List<string>());
 
           IClassMetadata metadata = sessionFactory.GetClassMetadata(currentType);
@@ -82,7 +82,7 @@ namespace Breeze.Persistence.NH {
           if (propInfo == null) {
             throw new ArgumentException("Type '" + currentType.Name + "' does not have property '" + seg + "'");
           }
-          if (expandMap != null && !expandMap.map[currentType].Contains(seg))
+          if (!expandMap.map[currentType].Contains(seg))
             expandMap.map[currentType].Add(seg);
 
           var propType = propInfo.PropertyType;
@@ -113,10 +113,12 @@ namespace Breeze.Persistence.NH {
 
           if (isInvoking) {
             // Get the correct extension method (Fetch, FetchMany, ThenFetch, or ThenFetchMany)
+            // Fetch, FetchMany, ThenFetch and ThenFetchMany are all public static methods of
+            // EagerFetchingExtensionMethods; a null here would mean NHibernate had removed one.
             var fetchMethodInfo = typeof(EagerFetchingExtensionMethods).GetMethod(propFetchFunctionName,
                                                                               BindingFlags.Static |
                                                                               BindingFlags.Public |
-                                                                              BindingFlags.InvokeMethod);
+                                                                              BindingFlags.InvokeMethod)!;
             var fetchMethodTypes = new List<System.Type>();
             fetchMethodTypes.AddRange(currentQueryable.GetType().GetGenericArguments().Take(isFirstFetch ? 1 : 2));
             fetchMethodTypes.Add(propType);
@@ -131,7 +133,8 @@ namespace Breeze.Persistence.NH {
 
             // Call the *Fetch* function
             var args = new object[] { currentQueryable, exprLambda };
-            currentQueryable = (IQueryable)fetchMethodInfo.Invoke(null, args) as IQueryable;
+            // The Fetch extension methods always return a query, never null.
+            currentQueryable = (IQueryable)fetchMethodInfo.Invoke(null, args)!;
           }
           currentType = propType;
           isFirstFetch = false;
@@ -158,7 +161,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="expandPaths">The names of the properties to expand.  May include nested paths of the form "Property/SubProperty"</param>
     /// <param name="expandMap">Will be populated with the names of the expanded properties for each type.  If null, a new one is created.</param>
     /// <returns>expandMap</returns>
-    public static ExpandTypeMap MapExpansions(Type type, string[] expandPaths, ExpandTypeMap expandMap = null) {
+    public static ExpandTypeMap MapExpansions(Type type, string[] expandPaths, ExpandTypeMap? expandMap = null) {
       if (!expandPaths.Any()) throw new ArgumentException("Expansion Paths cannot be null");
 
       if (expandMap == null) expandMap = new ExpandTypeMap();
@@ -170,7 +173,7 @@ namespace Breeze.Persistence.NH {
         var segments = expand.Split('/', '.');
         expandMap.Deepen(segments.Length);
         foreach (string seg in segments) {
-          if (expandMap != null && !expandMap.map.ContainsKey(currentType))
+          if (!expandMap.map.ContainsKey(currentType))
             expandMap.map.Add(currentType, new List<string>());
 
           // Gather information about the property
@@ -178,7 +181,7 @@ namespace Breeze.Persistence.NH {
           if (propInfo == null) {
             throw new ArgumentException("Type '" + currentType.Name + "' does not have property '" + seg + "'");
           }
-          if (expandMap != null && !expandMap.map[currentType].Contains(seg))
+          if (!expandMap.map[currentType].Contains(seg))
             expandMap.map[currentType].Add(seg);
 
           var propType = propInfo.PropertyType;
@@ -198,7 +201,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="sessionFactory">Provides the NHibernate metadata for the classes</param>
     /// <param name="expandMap">If provided, will be populated with the names of the expanded properties for each type.</param>
     /// <returns></returns>
-    public static ICriteria ApplyExpansions(ICriteria criteria, string[] expandPaths, ISessionFactory sessionFactory, IDictionary<Type, List<string>> expandMap = null) {
+    public static ICriteria ApplyExpansions(ICriteria criteria, string[] expandPaths, ISessionFactory sessionFactory, IDictionary<Type, List<string>>? expandMap = null) {
       if (criteria == null) throw new ArgumentException("Criteria cannot be null");
 
       if (!expandPaths.Any()) throw new ArgumentException("Expansion Paths cannot be null");

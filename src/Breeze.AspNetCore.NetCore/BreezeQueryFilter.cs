@@ -67,13 +67,15 @@ namespace Breeze.AspNetCore {
       var qs = QueryFns.ExtractAndDecodeQueryString(context, UsePost);
       var queryable = QueryFns.ExtractQueryable(context);
 
-      if (!EntityQuery.NeedsExecution(qs, queryable) && !NeedsMaxTake(queryable, MaxTake)) {
+      // Both checks are false for a null queryable, so testing it here changes nothing at
+      // runtime - it is what tells the compiler queryable is non-null from here on.
+      if (queryable == null || (!EntityQuery.NeedsExecution(qs, queryable) && !NeedsMaxTake(queryable, MaxTake))) {
         base.OnActionExecuted(context);
         return;
       }
 
       var eq = new EntityQuery(qs);
-      var eleType = TypeFns.GetElementType(queryable.GetType());
+      var eleType = TypeFns.GetElementType(queryable.GetType())!;   // a queryable has an element type
       eq.Validate(eleType);
 
       var msg = CheckMaxDepth(eq, MaxDepth);
@@ -127,7 +129,7 @@ namespace Breeze.AspNetCore {
     }
 
     /// <summary> Check select and expand to see if MaxDepth is exceeded </summary>
-    internal static string CheckMaxDepth(EntityQuery eq, int maxDepth) {
+    internal static string? CheckMaxDepth(EntityQuery eq, int maxDepth) {
       if (maxDepth >= 0 && eq.SelectClause != null) {
         // check selects
         foreach (var sp in eq.SelectClause.Properties) {
@@ -163,9 +165,9 @@ namespace Breeze.AspNetCore {
     }
 
     /// <summary> Check query and apply Take(maxTake) if needed. </summary>
-    internal static bool NeedsMaxTake(IQueryable queryable, int maxTake) {
+    internal static bool NeedsMaxTake(IQueryable? queryable, int maxTake) {
       if (maxTake < 0 || queryable == null) { return false; }
-      if (!queryable.GetType().FullName.Contains("EntityFramework")) { return false; }
+      if (!queryable.GetType().FullName!.Contains("EntityFramework")) { return false; }
       return true;
     }
 

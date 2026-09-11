@@ -43,7 +43,7 @@ namespace Breeze.Persistence.EFCore {
           var realType = myEnum.ClrType;
           // Check if realType is nullable
           if (Nullable.GetUnderlyingType(realType) != null) {
-            realType = Nullable.GetUnderlyingType(realType);
+            realType = Nullable.GetUnderlyingType(realType)!; // checked just above
           }
 
           string[] enumNames = Enum.GetNames(realType);
@@ -64,7 +64,7 @@ namespace Breeze.Persistence.EFCore {
     }
 
     private static bool IsEnum(Type type) {
-      return type.IsEnum || (Nullable.GetUnderlyingType(type) != null && Nullable.GetUnderlyingType(type).IsEnum);
+      return type.IsEnum || (Nullable.GetUnderlyingType(type) != null && Nullable.GetUnderlyingType(type)!.IsEnum);
     }
 
     private static Dictionary<Type, String> GetDbSetMap(DbContext context) {
@@ -91,7 +91,7 @@ namespace Breeze.Persistence.EFCore {
       if (et.IsOwned()) {
         mt.IsComplexType = true;
       }
-      if (dbSetMap.TryGetValue(et.ClrType, out string resourceName)) {
+      if (dbSetMap.TryGetValue(et.ClrType, out string? resourceName)) {
         mt.DefaultResourceName = resourceName;
       }
       var baseType = et.BaseType;

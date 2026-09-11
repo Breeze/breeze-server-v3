@@ -14,7 +14,8 @@ namespace Breeze.Persistence.NH {
   /// </summary>
   /// <typeparam name="T"></typeparam>
   public class NhQueryableInclude<T> : NhQueryable<T>, IQueryableInclude {
-    private List<string> includes;
+    // Null until the first Include; GetIncludes reports that as-is, as it always has.
+    private List<string>? includes;
 
     /// <summary>
     /// Create a query which may be marked cachable.
@@ -48,7 +49,7 @@ namespace Breeze.Persistence.NH {
 
     public NhQueryableInclude(IQueryProvider provider, Expression expr) : base(provider, expr) { }
 
-    public IList<string> GetIncludes() {
+    public IList<string>? GetIncludes() {
       return includes;
     }
 
@@ -70,6 +71,6 @@ namespace Breeze.Persistence.NH {
   }
 
   public interface IQueryableInclude : IQueryable {
-    IList<string> GetIncludes();
+    IList<string>? GetIncludes();
   }
 }

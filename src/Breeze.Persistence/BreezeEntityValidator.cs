@@ -67,10 +67,11 @@ namespace Breeze.Persistence {
       bool isValid = true;
       var entity = entityInfo.Entity;
       var entityType = entity.GetType();
-      var entityTypeName = entityType.FullName;
+      // The runtime type of an object is always a closed type, which has a FullName.
+      var entityTypeName = entityType.FullName!;
       var sType = _structuralTypeMap[entityTypeName];
       var dataProperties = sType.dataProperties;
-      object[] keyValues = null;
+      object[]? keyValues = null;
       foreach (var dp in sType.dataProperties) {
         if (dp.validators == null || dp.validators.Count == 0) continue;
         if (dp.propertyInfo == null) {
@@ -147,33 +148,35 @@ namespace Breeze.Persistence {
 
   interface IValidator {
     string Name { get; set; }
-    string Validate(object value);
+    /// <returns>The error message, or null if the value is valid.</returns>
+    string? Validate(object? value);
   }
 
   #region Internal types
   internal class StructuralType {
-    internal string fullName;
-    internal List<DataProperty> dataProperties;
+    // Both assigned by BuildStructuralTypeMap right after construction.
+    internal string fullName = null!;
+    internal List<DataProperty> dataProperties = null!;
   }
 
   internal class DataProperty {
     internal MetaDataProperty metaDataProperty;
-    internal PropertyInfo propertyInfo;
-    internal List<IValidator> validators;
+    internal PropertyInfo? propertyInfo; // looked up on first use
+    internal List<IValidator>? validators;
     public DataProperty(MetaDataProperty source) {
       this.metaDataProperty = source;
     }
   }
   internal class MetaValidatorImpl : MetaValidator, IValidator {
     public MetaValidatorImpl(string name) : base(name) { }
-    public virtual string Validate(object value) {
+    public virtual string? Validate(object? value) {
       return null;
     }
   }
 
   internal class RequiredValidatorImpl : MetaValidator, IValidator {
     public RequiredValidatorImpl() : base("required") { }
-    public virtual string Validate(object value) {
+    public virtual string? Validate(object? value) {
       if (value == null) {
         return "A value is required.";
       }
@@ -187,7 +190,7 @@ namespace Breeze.Persistence {
 
   internal class MaxLengthValidatorImpl : MaxLengthMetaValidator, IValidator {
     public MaxLengthValidatorImpl(int maxLength) : base(maxLength) { }
-    public virtual string Validate(object value) {
+    public virtual string? Validate(object? value) {
       if (MaxLength < 0) throw new Exception("Validator maxLength must be >= 0");
       var s = value as string;
       if (s == null) return null;

@@ -44,11 +44,11 @@ namespace Breeze.AspNetCore {
     /// <summary> HTTP status code </summary>
     public int Code { get; set; }
     /// <summary> Exception message </summary>
-    public string Message { get; set; }
-    /// <summary> Exception stack trace </summary>
-    public string StackTrace { get; set; }
-    /// <summary> Entity validation errors </summary>
-    public List<EntityError> EntityErrors { get; set; }
+    public string Message { get; set; } = null!;
+    /// <summary> Exception stack trace; null if the exception was never thrown </summary>
+    public string? StackTrace { get; set; }
+    /// <summary> Entity validation errors; null unless the exception was an EntityErrorsException </summary>
+    public List<EntityError>? EntityErrors { get; set; }
 
     /// <summary> Return ErrorDto as JSON </summary>
     public override string ToString() {

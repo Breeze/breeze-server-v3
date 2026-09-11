@@ -164,7 +164,9 @@ namespace Breeze.Core {
     /// <returns></returns>
     internal static bool IsGenericQueryableType(Type t) {
       if (typeof(IQueryable).GetTypeInfo().IsAssignableFrom(t)) {
-        var queryableType = typeof(IQueryable<>).MakeGenericType(TypeFns.GetElementType(t));
+        // Null only for a type implementing the non-generic IQueryable without any
+        // IEnumerable<T>; MakeGenericType then throws, as it always has.
+        var queryableType = typeof(IQueryable<>).MakeGenericType(TypeFns.GetElementType(t)!);
         if (queryableType.GetTypeInfo().IsAssignableFrom(t)) {
           return true;
         }
@@ -187,7 +189,7 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="type"></param>
     /// <returns>May return null if the specified type is not a grouping type</returns>
-    public static Type GetGroupingInterface(Type type) {
+    public static Type? GetGroupingInterface(Type type) {
       if (type.GetTypeInfo().IsInterface && type.Name.StartsWith("IGrouping")) return type;
       return type.GetTypeInfo().GetInterfaces().FirstOrDefault(i => i.Name.StartsWith("IGrouping"));
     }
@@ -197,7 +199,7 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="type"></param>
     /// <returns>null if it can't find one or result is ambiguous</returns>
-    public static Type GetGenericArgument(Type type) {
+    public static Type? GetGenericArgument(Type type) {
       if (!type.GetTypeInfo().IsGenericType) return null;
       var genArgs = type.GetTypeInfo().GetGenericArguments();
       if (genArgs.Length != 1) return null;
@@ -208,12 +210,13 @@ namespace Breeze.Core {
     /// Gets the nullable type that corresponds to the given type.
     /// </summary>
     /// <param name="type"></param>
-    /// <returns></returns>
-    public static Type GetNullableType(Type type) {
+    /// <returns>null for a value type that is not one of the predefined numeric, date/time,
+    /// Boolean, Char or Guid types (e.g. SByte, DateOnly, TimeOnly, enums, custom structs)</returns>
+    public static Type? GetNullableType(Type type) {
       if (!type.GetTypeInfo().IsValueType) {
         return type;
       }
-      NullableInfo result;
+      NullableInfo? result;
       if (NullableInfoMap.TryGetValue(type, out result)) {
         return result.NullableType;
       } else {
@@ -235,8 +238,8 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="seqType"></param>
     /// <returns></returns>
-    public static Type GetElementType(Type seqType) {
-      Type ienum = FindIEnumerable(seqType);
+    public static Type? GetElementType(Type seqType) {
+      Type? ienum = FindIEnumerable(seqType);
       if (ienum == null) return null;
       return ienum.GetTypeInfo().GetGenericArguments()[0];
     }
@@ -246,13 +249,14 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="seqType"></param>
     /// <returns></returns>
-    public static Type FindIEnumerable(Type seqType) {
+    public static Type? FindIEnumerable(Type? seqType) {
       if (seqType == null || seqType == typeof(string)) {
         return null;
       }
 
       if (seqType.IsArray) {
-        return typeof(IEnumerable<>).MakeGenericType(seqType.GetElementType());
+        // An array type always has an element type.
+        return typeof(IEnumerable<>).MakeGenericType(seqType.GetElementType()!);
       }
 
       if (seqType.GetTypeInfo().IsGenericType) {
@@ -267,7 +271,7 @@ namespace Breeze.Core {
       Type[] ifaces = seqType.GetTypeInfo().GetInterfaces();
       if (ifaces != null && ifaces.Length > 0) {
         foreach (Type iface in ifaces) {
-          Type ienum = FindIEnumerable(iface);
+          Type? ienum = FindIEnumerable(iface);
           if (ienum != null) return ienum;
         }
       }
@@ -319,11 +323,11 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static object GetDefaultValue(Type type) {
+    public static object? GetDefaultValue(Type? type) {
       if (type == null) return null;
       if (!type.GetTypeInfo().IsValueType) return null;
-      
-      NullableInfo result;
+
+      NullableInfo? result;
       if (NullableInfoMap.TryGetValue(type, out result )) {
         return result.DefaultValue;
       } else {
@@ -340,7 +344,8 @@ namespace Breeze.Core {
     /// <param name="resolvedTypes"></param>
     /// <returns></returns>
     public static MethodInfo GetMethodByExample<TIn, TOut>(Expression<Func<TIn, TOut>> prototypeLambda, params Type[] resolvedTypes) {
-      var mi = (prototypeLambda.Body as MethodCallExpression).Method;
+      // The prototype's body must be a method call; anything else fails here, as it always has.
+      var mi = (prototypeLambda.Body as MethodCallExpression)!.Method;
       if (!resolvedTypes.Any()) return mi;
       if (!mi.IsGenericMethod) return mi;
       var mi2 = mi.GetGenericMethodDefinition();
@@ -349,7 +354,8 @@ namespace Breeze.Core {
     }
 
     public static MethodInfo GetMethodByExample<TIn1, TIn2, TOut>(Expression<Func<TIn1, TIn2, TOut>> prototypeLambda, params Type[] resolvedTypes) {
-      var mi = (prototypeLambda.Body as MethodCallExpression).Method;
+      // The prototype's body must be a method call; anything else fails here, as it always has.
+      var mi = (prototypeLambda.Body as MethodCallExpression)!.Method;
       if (!resolvedTypes.Any()) return mi;
       if (!mi.IsGenericMethod) return mi;
       var mi2 = mi.GetGenericMethodDefinition();
@@ -357,8 +363,8 @@ namespace Breeze.Core {
       return mi3;
     }
 
-    public static MethodInfo GetMethodByNameAndType(Type containingType, string methodName, params Type[] genericTypeArgs) {
-      MethodInfo mi;
+    public static MethodInfo? GetMethodByNameAndType(Type containingType, string methodName, params Type[] genericTypeArgs) {
+      MethodInfo? mi;
       if (containingType.IsGenericType) {
         var constructed = containingType.MakeGenericType(genericTypeArgs);
         mi = constructed.GetMethod(methodName);
@@ -377,7 +383,7 @@ namespace Breeze.Core {
     /// <param name="isPublic"></param>
     /// <param name="isStatic"></param>
     /// <returns></returns>
-    public static MemberInfo FindPropertyOrField(Type type, string memberName, bool isPublic, bool isStatic) {
+    public static MemberInfo? FindPropertyOrField(Type type, string memberName, bool isPublic, bool isStatic) {
       var flags = isStatic ? BindingFlags.Static : BindingFlags.Instance;
       if (isPublic) {
         flags |= BindingFlags.Public;
@@ -395,7 +401,7 @@ namespace Breeze.Core {
     /// <param name="memberName"></param>
     /// <param name="bindingFlags"></param>
     /// <returns></returns>
-    public static MemberInfo FindPropertyOrField(Type type, string memberName, BindingFlags bindingFlags) {
+    public static MemberInfo? FindPropertyOrField(Type type, string memberName, BindingFlags bindingFlags) {
       foreach (Type t in GetSelfAndBaseTypes(type)) {
         MemberInfo[] members = t.GetTypeInfo().FindMembers(MemberTypes.Property | MemberTypes.Field,
             bindingFlags,  Type.FilterNameIgnoreCase, memberName);
@@ -414,7 +420,7 @@ namespace Breeze.Core {
     /// <param name="methodName"></param>
     /// <param name="parameterTypes"></param>
     /// <returns></returns>
-    public static MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
+    public static MethodInfo? FindMethod(Type type, string methodName, Type[] parameterTypes) {
       BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
           BindingFlags.Static | BindingFlags.Instance;
       return FindMethod(type, methodName, flags, parameterTypes);
@@ -430,7 +436,7 @@ namespace Breeze.Core {
     /// <param name="genericArgTypes"></param>
     /// <param name="parameterTypes"></param>
     /// <returns></returns>
-    public static MethodInfo FindMethod(Type type, string methodName, BindingFlags flags, Type[] genericArgTypes, Type[] parameterTypes) {
+    public static MethodInfo? FindMethod(Type type, string methodName, BindingFlags flags, Type[]? genericArgTypes, Type[] parameterTypes) {
 
       var methods = FindMethods(type, methodName, flags, genericArgTypes, parameterTypes).ToList();
       if (!methods.Any()) return null;
@@ -455,7 +461,7 @@ namespace Breeze.Core {
     /// <param name="genericArgTypes"></param>
     /// <param name="parameterTypes"></param>
     /// <returns></returns>
-    public static IEnumerable<MethodInfo> FindMethods(Type type, string methodName, BindingFlags flags, Type[] genericArgTypes, Type[] parameterTypes) {
+    public static IEnumerable<MethodInfo> FindMethods(Type type, string methodName, BindingFlags flags, Type[]? genericArgTypes, Type[] parameterTypes) {
       foreach (Type t in GetSelfAndBaseTypes(type)) {
         MemberInfo[] members = t.GetTypeInfo().FindMembers(MemberTypes.Method,
             flags, Type.FilterNameIgnoreCase, methodName);
@@ -515,7 +521,7 @@ namespace Breeze.Core {
     /// <param name="isStatic"></param>
     /// <param name="parameterTypes"></param>
     /// <returns></returns>
-    public static MethodInfo FindMethod(Type type, string methodName, bool isStatic, Type[] parameterTypes) {
+    public static MethodInfo? FindMethod(Type type, string methodName, bool isStatic, Type[] parameterTypes) {
       BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
           (isStatic ? BindingFlags.Static : BindingFlags.Instance);
       return FindMethod(type, methodName, flags, parameterTypes);
@@ -529,7 +535,7 @@ namespace Breeze.Core {
     /// <param name="flags"></param>
     /// <param name="parameterTypes"></param>
     /// <returns></returns>
-    public static MethodInfo FindMethod(Type type, string methodName, BindingFlags flags, Type[] parameterTypes) {
+    public static MethodInfo? FindMethod(Type type, string methodName, BindingFlags flags, Type[] parameterTypes) {
       return FindMethods(type, methodName, flags, parameterTypes).FirstOrDefault();
     }
 
@@ -541,7 +547,7 @@ namespace Breeze.Core {
     /// <param name="flags"></param>
     /// <param name="genericArgTypes"></param>
     /// <returns></returns>
-    public static IEnumerable<MethodInfo> FindGenericMethods(Type type, string methodName, BindingFlags flags, Type[] genericArgTypes) {
+    public static IEnumerable<MethodInfo> FindGenericMethods(Type type, string methodName, BindingFlags flags, Type[]? genericArgTypes) {
       foreach (Type t in GetSelfAndBaseTypes(type)) {
         MemberInfo[] members = t.GetTypeInfo().FindMembers(MemberTypes.Method,
             flags, Type.FilterNameIgnoreCase, methodName);
@@ -569,7 +575,8 @@ namespace Breeze.Core {
       if (type.GetTypeInfo().IsInterface) return (new List<Type>() { type }).Concat(type.GetTypeInfo().GetInterfaces());
       if (type == typeof(Object)) return new List<Type>() { type };
       var ifaceTypes = type.GetTypeInfo().GetInterfaces();
-      var baseTypes =  GetSelfAndBaseTypes(type.GetTypeInfo().BaseType);
+      // Interfaces and object are handled above; every other class or struct has a base type.
+      var baseTypes =  GetSelfAndBaseTypes(type.GetTypeInfo().BaseType!);
       var results = new[] { type }.Concat(baseTypes).Concat(ifaceTypes).Distinct().ToList();
       return results;
     }
@@ -580,9 +587,10 @@ namespace Breeze.Core {
     /// <param name="type"></param>
     /// <returns></returns>
     public static IEnumerable<Type> GetSelfAndBaseClasses(Type type) {
-      while (type != null) {
-        yield return type;
-        type = type.GetTypeInfo().BaseType;
+      Type? t = type;
+      while (t != null) {
+        yield return t;
+        t = t.GetTypeInfo().BaseType;
       }
     }
 
@@ -710,8 +718,8 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="genericType"></param>
     /// <param name="argTypes"></param>
-    /// <returns></returns>
-    public static Object ConstructGenericInstance(Type genericType, params Type[] argTypes) {
+    /// <returns>The new instance; null only when the constructed type is a <see cref="Nullable{T}"/>.</returns>
+    public static Object? ConstructGenericInstance(Type genericType, params Type[] argTypes) {
       if (genericType == null) {
         throw new ArgumentNullException("genericType");
       }
@@ -726,7 +734,8 @@ namespace Breeze.Core {
     /// <param name="type"></param>
     /// <returns></returns>
     public static IList MakeGenericList(Type type) {
-      return (IList)TypeFns.ConstructGenericInstance(typeof(List<>), type);
+      // Creating a List<T> never yields null.
+      return (IList)TypeFns.ConstructGenericInstance(typeof(List<>), type)!;
     }
 
     /// <summary>
@@ -735,9 +744,9 @@ namespace Breeze.Core {
     /// <param name="genericType"></param>
     /// <param name="argTypes"></param>
     /// <param name="constructorParams"></param>
-    /// <returns></returns>
-    public static Object ConstructGenericInstance(Type genericType, Type[] argTypes,
-      params Object[] constructorParams) {
+    /// <returns>The new instance; null only when the constructed type is a <see cref="Nullable{T}"/>.</returns>
+    public static Object? ConstructGenericInstance(Type genericType, Type[] argTypes,
+      params Object?[] constructorParams) {
       if (genericType == null) {
         throw new ArgumentNullException("genericType");
       }
@@ -833,7 +842,7 @@ namespace Breeze.Core {
     /// <param name="delimiter">Delimiter</param>
     /// <returns>A delimited string</returns>
     public static string ToAggregateString(this IEnumerable items, string delimiter) {
-      StringBuilder sb = null;
+      StringBuilder? sb = null;
       foreach (object aObject in items) {
         if (sb == null) {
           sb = new StringBuilder();

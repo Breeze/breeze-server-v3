@@ -39,7 +39,7 @@ namespace Breeze.Persistence.NH {
     /// <param name="parent">Top-level object containing the properties</param>
     /// <param name="expandPath">Path of properties to initialize for each type</param>
     /// <param name="pathIndex">Where we are in the path</param>
-    private static void InitializeObjectPath(object parent, string[] expandPath, int pathIndex) {
+    private static void InitializeObjectPath(object? parent, string[] expandPath, int pathIndex) {
       if (parent == null || pathIndex >= expandPath.Length)
         return;
       string propName = expandPath[pathIndex];
@@ -50,7 +50,8 @@ namespace Breeze.Persistence.NH {
       if (propInfo == null) {
         throw new ArgumentException("Cannot expand property " + propName + " on type " + type.Name);
       }
-      var methInfo = propInfo.GetGetMethod();
+      // A property named in an expand path is read: a write-only one has always failed here.
+      var methInfo = propInfo.GetGetMethod()!;
       var child = methInfo.Invoke(parent, null);
       pathIndex++;
 
