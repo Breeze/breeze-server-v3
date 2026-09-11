@@ -24,7 +24,8 @@ namespace Breeze.Persistence {
             if (types.Count == 0) {
               __instance = new BreezeConfig();
             } else if (types.Count == 1) {
-              __instance = (BreezeConfig) Activator.CreateInstance(types[0]);
+              // Creating a (non-Nullable<T>) class instance never yields null.
+              __instance = (BreezeConfig) Activator.CreateInstance(types[0])!;
             } else {
               throw new Exception(
                 "More than one BreezeConfig implementation was found in the currently loaded assemblies - limit is one.");
@@ -61,7 +62,8 @@ namespace Breeze.Persistence {
             __probeAssemblies = new ReadOnlyCollection<Assembly>(AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsFrameworkAssembly(a)).ToList());
             __assemblyCount = __assemblyLoadedCount;
           }
-          return __probeAssemblies;
+          // __assemblyCount is only non-zero after the block above has assigned __probeAssemblies.
+          return __probeAssemblies!;
         }
       }
     }
@@ -74,18 +76,18 @@ namespace Breeze.Persistence {
     /// </summary>
     public virtual bool UseIntEnums { get => _useIntEnums; set => _useIntEnums = value; }
 
-    private string _queryParamName;
+    private string? _queryParamName;
     /// <summary>
     /// Name of query parameter for JSON query string.  Note that this must agree with what the client sends.<br/>
     /// Default is null, which means no parameter -- the JSON starts at the question mark: <code>?{"take":5}</code><br/>
     /// If non-null, then the JSON is the value of a named parameter.  E.g. if QueryParamName = "bq", then <code>?bq={"take":5}</code>
     /// </summary>
-    public virtual string QueryParamName { get => _queryParamName; set => _queryParamName = value; }
+    public virtual string? QueryParamName { get => _queryParamName; set => _queryParamName = value; }
 
-    static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args) {
+    static void CurrentDomain_AssemblyLoad(object? sender, AssemblyLoadEventArgs args) {
       Interlocked.Increment(ref __assemblyLoadedCount);
     }
-    private static ReadOnlyCollection<Assembly> __probeAssemblies;
+    private static ReadOnlyCollection<Assembly>? __probeAssemblies;
     private static int __assemblyCount = 0;
     private static int __assemblyLoadedCount = 0;
 
@@ -110,7 +112,8 @@ namespace Breeze.Persistence {
     }
 
     public static bool IsFrameworkAssembly(Assembly assembly) {
-      var fullName = assembly.FullName;
+      // Loaded (runtime) assemblies always have a FullName.
+      var fullName = assembly.FullName!;
       if (fullName.StartsWith("Microsoft.")) return true;
       if (fullName.StartsWith("EntityFramework")) return true;
       if (fullName.StartsWith("NHibernate")) return true;
@@ -164,10 +167,10 @@ namespace Breeze.Persistence {
     }
 
     private static Object __lock = new Object();
-    private static BreezeConfig __instance;
-    
-    private JsonSerializerSettings _jsonSerializerSettings = null;
-    private JsonSerializerSettings _jsonSerializerSettingsForSave = null;
+    private static BreezeConfig? __instance;
+
+    private JsonSerializerSettings? _jsonSerializerSettings = null;
+    private JsonSerializerSettings? _jsonSerializerSettingsForSave = null;
 
   }
 

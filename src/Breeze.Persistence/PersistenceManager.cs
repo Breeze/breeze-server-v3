@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,20 +18,20 @@ using System.Xml.Linq;
 namespace Breeze.Persistence {
   /// <summary> Manages persistence for Breeze entity models. </summary>
   public abstract class PersistenceManager {
-    /// <summary> Generates primary key values for new entities </summary>
-    public IKeyGenerator KeyGenerator { get; set; }
+    /// <summary> Generates primary key values for new entities.  Null until one is assigned or first needed. </summary>
+    public IKeyGenerator? KeyGenerator { get; set; }
 
-    /// <summary> Get the SaveOptions from the JSON save bundle </summary>
-    public static SaveOptions ExtractSaveOptions(dynamic dynSaveBundle) {
+    /// <summary> Get the SaveOptions from the JSON save bundle; null if the bundle's saveOptions is JSON null </summary>
+    public static SaveOptions? ExtractSaveOptions(dynamic dynSaveBundle) {
       var jsonSerializer = CreateJsonSerializer();
 
       var dynSaveOptions = dynSaveBundle.saveOptions;
-      var saveOptions = (SaveOptions)jsonSerializer.Deserialize(new JTokenReader(dynSaveOptions), typeof(SaveOptions));
+      var saveOptions = (SaveOptions?)jsonSerializer.Deserialize(new JTokenReader(dynSaveOptions), typeof(SaveOptions));
       return saveOptions;
     }
 
-    /// <summary> Options for the current save operation </summary>
-    public SaveOptions SaveOptions { get; set; }
+    /// <summary> Options for the current save operation; null before a save starts </summary>
+    public SaveOptions? SaveOptions { get; set; }
 
     /// <summary> Get the JSON metadata for the entity model </summary>
     public string Metadata() {
@@ -60,18 +61,19 @@ namespace Breeze.Persistence {
     }
 
     /// <summary> Prepare the SaveWorkState from the JSON payload </summary>
+    [MemberNotNull(nameof(SaveWorkState))]
     protected void InitializeSaveState(JObject saveBundle) {
       JsonSerializer = CreateJsonSerializer();
 
       var dynSaveBundle = (dynamic)saveBundle;
       var entitiesArray = (JArray)dynSaveBundle.entities;
       var dynSaveOptions = dynSaveBundle.saveOptions;
-      SaveOptions = (SaveOptions)JsonSerializer.Deserialize(new JTokenReader(dynSaveOptions), typeof(SaveOptions));
+      SaveOptions = (SaveOptions?)JsonSerializer.Deserialize(new JTokenReader(dynSaveOptions), typeof(SaveOptions));
       SaveWorkState = new SaveWorkState(this, entitiesArray);
     }
 
     /// <summary> Extract the entities from the saveBundle, save them, and return the SaveResult </summary>
-    public SaveResult SaveChanges(JObject saveBundle, TransactionSettings transactionSettings = null) {
+    public SaveResult SaveChanges(JObject saveBundle, TransactionSettings? transactionSettings = null) {
 
       if (SaveWorkState == null || SaveWorkState.WasUsed) {
         InitializeSaveState(saveBundle);
@@ -87,7 +89,8 @@ namespace Breeze.Persistence {
           }
         } else if (transactionSettings.TransactionType == TransactionType.DbTransaction) {
           // this.OpenDbConnection();
-          using (IDbTransaction tran = BeginTransaction(transactionSettings.IsolationLevelAs)) {
+          // BeginTransaction returns null only if GetDbConnection() does; Commit then throws, as it always has.
+          using (IDbTransaction tran = BeginTransaction(transactionSettings.IsolationLevelAs)!) {
             try {
               OpenAndSave(SaveWorkState);
               tran.Commit();
@@ -116,7 +119,7 @@ namespace Breeze.Persistence {
     }
 
     /// <summary> Extract the entities from the saveBundle, save them, and return the SaveResult </summary>
-    public async Task<SaveResult> SaveChangesAsync(JObject saveBundle, TransactionSettings transactionSettings = null, CancellationToken cancellationToken = default) {
+    public async Task<SaveResult> SaveChangesAsync(JObject saveBundle, TransactionSettings? transactionSettings = null, CancellationToken cancellationToken = default) {
 
       if (SaveWorkState == null || SaveWorkState.WasUsed) {
         InitializeSaveState(saveBundle);
@@ -222,8 +225,8 @@ namespace Breeze.Persistence {
     /// </summary>
     protected abstract Task CloseDbConnectionAsync();
 
-    /// <summary> Begin a transaction before saving entities </summary>
-    protected virtual IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel) {
+    /// <summary> Begin a transaction before saving entities; null if there is no connection </summary>
+    protected virtual IDbTransaction? BeginTransaction(System.Data.IsolationLevel isolationLevel) {
       var conn = GetDbConnection();
       if (conn == null) return null;
       return conn.BeginTransaction(isolationLevel);
@@ -261,17 +264,17 @@ namespace Breeze.Persistence {
     }
 
     /// <summary> If assigned, this function is called before each entity is saved.  If the function returns false, the entity will not be saved. </summary>
-    public Func<EntityInfo, bool> BeforeSaveEntityDelegate { get; set; }
+    public Func<EntityInfo, bool>? BeforeSaveEntityDelegate { get; set; }
     /// <summary> If assigned, this function is called before each entity is saved using SaveChangesAsync.  If the function returns false, the entity will not be saved. </summary>
-    public Func<EntityInfo, CancellationToken, Task<bool>> BeforeSaveEntityAsyncDelegate { get; set; }
+    public Func<EntityInfo, CancellationToken, Task<bool>>? BeforeSaveEntityAsyncDelegate { get; set; }
     /// <summary> If assigned, this function is called before entities are saved.  Entities in the dictionary can be added, removed, or changed before saving. </summary>
-    public Func<Dictionary<Type, List<EntityInfo>>, Dictionary<Type, List<EntityInfo>>> BeforeSaveEntitiesDelegate { get; set; }
+    public Func<Dictionary<Type, List<EntityInfo>>, Dictionary<Type, List<EntityInfo>>>? BeforeSaveEntitiesDelegate { get; set; }
     /// <summary> If assigned, this function is called before entities are saved using SaveChangesAsync.  Entities in the dictionary can be added, removed, or changed before saving. </summary>
-    public Func<Dictionary<Type, List<EntityInfo>>, CancellationToken, Task<Dictionary<Type, List<EntityInfo>>>> BeforeSaveEntitiesAsyncDelegate { get; set; }
+    public Func<Dictionary<Type, List<EntityInfo>>, CancellationToken, Task<Dictionary<Type, List<EntityInfo>>>>? BeforeSaveEntitiesAsyncDelegate { get; set; }
     /// <summary> If assigned, this function is called after all entities are saved. </summary>
-    public Action<Dictionary<Type, List<EntityInfo>>, List<KeyMapping>> AfterSaveEntitiesDelegate { get; set; }
+    public Action<Dictionary<Type, List<EntityInfo>>, List<KeyMapping>>? AfterSaveEntitiesDelegate { get; set; }
     /// <summary> If assigned, this function is called after all entities are saved using SaveChangesAsync. </summary>
-    public Func<Dictionary<Type, List<EntityInfo>>, List<KeyMapping>, CancellationToken, Task> AfterSaveEntitiesAsyncDelegate { get; set; }
+    public Func<Dictionary<Type, List<EntityInfo>>, List<KeyMapping>, CancellationToken, Task>? AfterSaveEntitiesAsyncDelegate { get; set; }
 
 
     /// <summary>
@@ -369,7 +372,8 @@ namespace Breeze.Persistence {
     protected internal EntityInfo CreateEntityInfoFromJson(dynamic jo, Type entityType) {
       var entityInfo = CreateEntityInfo();
 
-      entityInfo.Entity = JsonSerializer.Deserialize(new JTokenReader(jo), entityType);
+      // Each element of the save bundle's entities array is a JSON object, never null.
+      entityInfo.Entity = JsonSerializer.Deserialize(new JTokenReader(jo), entityType)!;
       entityInfo.EntityState = (EntityState)Enum.Parse(typeof(EntityState), (String)jo.entityAspect.entityState);
       entityInfo.PersistenceManager = this;
 
@@ -384,7 +388,7 @@ namespace Breeze.Persistence {
       return entityInfo;
     }
 
-    private Dictionary<String, Object> JsonToDictionary(dynamic json) {
+    private Dictionary<String, Object?>? JsonToDictionary(dynamic json) {
       if (json == null) return null;
       var jprops = ((System.Collections.IEnumerable)json).Cast<JProperty>();
       var dict = jprops.ToDictionary(jprop => jprop.Name, jprop => {
@@ -430,14 +434,15 @@ namespace Breeze.Persistence {
       return generatorTypes.First();
     });
 
-    /// <summary> The SaveWorkState representing the save in progress </summary>
-    protected SaveWorkState SaveWorkState { get; private set; }
+    /// <summary> The SaveWorkState representing the save in progress; null before the first save </summary>
+    protected SaveWorkState? SaveWorkState { get; private set; }
     /// <summary> The configured serializer for reading the save payload </summary>
-    protected JsonSerializer JsonSerializer { get; private set; }
+    // Assigned by InitializeSaveState, before any save payload is read.
+    protected JsonSerializer JsonSerializer { get; private set; } = null!;
 
 
     private object _metadataLock = new object();
-    private string _jsonMetadata;
+    private string? _jsonMetadata;
 
   }
 
@@ -503,15 +508,18 @@ namespace Breeze.Persistence {
 
     public PersistenceManager PersistenceManager;
     protected List<EntityGroup> EntityInfoGroups;
-    public Dictionary<Type, List<EntityInfo>> SaveMap { get; set; }
-    public List<EntityInfo> EntitiesWithAutoGeneratedKeys { get; set; }
-    public List<KeyMapping> KeyMappings;
-    public List<EntityError> EntityErrors;
+    // SaveMap and EntitiesWithAutoGeneratedKeys are set by BeforeSave/BeforeSaveAsync, and
+    // KeyMappings by the persistence manager's SaveChangesCore; all run before they are read.
+    public Dictionary<Type, List<EntityInfo>> SaveMap { get; set; } = null!;
+    public List<EntityInfo> EntitiesWithAutoGeneratedKeys { get; set; } = null!;
+    public List<KeyMapping> KeyMappings = null!;
+    public List<EntityError>? EntityErrors;
     public bool WasUsed { get; internal set; }
 
     public class EntityGroup {
-      public Type EntityType;
-      public List<EntityInfo> EntityInfos;
+      // Both set by the object initializer in the SaveWorkState constructor.
+      public Type EntityType = null!;
+      public List<EntityInfo> EntityInfos = null!;
     }
 
     /// <summary> Convert for sending to client </summary>
@@ -537,7 +545,7 @@ namespace Breeze.Persistence {
     /// <summary> Not used on server </summary>
     public bool AllowConcurrentSaves { get; set; }
     /// <summary> Arbitrary object sent from client; may be used to influence save behavior </summary>
-    public Object Tag { get; set; }
+    public Object? Tag { get; set; }
   }
 
   /// <summary> Server-side key generator </summary>
@@ -548,26 +556,27 @@ namespace Breeze.Persistence {
 
   /// <summary> Instances of this are sent to KeyGenerator  </summary>
   public class TempKeyInfo {
-    /// <summary> Create for an entity </summary>
+    /// <summary> Create for an entity that has an AutoGeneratedKey </summary>
     public TempKeyInfo(EntityInfo entityInfo) {
       _entityInfo = entityInfo;
     }
+    // The '!'s below: TempKeyInfo is only created for entities whose AutoGeneratedKey is set.
     /// <summary> Entity (read-only) </summary>
     public Object Entity {
       get { return _entityInfo.Entity; }
     }
     /// <summary> Temp value of key from client (read-only)  </summary>
-    public Object TempValue {
-      get { return _entityInfo.AutoGeneratedKey.TempValue; }
+    public Object? TempValue {
+      get { return _entityInfo.AutoGeneratedKey!.TempValue; }
     }
     /// <summary> New value of key, provided by KeyGenerator </summary>
-    public Object RealValue {
-      get { return _entityInfo.AutoGeneratedKey.RealValue; }
-      set { _entityInfo.AutoGeneratedKey.RealValue = value; }
+    public Object? RealValue {
+      get { return _entityInfo.AutoGeneratedKey!.RealValue; }
+      set { _entityInfo.AutoGeneratedKey!.RealValue = value; }
     }
     /// <summary> Property on the entity that holds the key </summary>
     public PropertyInfo Property {
-      get { return _entityInfo.AutoGeneratedKey.Property; }
+      get { return _entityInfo.AutoGeneratedKey!.Property; }
     }
 
     private EntityInfo _entityInfo;
@@ -593,20 +602,22 @@ namespace Breeze.Persistence {
     /// <summary> Only created by PersistenceManager </summary>
     protected internal EntityInfo() {
     }
+    // PersistenceManager and Entity are set by the PersistenceManager right after it
+    // creates the EntityInfo (see CreateEntityInfo and CreateEntityInfoFromJson).
     /// <summary> PersistenceManager hosting this entity </summary>
-    public PersistenceManager PersistenceManager { get; internal set; }
+    public PersistenceManager PersistenceManager { get; internal set; } = null!;
     /// <summary> Entity instance </summary>
-    public Object Entity { get; internal set; }
+    public Object Entity { get; internal set; } = null!;
     /// <summary> State of the entity; changes during save </summary>
     public EntityState EntityState { get; set; }
-    /// <summary> Original values of any changed properties (provided by client - not trustworthy) </summary>
-    public Dictionary<String, Object> OriginalValuesMap { get; set; }
+    /// <summary> Original values of any changed properties (provided by client - not trustworthy); null if none were sent </summary>
+    public Dictionary<String, Object?>? OriginalValuesMap { get; set; }
     /// <summary> Not used  </summary>
     public bool ForceUpdate { get; set; }
     /// <summary> AutoGeneratedKey (if any) associated with this entity </summary>
-    public AutoGeneratedKey AutoGeneratedKey { get; set; }
-    /// <summary> Properties passed from the client that cannot be mapped to server-side entity class </summary>
-    public Dictionary<String, Object> UnmappedValuesMap { get; set; }
+    public AutoGeneratedKey? AutoGeneratedKey { get; set; }
+    /// <summary> Properties passed from the client that cannot be mapped to server-side entity class; null if none were sent </summary>
+    public Dictionary<String, Object?>? UnmappedValuesMap { get; set; }
   }
 
   /// <summary> Types of key generation for new entities </summary>
@@ -641,40 +652,44 @@ namespace Breeze.Persistence {
           _property = Entity.GetType().GetProperty(PropertyName,
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         }
-        return _property;
+        // PropertyName comes from the client's copy of the server metadata. A name that
+        // doesn't match fails where the property is used, as it always has.
+        return _property!;
       }
     }
-    /// <summary> Temporary value of the key, from the client </summary>
-    public Object TempValue;
-    /// <summary> Server-generated value of the key </summary>
-    public Object RealValue;
-    private PropertyInfo _property;
+    /// <summary> Temporary value of the key, from the client; set when the entity is added </summary>
+    public Object? TempValue;
+    /// <summary> Server-generated value of the key; set when it has been generated </summary>
+    public Object? RealValue;
+    private PropertyInfo? _property;
   }
 
-  /// <summary> Type returned to client as JSON </summary>
+  /// <summary> Type returned to client as JSON.  Either Errors, or the other three, are set. </summary>
   public class SaveResult {
     /// <summary> Entities affected by the save </summary>
-    public List<Object> Entities;
+    public List<Object>? Entities;
     /// <summary> Map client temporary keys to server-generated keys </summary>
-    public List<KeyMapping> KeyMappings;
+    public List<KeyMapping>? KeyMappings;
     /// <summary> Identifies entities that were deleted on the server as part of the save </summary>
-    public List<EntityKey> DeletedKeys;
+    public List<EntityKey>? DeletedKeys;
     /// <summary> Errors that occurred during save </summary>
-    public List<Object> Errors;
+    public List<Object>? Errors;
   }
 
   /// <summary> For server-generated keys.  Maps temporary key (from the client) to the real key (generated on the server) </summary>
   public class KeyMapping {
+    // All three are set by the persistence manager that creates the mapping.
     /// <summary> Entity type (Name:#Namespace) </summary>
-    public String EntityTypeName;
+    public String EntityTypeName = null!;
     /// <summary> Temporary key value (from the client) </summary>
-    public Object TempValue;
+    public Object TempValue = null!;
     /// <summary> Real key value (generated on the server or in the database) </summary>
-    public Object RealValue;
+    public Object RealValue = null!;
   }
 
   /// <summary> Unique identifier for an entity </summary>
   public class EntityKey {
+    // The parameterless constructor exists for deserialization, which fills in both fields.
     public EntityKey() { }
     public EntityKey(object entity, object key) {
       var t = entity.GetType();
@@ -682,9 +697,9 @@ namespace Breeze.Persistence {
       KeyValue = key;
     }
     /// <summary> The C# class name (Name:#Namespace) of the entity type </summary>
-    public String EntityTypeName;
+    public String EntityTypeName = null!;
     /// <summary> The key (id) value of the entity.  Maybe a single value or an array. </summary>
-    public Object KeyValue;
+    public Object KeyValue = null!;
   }
 
   //public class SaveError {
@@ -722,18 +737,20 @@ namespace Breeze.Persistence {
 
   /// <summary> Entity-specific error (such as validation error) that occur during save. </summary>
   public class EntityError {
+    // A plain DTO filled in by whoever reports the error (Breeze validators, persistence
+    // managers or application code); nothing guarantees any member is set.
     /// <summary> Short name of the error </summary>
-    public String ErrorName;
+    public String? ErrorName;
     /// <summary> Entity type causing the error </summary>
-    public String EntityTypeName;
+    public String? EntityTypeName;
     /// <summary> Identifier (if known) for the entity causing the error </summary>
-    public Object[] KeyValues;
+    public Object[]? KeyValues;
     /// <summary> Name of property (if known) causing the error </summary>
-    public String PropertyName;
+    public String? PropertyName;
     /// <summary> Message describing the error </summary>
-    public string ErrorMessage;
+    public string? ErrorMessage;
     /// <summary> Arbitrary object to pass to client </summary>
-    public object Custom;
+    public object? Custom;
   }
 
 
@@ -753,8 +770,9 @@ namespace Breeze.Persistence {
       base.WritePropertyName(name);
     }
 
-    public override void WriteValue(string value) {
-      if (_isDataType && !value.StartsWith("Edm.")) {
+    public override void WriteValue(string? value) {
+      // Values of "type" come from XML attributes, which are never null.
+      if (_isDataType && !value!.StartsWith("Edm.")) {
         base.WriteValue("Edm." + value);
       } else {
         base.WriteValue(value);
