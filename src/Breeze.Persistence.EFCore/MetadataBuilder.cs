@@ -104,7 +104,7 @@ namespace Breeze.Persistence.EFCore {
 
       // Create data properties declared on this type (not base types)
       mt.DataProperties = et.GetProperties()
-        .Where(p => p.DeclaringEntityType == et)
+        .Where(p => p.DeclaringType == et)
         .Select(p => CreateDataProperty(p)).ToList();
 
       // EF returns parent's key with the complex type - we need to remove this.
@@ -119,7 +119,7 @@ namespace Breeze.Persistence.EFCore {
       // Handle complex properties
       // for now this only complex types ( 'owned types' in EF parlance are eager loaded)
       var ownedNavigations = et.GetNavigations()
-        .Where(p => p.DeclaringEntityType == et)
+        .Where(p => p.DeclaringType == et)
         .Where(n => n.TargetEntityType.IsOwned());
       ownedNavigations.ToList().ForEach(n => {
         var complexType = n.TargetEntityType.ClrType;
@@ -132,7 +132,7 @@ namespace Breeze.Persistence.EFCore {
       });
 
       mt.NavigationProperties = et.GetNavigations()
-        .Where(p => p.DeclaringEntityType == et)
+        .Where(p => p.DeclaringType == et)
         .Where(n => !n.TargetEntityType.IsOwned()).Select(p => CreateNavProperty(p)).ToList();
 
       return mt;
