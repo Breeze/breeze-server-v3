@@ -29,11 +29,7 @@ namespace Breeze.Persistence.EFCore {
       var complexTypes = dbContext.Model.GetEntityTypes()
         .Where(et => et.IsOwned())
         .Select(et => CreateMetaType(et, dbSetMap))
-#if NET6_0_OR_GREATER
         .DistinctBy(et => et.ShortName).ToList();
-#else
-        .Distinct(new MetaTypeEqualityComparer()).ToList();
-#endif
       complexTypes.ForEach(v => metadata.StructuralTypes.Insert(0, v));
 
       // Get the enums out of the model types
@@ -51,11 +47,7 @@ namespace Breeze.Persistence.EFCore {
           }
 
           string[] enumNames = Enum.GetNames(realType);
-#if NET7_0_OR_GREATER
           Array enumOrds = BreezeConfig.Instance.UseIntEnums ? Enum.GetValuesAsUnderlyingType(realType) : enumNames;
-#else
-          Array enumOrds = BreezeConfig.Instance.UseIntEnums ? Enum.GetValues(realType).Cast<int>().ToArray<int>() : enumNames;
-#endif
           var et = new MetaEnum {
             ShortName = realType.Name,
             Namespace = realType.Namespace,
@@ -229,15 +221,4 @@ namespace Breeze.Persistence.EFCore {
 
   }
 
-#if !NET6_0_OR_GREATER
-  class MetaTypeEqualityComparer : IEqualityComparer<MetaType> {
-    public bool Equals(MetaType x, MetaType y) {
-      return x.ShortName == y.ShortName; 
-    }
-
-    public int GetHashCode([DisallowNull] MetaType obj) {
-      return obj.ShortName.GetHashCode(); 
-    }
-  }
-#endif
 }

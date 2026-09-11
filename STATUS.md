@@ -69,11 +69,17 @@ into a real application.**
 
 ## Remaining work
 
-- `<Nullable>enable</Nullable>` per project, and delete the now-dead version conditionals.
-  There are only **6 preprocessor regions (~30 lines) in 3 files** across 9,735 lines:
-  `Breeze.Core/Query/DataType.cs` (2), `Breeze.Core/TypeFns.cs` (1),
-  `Breeze.Persistence.EFCore/MetadataBuilder.cs` (3). Dropping net5/6/7 makes every one
-  unconditional and deletes the 10-line `MetaTypeEqualityComparer` fallback outright.
+- ~~Delete the dead version conditionals~~ **done.** All 6 preprocessor regions are gone;
+  `src/` now contains no `#if` at all. The `MetaTypeEqualityComparer` fallback went with
+  them.
+- `<Nullable>enable</Nullable>` - **measured, not started.** Turning it on for
+  `Breeze.Core` alone produces **750 warnings** (~250 unique across the three target
+  frameworks), and that project is 3,836 of the 9,735 lines. The breakdown is CS8603
+  (possible null return) 258, CS8618 (non-nullable field uninitialized) 222, then
+  CS8604/CS8600/CS8625. Unlike the client's strictNullChecks migration - where one bad
+  interface declaration accounted for 113 of 166 errors - there is no single dominant
+  cause here. Budget it as its own piece of work, project by project, with the
+  cross-tier suite green after each.
 - Seed `UnusualDate.DateOnly` / `TimeOnly`. `Add_DateOnly_TimeOnly.sql` added the columns
   but never populated them, so all 10 rows are NULL and the client's
   `where dateOnly & timeOnly` test cannot pass.
