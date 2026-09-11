@@ -9,7 +9,8 @@ namespace Breeze.Persistence.NH {
   public static class NHQueryHelper {
 
     public static IQueryable<TEntity> Include<TEntity>(this IQueryable<TEntity> source, string navigationPropertyPath) where TEntity : class {
-      if (source == null) return source;
+      // Defensive, and kept: callers compiled without nullable annotations can still pass null.
+      if (source == null) return source!;
       var provider = source.Provider as DefaultQueryProvider;
       if (provider == null) return source;
       if (provider is NHQueryProvider) {
@@ -23,7 +24,7 @@ namespace Breeze.Persistence.NH {
       }
     }
 
-    public static bool NeedsExecution(string queryString, IQueryable queryable) {
+    public static bool NeedsExecution(string? queryString, IQueryable? queryable) {
       return (queryable != null && (queryString != null || queryable.Provider is DefaultQueryProvider));
     }
 
@@ -55,7 +56,7 @@ namespace Breeze.Persistence.NH {
     /// </summary>
     /// <param name="queryable"></param>
     /// <returns>the session if queryable.Provider is NHibernate.Linq.DefaultQueryProvider, else null</returns>
-    private static ISession GetSession(IQueryable queryable) {
+    private static ISession? GetSession(IQueryable queryable) {
       if (queryable == null) return null;
       var provider = queryable.Provider as DefaultQueryProvider;
       if (provider == null) return null;

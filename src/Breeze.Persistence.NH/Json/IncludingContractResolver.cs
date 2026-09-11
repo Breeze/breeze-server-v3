@@ -14,8 +14,9 @@ namespace Breeze.Persistence.NH {
   /// types unless explicitly included.
   /// </summary>
   public class IncludingContractResolver : DefaultContractResolver {
-    private HashSet<string> includedMembers;
-    private IDictionary<Type, List<string>> includedTypeMembers;
+    // Each constructor sets one of these and leaves the other null; IsIncluded checks both.
+    private HashSet<string>? includedMembers;
+    private IDictionary<Type, List<string>>? includedTypeMembers;
 
     /// <summary>
     /// Configure the included property names using an array of strings
@@ -80,7 +81,8 @@ namespace Breeze.Persistence.NH {
       if (propertyType.HasElementType || typeof(IEnumerable).IsAssignableFrom(propertyType)) return false;
 
       // System types are included
-      if (propertyType.Namespace.StartsWith("System")) return true;
+      // Namespace is null for array, pointer and generic-parameter types - none of them System types.
+      if (propertyType.Namespace != null && propertyType.Namespace.StartsWith("System")) return true;
 
       return false;
     }

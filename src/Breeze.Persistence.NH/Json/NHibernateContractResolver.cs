@@ -72,12 +72,14 @@ namespace Breeze.Persistence.NH {
     /// <returns></returns>
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization) {
       JsonProperty property = base.CreateProperty(member, memberSerialization);
-      PropertyInfo pinfo = member as PropertyInfo;
+      PropertyInfo? pinfo = member as PropertyInfo;
 
       if ((typeof(string) != property.PropertyType) && typeof(IEnumerable).IsAssignableFrom(property.PropertyType) && pinfo != null) {
+        // Captured by the lambda below: a non-nullable local is what carries the check above into it.
+        PropertyInfo collectionProperty = pinfo;
         property.ShouldSerialize =
         instance => {
-          var value = pinfo.GetValue(instance);
+          var value = collectionProperty.GetValue(instance);
           var inited = NHibernateUtil.IsInitialized(value);
           return inited;
         };

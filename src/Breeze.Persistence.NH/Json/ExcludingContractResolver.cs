@@ -27,7 +27,8 @@ namespace Breeze.Persistence.NH {
       var members = base.GetSerializableMembers(objectType);
 
       members.RemoveAll(memberInfo => excludedMemberNames.Contains(memberInfo.Name));
-      members.RemoveAll(memberInfo => excludedMemberNames.Contains(memberInfo.DeclaringType.Name + '.' + memberInfo.Name));
+      // A member that GetSerializableMembers returned was declared by some type.
+      members.RemoveAll(memberInfo => excludedMemberNames.Contains(memberInfo.DeclaringType!.Name + '.' + memberInfo.Name));
 
       return members;
     }

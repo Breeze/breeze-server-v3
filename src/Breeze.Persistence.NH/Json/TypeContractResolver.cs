@@ -57,7 +57,7 @@ namespace Breeze.Persistence.NH {
 
     protected bool IsIncluded(Type type) {
       // unwrap collections
-      if (type.HasElementType) type = type.GetElementType();
+      if (type.HasElementType) type = type.GetElementType()!;   // never null when HasElementType
       if (type.IsGenericType) type = type.GetGenericArguments()[0];
 
       if (includedTypes.Contains(type))
