@@ -16,49 +16,54 @@ one catalog. Their tables do not overlap:
 
 ## Creating the database
 
-The Northwind and Produce data still ships as the SQL Server data files in this
-directory. To build `BreezeTestDb` on a local default instance:
+[`BreezeTestDb.sql`](./BreezeTestDb.sql) creates all 33 tables — Northwind, Produce and the
+inheritance tables — and loads the Northwind and Produce data. On a local default instance,
+from the root of this repo:
 
-1. Copy `NorthwindIB.mdf` / `NorthwindIB_log.ldf` to a folder SQL Server can write to
-   (do **not** attach them in place — attaching upgrades the files, which would dirty
-   the repo), renaming them to `BreezeTestDb.mdf` / `BreezeTestDb_log.ldf`.
+```bash
+sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
+sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
+```
 
-2. Attach them under the new name:
+`-f 65001` matters; see *Encoding* below. Alternatively, from a `breeze-client-v3` checkout
+next to this repo, `scripts\test-with-server.cmd` creates the database if it is missing,
+starts the test server and runs the client suite against it.
 
-   ```sql
-   CREATE DATABASE BreezeTestDb
-     ON (FILENAME='<path>\BreezeTestDb.mdf'),
-        (FILENAME='<path>\BreezeTestDb_log.ldf')
-     FOR ATTACH;
-   ```
+The inheritance tables are created empty; `InheritanceDbInitializer.Seed` fills them on
+every server startup.
 
-   > These files were created by SQL Server 2008 (internal version 904). Attaching
-   > them to a modern instance performs a one-way upgrade. If you get
-   > `Operating system error 5 (Access is denied)`, grant your own Windows account
-   > full control of the files — `CREATE DATABASE ... FOR ATTACH` checks file access
-   > while impersonating the calling login, not the service account.
+[`inheritance-schema.sql`](./inheritance-schema.sql) is the EF-generated schema for the
+inheritance tables, kept for reference and regenerated with
+`InheritanceContext.Database.GenerateCreateScript()` when that model changes. It is already
+part of `BreezeTestDb.sql`; you do not need to run it.
 
-3. Add the Produce table, by attaching `ProduceTPH.mdf` the same way under a temporary
-   name and copying the single table across:
+To regenerate `BreezeTestDb.sql` itself after a schema change, script a **pristine**
+database — one no tests have run against — with:
 
-   ```sql
-   SELECT * INTO BreezeTestDb.dbo.ItemOfProduce FROM <temp>.dbo.ItemOfProduce;
-   ALTER TABLE BreezeTestDb.dbo.ItemOfProduce ALTER COLUMN Id uniqueidentifier NOT NULL;
-   ALTER TABLE BreezeTestDb.dbo.ItemOfProduce ADD CONSTRAINT PK_ItemOfProduce PRIMARY KEY CLUSTERED (Id);
-   ```
+```bash
+dotnet run --project tools/DbScripter -- tests/Databases/BreezeTestDb.sql
+```
 
-4. Add the inheritance tables by running [`inheritance-schema.sql`](./inheritance-schema.sql)
-   against `BreezeTestDb`. That script is generated from the EF model — regenerate it with
-   `InheritanceContext.Database.GenerateCreateScript()` if the model changes.
-
-The inheritance tables carry no data in the file; they are populated on every server
-startup by `InheritanceDbInitializer.Seed`.
+The database used to ship as SQL Server 2008 `.mdf`/`.ldf` files that had to be attached
+and merged by hand. Those files are gone.
 
 ## Resetting between runs
 
-[`CleanBreezeTestDb.sql`](./CleanBreezeTestDb.sql) removes the rows that the save tests
-add, returning the Northwind tables to their original state. Run it if a failed test run
-leaves the database dirty.
+Re-applying `BreezeTestDb.sql` is the reset. The client's integration tests do it
+automatically before every run (`test/global-setup.ts` in breeze-client-v3). By hand:
+
+```bash
+sqlcmd -S . -E -Q "ALTER DATABASE BreezeTestDb SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE BreezeTestDb; CREATE DATABASE BreezeTestDb;"
+sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
+```
+
+`SINGLE_USER WITH ROLLBACK IMMEDIATE` disconnects a running test server; it reconnects on
+its next query, but restart it so that it re-seeds the inheritance tables.
+
+[`CleanBreezeTestDb.sql`](./CleanBreezeTestDb.sql) predates the script and is **not** a
+reliable reset: it deletes rows the save tests are known to add, but cannot restore rows
+they delete, misses some they add, and one of its deletes fails on a foreign key. It is due
+to be removed; don't rely on it.
 
 `InheritanceDbInitializer.Seed` resets the inheritance tables by deleting and re-inserting
 their rows. It deliberately does **not** call `EnsureDeleted`/`EnsureCreated` any more —

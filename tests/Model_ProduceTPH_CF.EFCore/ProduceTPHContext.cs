@@ -21,7 +21,7 @@ namespace ProduceTPH
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ProduceTPH;Integrated Security=True;MultipleActiveResultSets=True");
+                // Configured by the host (Startup.cs), against the shared BreezeTestDb connection string.
             }
         }
 

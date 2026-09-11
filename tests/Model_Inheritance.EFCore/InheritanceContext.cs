@@ -17,7 +17,7 @@ namespace Inheritance.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=InheritanceContext;Integrated Security=True;MultipleActiveResultSets=True");
+                // Configured by the host (Startup.cs), against the shared BreezeTestDb connection string.
             }
         }
 
