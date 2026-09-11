@@ -50,26 +50,33 @@ dotnet pack  src/Breeze.Core/Breeze.Core.csproj -c Release
 
 ## Running the tests
 
-The test suite is driven from the client repo
-([breeze-client-v3](https://github.com/Breeze/breeze-client-v3)); this repo provides the server it runs against.
+The suite is driven from the client repo,
+[breeze-client-v3](https://github.com/Breeze/breeze-client-v3); this repo provides the
+server and the database it runs against.
 
-1. Create the test database - a single database named `BreezeTestDb`:
+**Full instructions, verified end to end, are in
+[breeze-client-v3/TESTING.md](https://github.com/Breeze/breeze-client-v3/blob/master/TESTING.md).**
+The short version:
 
-   ```
-   sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
-   sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
-   ```
+```bash
+# 1. create the single test database (note -f 65001; see below)
+sqlcmd -S . -E -Q "CREATE DATABASE BreezeTestDb"
+sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
 
-2. Start the server:
+# 2. start the server and leave it running
+dotnet run --project tests/Test.AspNetCore.EFCore/Test.AspNetCore.EFCore.csproj \
+  --no-launch-profile --urls http://localhost:34377
 
-   ```
-   dotnet run --project tests/Test.AspNetCore.EFCore/Test.AspNetCore.EFCore.csproj --urls http://localhost:34377
-   ```
+# 3. from the breeze-client-v3 checkout
+npm test
+```
 
-3. Run the client test suite against it.
+`-f 65001` is required. The script is UTF-8 and the Northwind data contains accented
+characters; without it sqlcmd decodes the file as the system ANSI codepage and silently
+corrupts every one of them. See [tests/Databases/README.md](tests/Databases/README.md).
 
-See [tests/Databases/README.md](tests/Databases/README.md) for details, including how to reset the database between
-runs - the suite mutates data, so re-applying the script is the reliable reset.
+`--no-launch-profile` is also required - the default profile is IIS Express.
+
 
 ## Relationship to the old repo
 
