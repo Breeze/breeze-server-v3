@@ -4,6 +4,8 @@
     <!-- No per-project .exe: run through the Microsoft-signed dotnet.exe instead. Windows
          application control (Smart App Control, WDAC) blocks freshly built unsigned .exe files. -->
     <UseAppHost>false</UseAppHost>
+    <!-- A test host. Never packed; see Controllers/TestDbController.cs. -->
+    <IsPackable>false</IsPackable>
     <TargetFramework>net10.0</TargetFramework>
     <DefineConstants>$(DefineConstants);EFCORE</DefineConstants>
   </PropertyGroup>

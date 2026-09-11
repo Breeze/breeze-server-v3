@@ -134,10 +134,14 @@ namespace Test.AspNetCore {
       // Must come before UseMvc so preflight requests are answered.
       app.UseCors(TestCorsPolicy);
 
-      app.UseStaticFiles(new StaticFileOptions() {
-        FileProvider = new PhysicalFileProvider(path),
-        RequestPath = new PathString("")
-      });
+      // breezeTests/ is gitignored and only exists where someone created it, so a fresh clone
+      // (or a git worktree) has none; PhysicalFileProvider throws on a missing directory.
+      if (Directory.Exists(path)) {
+        app.UseStaticFiles(new StaticFileOptions() {
+          FileProvider = new PhysicalFileProvider(path),
+          RequestPath = new PathString("")
+        });
+      }
 
       app.UseMvc();
 
