@@ -8,11 +8,11 @@ namespace Breeze.Core {
 
 
   public static class JsonHelper {
-    public static object Deserialize(string json) {
+    public static object? Deserialize(string json) {
       return ToObject(JToken.Parse(json));
     }
 
-    private static object ToObject(JToken token) {
+    private static object? ToObject(JToken token) {
       switch (token.Type) {
         case JTokenType.Object:
           return token.Children<JProperty>()

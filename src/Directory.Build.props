@@ -11,8 +11,9 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
-    <!-- Enabled per project as each one is modernized. -->
-    <Nullable>disable</Nullable>
+    <!-- Nullable reference types are on for all shipping packages; the
+         annotations are part of the public API surface. -->
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Label="Signing">

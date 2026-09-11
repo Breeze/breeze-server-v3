@@ -31,7 +31,7 @@ namespace Breeze.Core {
     }
 
     // returns null for scalar properties
-    public Type ElementType {
+    public Type? ElementType {
       get { return TypeFns.GetElementType(ReturnType); }
 
     }
@@ -63,8 +63,8 @@ namespace Breeze.Core {
       }
     }
 
-    private static PropertyInfo GetProperty(Type instanceType, String propertyName, bool throwOnError = true) {
-      var propertyInfo = (PropertyInfo)TypeFns.FindPropertyOrField(instanceType, propertyName,
+    private static PropertyInfo? GetProperty(Type instanceType, String propertyName, bool throwOnError = true) {
+      var propertyInfo = (PropertyInfo?)TypeFns.FindPropertyOrField(instanceType, propertyName,
         BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
       if (propertyInfo == null) {
         if (throwOnError) {

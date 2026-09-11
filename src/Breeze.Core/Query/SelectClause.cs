@@ -14,9 +14,9 @@ namespace Breeze.Core {
    */
   public class SelectClause {
     private List<String> _propertyPaths;
-    private List<PropertySignature> _properties;
+    private List<PropertySignature> _properties = null!; // set by Validate()
 
-    public static SelectClause From(IEnumerable propertyPaths) {
+    public static SelectClause? From(IEnumerable? propertyPaths) {
       return (propertyPaths == null) ? null : new SelectClause(propertyPaths.Cast<String>());
     }
 

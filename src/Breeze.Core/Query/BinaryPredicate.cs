@@ -13,11 +13,12 @@ namespace Breeze.Core {
    */
   public class BinaryPredicate : BasePredicate {
     public Object Expr1Source { get; private set; }
-    public Object Expr2Source { get; private set; }
-    private BaseBlock _block1;
-    private BaseBlock _block2;
+    public Object? Expr2Source { get; private set; }
+    // Both blocks are built by Validate(), which must run before ToExpression().
+    private BaseBlock _block1 = null!;
+    private BaseBlock _block2 = null!;
 
-    public BinaryPredicate(Operator op, Object expr1Source, Object expr2Source) : base(op) {
+    public BinaryPredicate(Operator op, Object expr1Source, Object? expr2Source) : base(op) {
       Expr1Source = expr1Source;
       Expr2Source = expr2Source;
     }
@@ -53,7 +54,9 @@ namespace Breeze.Core {
       } else {
         if (Expr2Source is IList) {
           // coerce to list of (potentially nullable) types
-          var propType = (this._block1 is PropBlock pb) ? pb.Property.ReturnType : this._block1.DataType.GetUnderlyingType();
+          // A left-hand block that is not a PropBlock is an FnBlock, whose registered
+          // return types are all non-null DataTypes with a CLR type.
+          var propType = (this._block1 is PropBlock pb) ? pb.Property.ReturnType : this._block1.DataType!.GetUnderlyingType()!;
           var list = DataType.CoerceList((IList)Expr2Source, propType);
           this._block2 = new LitBlock(list, null);
         } else {
@@ -65,10 +68,12 @@ namespace Breeze.Core {
 
 
     public override Expression ToExpression(ParameterExpression paramExpr) {
-      return BuildBinaryExpr(_block1.ToExpression(paramExpr), _block2.ToExpression(paramExpr), Operator);
+      // Null only for a BinaryOperator this class does not handle; that has always
+      // failed in the caller (Expression.Lambda).
+      return BuildBinaryExpr(_block1.ToExpression(paramExpr), _block2.ToExpression(paramExpr), Operator)!;
     }
 
-    private Type GetEnumType(BaseBlock block) {
+    private Type? GetEnumType(BaseBlock block) {
       if (block is PropBlock) {
         PropBlock pExpr = (PropBlock)block;
         var prop = pExpr.Property;
@@ -81,7 +86,7 @@ namespace Breeze.Core {
       return null;
     }
 
-    private Expression BuildBinaryExpr(Expression expr1, Expression expr2, Operator op) {
+    private Expression? BuildBinaryExpr(Expression expr1, Expression expr2, Operator op) {
 
       if (expr1.Type != expr2.Type) {
         // don't try to convert if operator is In, because then expr2 is IList
@@ -99,10 +104,12 @@ namespace Breeze.Core {
           }
         }
 
+        // GetNullableType is null for SByte, DateOnly and TimeOnly (predefined but not in
+        // TypeFns' nullable map); Expression.Convert then throws, as it always has.
         if (HasNullValue(expr2) && CannotBeNull(expr1)) {
-          expr1 = Expression.Convert(expr1, TypeFns.GetNullableType(expr1.Type));
+          expr1 = Expression.Convert(expr1, TypeFns.GetNullableType(expr1.Type)!);
         } else if (HasNullValue(expr1) && CannotBeNull(expr2)) {
-          expr2 = Expression.Convert(expr2, TypeFns.GetNullableType(expr2.Type));
+          expr2 = Expression.Convert(expr2, TypeFns.GetNullableType(expr2.Type)!);
         }
         
       }
@@ -129,7 +136,8 @@ namespace Breeze.Core {
         var mi = TypeFns.GetMethodByExample((String s) => s.Contains("abc"));
         return Expression.Call(expr1, mi, expr2);
       } else if (op == BinaryOperator.In) {
-        var mi = TypeFns.GetMethodByNameAndType(typeof(List<>), "Contains", expr1.Type);
+        // List<T>.Contains always exists.
+        var mi = TypeFns.GetMethodByNameAndType(typeof(List<>), "Contains", expr1.Type)!;
         return Expression.Call(expr2, mi, expr1);
       }
 

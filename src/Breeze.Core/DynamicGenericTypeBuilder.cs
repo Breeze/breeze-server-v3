@@ -188,7 +188,8 @@ namespace Breeze.Core {
       ILGenerator ctorIL = ctorBuilder.GetILGenerator();
       ctorIL.Emit(OpCodes.Ldarg_0);
       // var baseCtorInfo = typeof(Object).GetConstructor(new Type[0]);
-      var baseCtorInfo = typeof(DynamicTypeBase).GetTypeInfo().GetConstructor(new Type[0]);
+      // DynamicTypeBase declares a public parameterless constructor.
+      var baseCtorInfo = typeof(DynamicTypeBase).GetTypeInfo().GetConstructor(new Type[0])!;
       ctorIL.Emit(OpCodes.Call, baseCtorInfo);
       for (byte i = 0; i < info.PropertyNames.Count; i++) {
         ctorIL.Emit(OpCodes.Ldarg_0);
@@ -218,7 +219,8 @@ namespace Breeze.Core {
 
       var generator = ctorBuilder.GetILGenerator();
       generator.Emit(OpCodes.Ldarg_0);
-      var baseCtorInfo = typeof(Object).GetTypeInfo().GetConstructor(new Type[0]);
+      // object has a public parameterless constructor.
+      var baseCtorInfo = typeof(Object).GetTypeInfo().GetConstructor(new Type[0])!;
       generator.Emit(OpCodes.Call, baseCtorInfo);
       generator.Emit(OpCodes.Ret);
     }

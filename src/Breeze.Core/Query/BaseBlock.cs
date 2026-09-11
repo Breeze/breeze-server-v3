@@ -44,8 +44,8 @@ namespace Breeze.Core {
     }
 
     // will return either a PropBlock or a LitBlock
-    public static BaseBlock CreateRHSBlock(Object exprSource,
-        Type entityType, DataType otherExprDataType) {
+    public static BaseBlock CreateRHSBlock(Object? exprSource,
+        Type entityType, DataType? otherExprDataType) {
 
       if (exprSource == null) {
         return new LitBlock(exprSource, otherExprDataType);
@@ -71,7 +71,7 @@ namespace Breeze.Core {
       }
 
       if (exprSource is IDictionary<string, Object>) {
-        var exprMap = (IDictionary<string, Object>)exprSource;
+        var exprMap = (IDictionary<string, Object?>)exprSource;
         // note that this is NOT the same a using get and checking for null
         // because null is a valid 'value'.
         if (!exprMap.ContainsKey("value")) {
@@ -79,13 +79,15 @@ namespace Breeze.Core {
               "Unable to locate a 'value' property on: "
                   + exprMap.ToString());
         }
-        Object value = exprMap["value"];
+        Object? value = exprMap["value"];
 
         if (exprMap.ContainsKey("isProperty")) {
-          return new PropBlock((String)value, entityType);
+          // A property reference names a property; a null 'value' here fails in
+          // PropBlock, as it always has.
+          return new PropBlock((String)value!, entityType);
         } else {
-          String dt = (String)exprMap["dataType"];
-          DataType dataType = (dt != null) ? DataType.FromName(dt) : otherExprDataType;
+          String? dt = (String?)exprMap["dataType"];
+          DataType? dataType = (dt != null) ? DataType.FromName(dt) : otherExprDataType;
           return new LitBlock(value, dataType);
         }
       }
@@ -105,7 +107,8 @@ namespace Breeze.Core {
 
     }
 
-    public abstract DataType DataType {
+    // null for a literal whose type is unknown (e.g. a null literal)
+    public abstract DataType? DataType {
       get;
     }
 

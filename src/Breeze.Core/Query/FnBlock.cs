@@ -56,7 +56,7 @@ namespace Breeze.Core {
       get { return _exprs.AsReadOnly(); }
     }
 
-    public override DataType DataType {
+    public override DataType? DataType {
       get {
         return GetReturnType(FnName);
       }
@@ -66,7 +66,7 @@ namespace Breeze.Core {
       _fnMap[name.ToLowerInvariant()] = dataTypes;
     }
 
-    public static DataType GetReturnType(String fnName) {
+    public static DataType? GetReturnType(String fnName) {
       DataType[] dataTypes = _fnMap[fnName.ToLowerInvariant()];
       return (dataTypes != null) ? dataTypes[0] : null;
     }
@@ -151,8 +151,9 @@ namespace Breeze.Core {
         var test = Expression.Equal(expr, nullBaseExpression);
         expr = Expression.Convert(expr, TypeFns.GetNonNullableType(expr.Type));
         Expression propExpr = Expression.PropertyOrField(expr, propertyName);
-        propExpr = Expression.Convert(propExpr, TypeFns.GetNullableType(returnType));
-        var nullExpr = Expression.Constant(null, TypeFns.GetNullableType(returnType));
+        // returnType is always int here, which has a nullable counterpart.
+        propExpr = Expression.Convert(propExpr, TypeFns.GetNullableType(returnType)!);
+        var nullExpr = Expression.Constant(null, TypeFns.GetNullableType(returnType)!);
         return Expression.Condition(test, nullExpr, propExpr);
       } else {
         return Expression.PropertyOrField(expr, propertyName);

@@ -7,7 +7,7 @@ using System.Xml;
 namespace Breeze.Core {
   public class DataType {
     private String _name;
-    private Type _type;
+    private Type? _type; // null for Binary, the only DataType without a CLR type
     private static Dictionary<String, DataType> _nameMap = new Dictionary<String, DataType>();
     private static Dictionary<Type, DataType> _typeMap = new Dictionary<Type, DataType>();
 
@@ -48,7 +48,7 @@ namespace Breeze.Core {
       return _name;
     }
 
-    public Type GetUnderlyingType() {
+    public Type? GetUnderlyingType() {
       return _type;
     }
 
@@ -64,7 +64,8 @@ namespace Breeze.Core {
     /// <summary> Convert list to IList of itemType.  Handles case where itemType is enum and/or nullable. </summary>
     public static IList CoerceList(IList list, Type itemType) {
       var listType = typeof(List<>).MakeGenericType(new[] { itemType });
-      var newList = (IList)Activator.CreateInstance(listType);
+      // Creating a List<T> never yields null.
+      var newList = (IList)Activator.CreateInstance(listType)!;
       var et = TypeFns.GetNonNullableType(itemType);
       if (et.IsEnum) {
         foreach (var item in list) {
@@ -85,15 +86,18 @@ namespace Breeze.Core {
     // private static DateFormat ISO8601_Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     /// <summary> Convert value to an object of the dataType </summary>
-    public static Object CoerceData(Object value, DataType dataType) {
+    public static Object? CoerceData(Object? value, DataType? dataType) {
 
+      // The '!'s on GetUnderlyingType() below: it is null only for Binary, which has never
+      // been coercible; those calls throw ArgumentNullException for it, as they always have.
       if (value == null || dataType == null || value.GetType() == dataType.GetUnderlyingType()) {
         return value;
       } else if (value is IList ilist) {
         // this occurs with an 'In' clause
-        return CoerceList(ilist, dataType.GetUnderlyingType());
+        return CoerceList(ilist, dataType.GetUnderlyingType()!);
       } else if (dataType == DataType.Guid) {
-        return System.Guid.Parse(value.ToString());
+        // object.ToString() is annotated nullable only for unusual overrides.
+        return System.Guid.Parse(value.ToString()!);
       } else if (dataType == DataType.DateTimeOffset && value is DateTime) {
         DateTimeOffset result = (DateTime)value;
         return result;
@@ -104,7 +108,7 @@ namespace Breeze.Core {
       } else if (dataType == DataType.TimeOnly && value is String) {
         return System.TimeOnly.Parse((string)value);
       } else {
-        return Convert.ChangeType(value, dataType.GetUnderlyingType());
+        return Convert.ChangeType(value, dataType.GetUnderlyingType()!);
       }
 
 

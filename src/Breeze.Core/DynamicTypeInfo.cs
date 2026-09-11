@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 
@@ -63,7 +64,7 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="anonOrDynType"></param>
     /// <returns></returns>
-    public static DynamicTypeInfo FindOrCreate(Type anonOrDynType) {
+    public static DynamicTypeInfo? FindOrCreate(Type anonOrDynType) {
       if (DynamicTypeInfo.IsDynamicType(anonOrDynType)) {
         return FindByDynamicTypeName(anonOrDynType.Name);
       } else {
@@ -122,7 +123,9 @@ namespace Breeze.Core {
     /// For internal use only.
     /// </summary>
     public Type OriginalType {
-      get { return _originalType; }
+      // Set by both constructors (the TypeShape one via CreateDynamicType). It is only
+      // null while that constructor runs, and the code that runs then reads _originalType.
+      get { return _originalType!; }
       set { _originalType = value; }
     }
 
@@ -139,10 +142,10 @@ namespace Breeze.Core {
     }
 
     /// <summary>
-    /// For internal use only.
+    /// For internal use only. The anonymous type's name; null for types built from a property list.
     /// </summary>
     [DataMember]
-    public String TypeName { get; protected set; }
+    public String? TypeName { get; protected set; }
 
     /// <summary>
     /// For internal use only.
@@ -170,7 +173,8 @@ namespace Breeze.Core {
     public ReadOnlyCollection<PropertyInfo> Properties {
       get {
         if ( _properties == null) {
-          _properties = PropertyNames.Select(p => DynamicType.GetTypeInfo().GetProperty(p)).ToList();
+          // DynamicGenericTypeBuilder defines a property for every name in PropertyNames.
+          _properties = PropertyNames.Select(p => DynamicType.GetTypeInfo().GetProperty(p)!).ToList();
         }
         return _properties.AsReadOnly();
       }
@@ -207,14 +211,14 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override bool Equals(object obj) {
+    public override bool Equals(object? obj) {
       if (this == obj) return true;
       var other = obj as DynamicTypeInfo;
       if (other == null) return false;
       if (OriginalType != null) {
         return this.OriginalType == other.OriginalType;
       } else {
-        return this.TypeName.Equals(other.TypeName)
+        return String.Equals(this.TypeName, other.TypeName)
           && this.PropertyNames.SequenceEqual(other.PropertyNames)
           && this.PropertyTypes.SequenceEqual(other.PropertyTypes);
       }
@@ -225,7 +229,7 @@ namespace Breeze.Core {
     /// </summary>
     /// <returns></returns>
     public override int GetHashCode() {
-      return TypeName.GetHashCode();
+      return TypeName?.GetHashCode() ?? 0;
     }
 
     #region public statics 
@@ -247,7 +251,7 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="pAssemblyName"></param>
     /// <returns></returns>
-    public static DynamicTypeInfo FindByAssemblyName(String pAssemblyName) {
+    public static DynamicTypeInfo? FindByAssemblyName(String pAssemblyName) {
       String dynamicTypeName = ConvertDynamicAssemblyNameToDynamicTypeName(pAssemblyName);
       return DynamicTypeInfo.FindByDynamicTypeName(dynamicTypeName);
     }
@@ -257,8 +261,8 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static DynamicTypeInfo FindByDynamicTypeName(String name) {
-      DynamicTypeInfo result;
+    public static DynamicTypeInfo? FindByDynamicTypeName(String name) {
+      DynamicTypeInfo? result;
       lock (__lock) {
         if (TypeInfoNameMap.TryGetValue(name, out result)) {
           return result;
@@ -274,9 +278,11 @@ namespace Breeze.Core {
     /// <param name="type"></param>
     /// <returns></returns>
     public static bool IsDynamicType(Type type) {
-      return type.FullName.StartsWith(CSharpDynamicPrefix)
-        || type.FullName.StartsWith(VBDynamicPrefix)
-        || type.FullName.StartsWith(BaseDynamicPrefix);
+      // FullName is null for generic type parameters, which are never dynamic types.
+      var fullName = type.FullName;
+      return fullName != null && (fullName.StartsWith(CSharpDynamicPrefix)
+        || fullName.StartsWith(VBDynamicPrefix)
+        || fullName.StartsWith(BaseDynamicPrefix));
     }
 
     /// <summary>
@@ -297,8 +303,8 @@ namespace Breeze.Core {
     /// </summary>
     /// <param name="typeShape"></param>
     /// <returns></returns>
-    private static DynamicTypeInfo FindByTypeShape(TypeShape typeShape) {
-      DynamicTypeInfo result;
+    private static DynamicTypeInfo? FindByTypeShape(TypeShape typeShape) {
+      DynamicTypeInfo? result;
       lock (__lock) {
         if (TypeShapeMap.TryGetValue(typeShape, out result)) {
           return result;
@@ -310,24 +316,25 @@ namespace Breeze.Core {
 
     #endregion
 
+    // The maps are assigned together by Initialize(), hence the '!'s below.
     private static Dictionary<Type, DynamicTypeInfo> TypeInfoMap {
       get {
         Initialize();
-        return __typeInfoMap;
+        return __typeInfoMap!;
       }
     }
 
     private static Dictionary<String, DynamicTypeInfo> TypeInfoNameMap {
       get {
         Initialize();
-        return __typeInfoNameMap;
+        return __typeInfoNameMap!;
       }
     }
 
     private static Dictionary<TypeShape, DynamicTypeInfo> TypeShapeMap {
       get {
         Initialize();
-        return __typeShapeMap;
+        return __typeShapeMap!;
       }
     }
 
@@ -350,9 +357,10 @@ namespace Breeze.Core {
     /// </summary>
     /// <returns></returns>
     private String BuildDynamicTypeName() {
-      if (this.OriginalType != null) {
+      if (this._originalType != null) {
         // Assert.IsTrue(AnonymousFns.IsAnonymousType(this.OriginalType)
-        return TypeName
+        // Only the anonymous-type constructor sets _originalType this early, and it sets TypeName too.
+        return TypeName!
           .Replace(VBAnonPrefix, VBDynamicPrefix)
           .Replace(CSharpAnonPrefix, CSharpDynamicPrefix)
           + GetUniqueToken();
@@ -397,12 +405,14 @@ namespace Breeze.Core {
     }
 
 
+    [MemberNotNull(nameof(_dynamicType), nameof(_dynamicEmptyConstructorInfo), nameof(_dynamicConstructorInfo), nameof(_originalType))]
     private void CreateDynamicType() {
       _dynamicType = DynamicGenericTypeBuilder.CreateType(this);
-      _dynamicEmptyConstructorInfo = _dynamicType.GetTypeInfo().GetConstructor( new Type[0]);
-      _dynamicConstructorInfo = _dynamicType.GetTypeInfo().GetConstructor(_propertyTypes.ToArray());
-      if (OriginalType == null) {
-        OriginalType = _dynamicType;
+      // DynamicGenericTypeBuilder always defines both of these constructors.
+      _dynamicEmptyConstructorInfo = _dynamicType.GetTypeInfo().GetConstructor( new Type[0])!;
+      _dynamicConstructorInfo = _dynamicType.GetTypeInfo().GetConstructor(_propertyTypes.ToArray())!;
+      if (_originalType == null) {
+        _originalType = _dynamicType;
       }
       AddToMap(this);
       Trace.WriteLine("DynamicType constructed " + this.DynamicTypeName);
@@ -458,7 +468,7 @@ namespace Breeze.Core {
       public List<String> PropertyNames { get; private set; }
       public List<Type> PropertyTypes { get; private set; }
 
-      public override bool Equals(object obj) {
+      public override bool Equals(object? obj) {
         var tk = obj as TypeShape;
         if (tk == null) return false;
         return tk.PropertyNames.SequenceEqual(this.PropertyNames) 
@@ -474,20 +484,21 @@ namespace Breeze.Core {
     private static Object __lock = new Object();
     private static bool __typeResolverRegistered = false;
     // map of anon and dynamic types to corresponding dynamicTypeInfo
-    private static Dictionary<Type, DynamicTypeInfo> __typeInfoMap;
+    private static Dictionary<Type, DynamicTypeInfo>? __typeInfoMap;
     // map of regular type name to its corresponding dynamicTypeInfo
-    private static Dictionary<String, DynamicTypeInfo> __typeInfoNameMap;
+    private static Dictionary<String, DynamicTypeInfo>? __typeInfoNameMap;
     // map of unique dynamic type shapes to their corresponding dynamicTypeInfo
-    private static Dictionary<TypeShape, DynamicTypeInfo> __typeShapeMap;
+    private static Dictionary<TypeShape, DynamicTypeInfo>? __typeShapeMap;
 
     private bool _isInMap;
-    private Type _originalType;
-    private Type _dynamicType;
+    private Type? _originalType;
+    // The next four are created lazily by CreateDynamicType.
+    private Type? _dynamicType;
     private List<String> _propertyNames;
     private List<Type> _propertyTypes;
-    private List<PropertyInfo> _properties;
-    private ConstructorInfo _dynamicConstructorInfo;
-    private ConstructorInfo _dynamicEmptyConstructorInfo;
+    private List<PropertyInfo>? _properties;
+    private ConstructorInfo? _dynamicConstructorInfo;
+    private ConstructorInfo? _dynamicEmptyConstructorInfo;
 
   }
 

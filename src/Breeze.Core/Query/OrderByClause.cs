@@ -21,7 +21,7 @@ namespace Breeze.Core {
 
     
     // need to be able to take in a List<Object>
-    public static OrderByClause From(IEnumerable propertyPaths) {
+    public static OrderByClause? From(IEnumerable? propertyPaths) {
       return (propertyPaths == null) ? null : new OrderByClause(propertyPaths.Cast<String>());
     }
 
@@ -52,7 +52,7 @@ namespace Breeze.Core {
     public class OrderByItem {
       public string PropertyPath { get; private set; }
       public bool IsDesc { get; private set; }
-      public PropertySignature Property { get; private set; }
+      public PropertySignature? Property { get; private set; } // set by Validate(); null before that
 
       public OrderByItem(String propertyPath, bool isDesc) {
         PropertyPath = propertyPath;

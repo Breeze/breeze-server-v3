@@ -11,7 +11,7 @@ namespace Breeze.Core {
       return objectType == typeof(byte[]);
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
       if (reader.TokenType == JsonToken.Null)
         return null;
       var token = JToken.Load(reader);
@@ -21,9 +21,10 @@ namespace Breeze.Core {
         case JTokenType.Null:
           return null;
         case JTokenType.String:
-          return Convert.FromBase64String((string)token);
+          // A String token always carries a non-null string.
+          return Convert.FromBase64String(((string?)token)!);
         case JTokenType.Object: {
-            var value = (string)token["$value"];
+            var value = (string?)token["$value"];
             return value == null ? null : Convert.FromBase64String(value);
           }
         default:
@@ -33,8 +34,9 @@ namespace Breeze.Core {
 
     public override bool CanWrite { get { return true; } }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-      string base64String = Convert.ToBase64String((byte[])value);
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
+      // Json.NET writes null values itself and never hands them to a converter.
+      string base64String = Convert.ToBase64String((byte[])value!);
 
       serializer.Serialize(writer, base64String);
     }

@@ -32,7 +32,7 @@ namespace Breeze.Core {
     public OperatorType OpType { get; private set; }
     public List<String> _aliases;
 
-    public static Operator FromString(String op) {
+    public static Operator? FromString(String op) {
       if (_opMap.ContainsKey(op.ToLowerInvariant())) {
         return _opMap[op.ToLowerInvariant()];
       } else {
@@ -54,7 +54,7 @@ namespace Breeze.Core {
   }
 
   public class BinaryOperator : Operator {
-    public Expression Expression { get; private set; }
+    public Expression? Expression { get; private set; } // never assigned
     public BinaryOperator(String name) : base(name, OperatorType.Binary) {
       
     }

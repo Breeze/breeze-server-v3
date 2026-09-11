@@ -133,7 +133,7 @@ namespace Breeze.Core {
       return func;
     }
 
-    public static Func<IQueryable, IQueryable> BuildIQueryableFunc<TArg>(Type instanceType, MethodInfo method, TArg parameter, Type queryableBaseType = null) {
+    public static Func<IQueryable, IQueryable> BuildIQueryableFunc<TArg>(Type instanceType, MethodInfo method, TArg parameter, Type? queryableBaseType = null) {
       if (queryableBaseType == null) {
         queryableBaseType = typeof(IQueryable<>);
       }

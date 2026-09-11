@@ -32,18 +32,19 @@ namespace Breeze.Core {
       return Expression.Lambda(expr, paramExpr);
     }
 
-    public static List<BasePredicate> PredicatesFromMap(IDictionary<string, object> map) {
+    public static List<BasePredicate> PredicatesFromMap(IDictionary<string, object?> map) {
       return map.Keys.Select(k => PredicateFromKeyValue(k, map[k])).ToList();
     }
 
-    public static BasePredicate PredicateFromMap(IDictionary<string, object> sourceMap) {
+    /// <returns>null if the map is null or empty</returns>
+    public static BasePredicate? PredicateFromMap(IDictionary<string, object?>? sourceMap) {
       if (sourceMap == null) return null;
       List<BasePredicate> preds = PredicatesFromMap(sourceMap);
       return CreateCompoundPredicate(preds);
     }
 
-    private static BasePredicate PredicateFromKeyValue(String key, Object value) {
-      Operator op = Operator.FromString(key);
+    private static BasePredicate PredicateFromKeyValue(String key, Object? value) {
+      Operator? op = Operator.FromString(key);
       if (op != null) {
         if (op.OpType == OperatorType.AndOr) {
           var preds2 = PredicatesFromObject(value);
@@ -67,13 +68,13 @@ namespace Breeze.Core {
       }
 
       var preds = new List<BasePredicate>();
-      var map = (Dictionary<string, object>)value;
+      var map = (Dictionary<string, object?>)value;
 
 
       foreach (var subKey in map.Keys) {
 
-        Operator subOp = Operator.FromString(subKey);
-        Object subVal = map[subKey];
+        Operator? subOp = Operator.FromString(subKey);
+        Object? subVal = map[subKey];
         BasePredicate pred;
         if (subOp != null) {
           if (subOp.OpType == OperatorType.AnyAll) {
@@ -92,13 +93,16 @@ namespace Breeze.Core {
         }
         preds.Add(pred);
       }
-      return CreateCompoundPredicate(preds);
+      // An empty map (e.g. { "Name": {} }) yields null here; it has always been passed
+      // on and failed later, during Validate/ToExpression.
+      return CreateCompoundPredicate(preds)!;
     }
 
 
-    private static BasePredicate PredicateFromObject(Object source) {
+    private static BasePredicate PredicateFromObject(Object? source) {
       var preds = PredicatesFromObject(source);
-      return CreateCompoundPredicate(preds);
+      // Null for an empty source; passed on (and failing later) as it always has been.
+      return CreateCompoundPredicate(preds)!;
       //		if (preds.size() > 1) {
       //			throw new RuntimeException("BasePredicateFromObject: should only contain a single item");
       //		} else {
@@ -106,12 +110,12 @@ namespace Breeze.Core {
       //		}
     }
 
-    private static List<BasePredicate> PredicatesFromObject(Object source) {
+    private static List<BasePredicate> PredicatesFromObject(Object? source) {
       var preds = new List<BasePredicate>();
       if (source is IDictionary<string, Object>) {
-        preds = PredicatesFromMap((IDictionary<string, Object>)source);
+        preds = PredicatesFromMap((IDictionary<string, Object?>)source);
       } else if (source is IList) {
-        foreach (Object item in (IList)source) {
+        foreach (Object? item in (IList)source) {
           var pred = PredicateFromObject(item);
           preds.Add(pred);
         }
@@ -119,7 +123,7 @@ namespace Breeze.Core {
       return preds;
     }
 
-    private static BasePredicate CreateCompoundPredicate(List<BasePredicate> preds) {
+    private static BasePredicate? CreateCompoundPredicate(List<BasePredicate> preds) {
       if (preds.Count > 1) {
         return new AndOrPredicate(Operator.And, preds);
       } else if (preds.Count == 1) {

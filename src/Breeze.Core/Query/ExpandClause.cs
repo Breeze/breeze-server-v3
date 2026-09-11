@@ -17,7 +17,7 @@ namespace Breeze.Core {
     private List<String> _propertyPaths;
 
 
-    public static ExpandClause From(IEnumerable propertyPaths) {
+    public static ExpandClause? From(IEnumerable? propertyPaths) {
       return (propertyPaths == null) ? null : new ExpandClause(propertyPaths.Cast<String>());
     }
 

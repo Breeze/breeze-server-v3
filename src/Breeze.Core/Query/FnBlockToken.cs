@@ -11,7 +11,7 @@ namespace Breeze.Core {
   class FnBlockToken {
     private StringBuilder _sb;
     private int _nextIx;
-    private List<FnBlockToken> _fnArgs;
+    private List<FnBlockToken>? _fnArgs; // null unless the token is a function call
 
     private FnBlockToken() {
       _sb = new StringBuilder();
@@ -22,7 +22,7 @@ namespace Breeze.Core {
       return (FnBlock)token.ToExpression(entityType, null);
     }
 
-    private BaseBlock ToExpression(Type entityType, DataType returnDataType) {
+    private BaseBlock ToExpression(Type entityType, DataType? returnDataType) {
       String text = _sb.ToString();
       if (this._fnArgs == null) {
 
@@ -111,7 +111,7 @@ namespace Breeze.Core {
       return ix;
     }
 
-    private static FnBlockToken CollectQuotedToken(String source, int ix) {
+    private static FnBlockToken? CollectQuotedToken(String source, int ix) {
       char c = source[ix];
       if (c != '\'' && c != '"') return null;
       var token = new FnBlockToken();

@@ -7,16 +7,16 @@ using System.Linq;
 namespace Breeze.Core {
   public class EntityQuery {
 
-    private String _resourceName;
-    private BasePredicate _wherePredicate;
-    private OrderByClause _orderByClause;
-    private ExpandClause _expandClause;
-    private SelectClause _selectClause;
+    private String? _resourceName;
+    private BasePredicate? _wherePredicate;
+    private OrderByClause? _orderByClause;
+    private ExpandClause? _expandClause;
+    private SelectClause? _selectClause;
     private int? _skipCount;
     private int? _takeCount;
     private bool? _inlineCountEnabled;
-    private Dictionary<String, Object> _parameters;
-    private Type _entityType;
+    private Dictionary<String, Object?>? _parameters;
+    private Type? _entityType;
 
     static EntityQuery() {
       // default implementations of pluggable static extension methods
@@ -34,14 +34,15 @@ namespace Breeze.Core {
      * Materializes the serialized json representation of an EntityQuery.
      * @param json The serialized json version of the EntityQuery.
      */
-    public EntityQuery(String json) {
+    public EntityQuery(String? json) {
       if (json == null || json.Length == 0) {
         return;
       }
-      Dictionary<string, object> qmap;
+      Dictionary<string, object?> qmap;
       try {
         var dmap = JsonHelper.Deserialize(json);
-        qmap = (Dictionary<string, object>)dmap;
+        // The JSON literal null is not a query object either.
+        qmap = (Dictionary<string, object?>)(dmap ?? throw new InvalidCastException());
       } catch (Exception) {
         throw new Exception(
                 "This EntityQuery ctor requires a valid json string. The following is not json: "
@@ -51,11 +52,11 @@ namespace Breeze.Core {
       this._resourceName = GetMapValue<string>(qmap, "resourceName");
       this._skipCount = GetMapInt(qmap, "skip");
       this._takeCount = GetMapInt(qmap, "take");
-      this._wherePredicate = BasePredicate.PredicateFromMap(GetMapValue<Dictionary<string, object>>(qmap, "where"));
+      this._wherePredicate = BasePredicate.PredicateFromMap(GetMapValue<Dictionary<string, object?>>(qmap, "where"));
       this._orderByClause = OrderByClause.From(GetMapValue<List<Object>>(qmap, "orderBy"));
       this._selectClause = SelectClause.From(GetMapValue<List<Object>>(qmap, "select"));
       this._expandClause = ExpandClause.From(GetMapValue<List<Object>>(qmap, "expand"));
-      this._parameters = GetMapValue<Dictionary<string, object>>(qmap, "parameters");
+      this._parameters = GetMapValue<Dictionary<string, object?>>(qmap, "parameters");
       this._inlineCountEnabled = GetMapValue<bool?>(qmap, "inlineCount");
 
     }
@@ -86,20 +87,21 @@ namespace Breeze.Core {
      * @return A new EntityQuery.
      */
     public EntityQuery Where(String json) {
-      var qmap = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+      var qmap = JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
       var pred = BasePredicate.PredicateFromMap(qmap);
-      return this.Where(pred);
+      // pred is null for empty (or "null") JSON; it has always been passed on as is.
+      return this.Where(pred!);
     }
 
-    private T GetMapValue<T>(IDictionary<string, object> map, string key) {
+    private T? GetMapValue<T>(IDictionary<string, object?> map, string key) {
       if (map.ContainsKey(key)) {
-        return (T)map[key];
+        return (T?)map[key];
       } else {
         return default(T);
       }
     }
 
-    private int? GetMapInt(IDictionary<string, object> map, string key) {
+    private int? GetMapInt(IDictionary<string, object?> map, string key) {
       if (map.ContainsKey(key)) {
         return Convert.ToInt32(map[key]);
       } else {
@@ -184,7 +186,9 @@ namespace Breeze.Core {
     // Impl of following functions is deferred to whatever Persistence framework is being used, i.e. EF vs NHibernate 
 
     /// <summary> Whether query string needs execution </summary>
-    public static Func<string, IQueryable, bool> NeedsExecution {
+    /// <remarks> Either argument may be null: the query string when the request has none,
+    /// the IQueryable when the action result is not a queryable. </remarks>
+    public static Func<string?, IQueryable?, bool> NeedsExecution {
       get;
       set;
     }
@@ -276,14 +280,14 @@ namespace Breeze.Core {
       return eq;
     }
 
-    private List<String> ToStringList(Object src) {
+    private List<String>? ToStringList(Object? src) {
       if (src == null)
         return null;
       if (src is List<String>) {
         return (List<String>)src;
       } else if (src is String) {
         var list = new List<String>();
-        list.Add(src as String);
+        list.Add((String)src);
         return list;
 
       }
@@ -314,27 +318,27 @@ namespace Breeze.Core {
      * will return null until the validate method has been called.
      * @return The EntityType that this query has been validated against.
      */
-    public Type EntityType {
+    public Type? EntityType {
       get { return _entityType; }
     }
 
-    public String ResourceName {
+    public String? ResourceName {
       get { return _resourceName; }
     }
 
-    public BasePredicate WherePredicate {
+    public BasePredicate? WherePredicate {
       get { return _wherePredicate; }
     }
 
-    public OrderByClause OrderByClause {
+    public OrderByClause? OrderByClause {
       get { return _orderByClause; }
     }
 
-    public ExpandClause ExpandClause {
+    public ExpandClause? ExpandClause {
       get { return _expandClause; }
     }
 
-    public SelectClause SelectClause {
+    public SelectClause? SelectClause {
       get { return _selectClause; }
     }
 
@@ -350,7 +354,7 @@ namespace Breeze.Core {
       get { return _inlineCountEnabled.HasValue && _inlineCountEnabled.Value; }
     }
 
-    public IDictionary<string, object> GetParameters() {
+    public IDictionary<string, object?>? GetParameters() {
       return _parameters;
     }
 
