@@ -660,11 +660,15 @@ namespace Test.AspNetCore.Controllers {
 #if NHIBERNATE
     public IQueryable<Object> CompanyInfoAndOrders() {
       // Need to handle this specially for NH, to prevent $top being applied to Orders
-      var q = PersistenceManager.Context.Customers.Select(c => new { c.CompanyName, c.CustomerID, c.Orders });
+      // OrderBy so the result order is deterministic; without it SQL may return rows
+      // in any order and a client asserting on results[0] becomes flaky.
+      var q = PersistenceManager.Context.Customers.OrderBy(c => c.CustomerID).Select(c => new { c.CompanyName, c.CustomerID, c.Orders });
       var stuff = q.ToList().AsQueryable();
 #else
     public IQueryable<Object> CompanyInfoAndOrders() {
-      var stuff = PersistenceManager.Context.Customers.Select(c => new { c.CompanyName, c.CustomerID, c.Orders });
+      // OrderBy so the result order is deterministic; without it SQL may return rows
+      // in any order and a client asserting on results[0] becomes flaky.
+      var stuff = PersistenceManager.Context.Customers.OrderBy(c => c.CustomerID).Select(c => new { c.CompanyName, c.CustomerID, c.Orders });
 #endif
       return stuff;
     }
