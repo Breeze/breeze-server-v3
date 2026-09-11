@@ -53,9 +53,35 @@ Re-applying `BreezeTestDb.sql` is the reset. The client's integration tests do i
 automatically before every run (`test/global-setup.ts` in breeze-client-v3). By hand:
 
 ```bash
-sqlcmd -S . -E -Q "ALTER DATABASE BreezeTestDb SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE BreezeTestDb; CREATE DATABASE BreezeTestDb;"
+sqlcmd -S . -E -Q "IF DB_ID('BreezeTestDb_TestSnapshot') IS NOT NULL DROP DATABASE BreezeTestDb_TestSnapshot; ALTER DATABASE BreezeTestDb SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE BreezeTestDb; CREATE DATABASE BreezeTestDb;"
 sqlcmd -S . -E -d BreezeTestDb -f 65001 -i tests/Databases/BreezeTestDb.sql
 ```
+
+The first statement drops the database snapshot the client tests leave behind; a database
+that has a snapshot cannot be dropped.
+
+### Between spec files: the database snapshot
+
+Rebuilding takes seconds, too long to repeat before each of the client's integration spec
+files. Instead, after each rebuild the client has the test host take a SQL Server
+[database snapshot](https://learn.microsoft.com/sql/relational-databases/databases/database-snapshots-sql-server)
+of the pristine database, `BreezeTestDb_TestSnapshot`, and reverts to it before every
+spec file. Both go through a test-host-only controller,
+[`TestDbController`](../Test.AspNetCore.EFCore/Controllers/TestDbController.cs):
+
+| | |
+|---|---|
+| `POST /breeze/TestDb/Snapshot` | drops any snapshot of `BreezeTestDb` and takes a new one (sparse `.ss` files next to the data file) |
+| `POST /breeze/TestDb/Reset` | reverts `BreezeTestDb` to the snapshot, then clears the connection pools |
+
+They are **off by default** and return 404 unless the host is started with
+`--TestDb:AllowReset=true` (the client's `scripts/test-with-server.ps1` does this), and
+even then they only answer requests from the local machine. The controller is part of the
+test host alone, which is not packable; it is in no package.
+
+A revert takes about 0.2 seconds. It leaves the cache cold and the connection pool empty,
+so one before each of the 27 client files adds about 10 seconds to a run. Database
+snapshots need SQL Server 2016 SP1 or later, in any edition.
 
 `SINGLE_USER WITH ROLLBACK IMMEDIATE` disconnects a running test server; it reconnects on
 its next query, but restart it so that it re-seeds the inheritance tables.
