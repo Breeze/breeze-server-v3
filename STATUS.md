@@ -83,10 +83,10 @@ into a real application.**
 - Seed `UnusualDate.DateOnly` / `TimeOnly`. `Add_DateOnly_TimeOnly.sql` added the columns
   but never populated them, so all 10 rows are NULL and the client's
   `where dateOnly & timeOnly` test cannot pass.
-- Retire `tests/Databases/CleanBreezeTestDb.sql`. It cannot restore the database: it
-  misses `EmployeeID = 10`, leaves `Customer` at 95 vs 93, and one delete fails with FK
-  error `Msg 547`. **Re-applying `BreezeTestDb.sql` is the reliable reset** and takes
-  seconds.
+- ~~Retire `tests/Databases/CleanBreezeTestDb.sql`~~ **done** — deleted. It could not
+  restore the database: it missed `EmployeeID = 10`, left `Customer` at 95 vs 93, and one
+  delete failed with FK error `Msg 547`. Rebuilding from `BreezeTestDb.sql` once per run,
+  and reverting to a database snapshot before each client test file, replaced it.
 - GitHub Actions for build + pack.
 - Fix the ~52 malformed XML-doc warnings.
 

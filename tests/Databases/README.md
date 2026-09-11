@@ -86,10 +86,11 @@ snapshots need SQL Server 2016 SP1 or later, in any edition.
 `SINGLE_USER WITH ROLLBACK IMMEDIATE` disconnects a running test server; it reconnects on
 its next query, but restart it so that it re-seeds the inheritance tables.
 
-[`CleanBreezeTestDb.sql`](./CleanBreezeTestDb.sql) predates the script and is **not** a
-reliable reset: it deletes rows the save tests are known to add, but cannot restore rows
-they delete, misses some they add, and one of its deletes fails on a foreign key. It is due
-to be removed; don't rely on it.
+The old `CleanBreezeTestDb.sql` is gone. It predated this script and was never a reliable
+reset: it deleted rows the save tests are known to add, could not restore rows they delete,
+missed some they add, and one of its deletes failed on a foreign key. Rebuilding from
+`BreezeTestDb.sql` once per run, and reverting to the snapshot before each test file,
+replaced it.
 
 `InheritanceDbInitializer.Seed` resets the inheritance tables by deleting and re-inserting
 their rows. It deliberately does **not** call `EnsureDeleted`/`EnsureCreated` any more —
