@@ -882,20 +882,20 @@ namespace Test.AspNetCore.Controllers {
       return result;
     }
 
-    // Test performing a raw db update to ProduceTPH using the ProduceTPH connection.  Requires DTC.
+    // Test performing a raw db update to ItemOfProduce on a second connection. The Produce data now
+    // lives in BreezeTestDb with Northwind; inside a TransactionScope this can still promote to DTC.
 #if NHIBERNATE
     private int UpdateProduceDescription(string comment) {
       var text = String.Format("update ItemOfProduce set Description='{0}' where id='{1}'",
           comment, "13F1C9F5-3189-45FA-BA6E-13314FAFAA92");
       var ps = Session.SessionFactory.OpenStatelessSession();
-      ps.Connection.ChangeDatabase("ProduceTPH");
       var cmd = ps.CreateSQLQuery(text);
       var result = cmd.ExecuteUpdate();
       return result;
     }
 #else
     private int UpdateProduceDescription(string comment) {
-      using var conn = new SqlConnection("data source=.;initial catalog=ProduceTPH;integrated security=True;Encrypt=False;multipleactiveresultsets=True;application name=EntityFramework");
+      using var conn = new SqlConnection(this.Context.Database.GetConnectionString());
       conn.Open();
       var cmd = conn.CreateCommand();
       cmd.CommandText = String.Format("update ItemOfProduce set Description='{0}' where id='{1}'",
