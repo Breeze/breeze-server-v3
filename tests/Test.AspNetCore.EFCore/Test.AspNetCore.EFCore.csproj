@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <!-- No per-project .exe: run through the Microsoft-signed dotnet.exe instead. Windows
+         application control (Smart App Control, WDAC) blocks freshly built unsigned .exe files. -->
+    <UseAppHost>false</UseAppHost>
     <TargetFramework>net10.0</TargetFramework>
     <DefineConstants>$(DefineConstants);EFCORE</DefineConstants>
   </PropertyGroup>
