@@ -17,3 +17,8 @@ breezeTests/
 *.mdf
 *.ldf
 artifacts:
+
+# DocFX output - regenerate with `dotnet docfx docs/docfx.json` (see DOCS.md)
+docs/api/
+docs/_site/
+docs/obj/

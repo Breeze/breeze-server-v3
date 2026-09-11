@@ -54,10 +54,10 @@ namespace Breeze.Persistence.NH {
 
     /// <summary>
     /// Allows Include clauses to be added to NhQueryable objects.
-    /// </summary><example>
-    /// var query = new NhQueryableInclude<Customer>(session.GetSessionImplementation());
+    /// </summary><example><code>
+    /// var query = new NhQueryableInclude&lt;Customer&gt;(session.GetSessionImplementation());
     /// query = query.Include("Orders");
-    /// </example>
+    /// </code></example>
     /// <param name="propertyPath"></param>
     /// <returns></returns>
     public NhQueryableInclude<T> Include(string propertyPath) {

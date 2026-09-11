@@ -27,6 +27,7 @@ A typical EF Core application installs the first two.
 | [UPGRADE.md](./UPGRADE.md) | **Upgrading an app from 7.x** - every consumer-facing change |
 | [CHANGES-DEV.md](./CHANGES-DEV.md) | Structural changes, for people working on Breeze itself |
 | [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
+| [DOCS.md](./DOCS.md) | Building and viewing the .NET API reference (DocFX) |
 
 General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).
 
