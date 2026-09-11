@@ -129,3 +129,10 @@ To regenerate the database script from a live database:
 ```bash
 dotnet run --project tools/DbScripter -- tests/Databases/BreezeTestDb.sql
 ```
+
+## API reference site (done)
+
+A DocFX site documents the five packages in `src/` (net10.0 metadata). `dotnet tool
+restore`, then `dotnet docfx docs/docfx.json --serve` and open http://localhost:8080/. See
+DOCS.md. Not published yet. 273 public types and members have no XML doc comment (188 of
+them in Breeze.Core) — a candidate for a documentation pass.
