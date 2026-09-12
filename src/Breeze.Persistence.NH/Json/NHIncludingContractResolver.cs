@@ -23,6 +23,7 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Configure the included property names using an array of strings
     /// </summary>
+    /// <param name="sessionFactory">Supplies the ClassMetaData that decides what is serialized by default</param>
     /// <param name="includedMembers">Names of properties to be included</param>
     public NHIncludingContractResolver(ISessionFactory sessionFactory, params string[] includedMembers) {
       this.sessionFactory = sessionFactory;
@@ -32,7 +33,8 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Configure the included property names using a dictionary of { Type -> List of property names to include }
     /// </summary>
-    /// <param name="includedTypeMembers"></param>
+    /// <param name="sessionFactory">Supplies the ClassMetaData that decides what is serialized by default</param>
+    /// <param name="includedTypeMembers">Map of { Type -> names of properties to include }</param>
     public NHIncludingContractResolver(ISessionFactory sessionFactory, IDictionary<Type, List<string>> includedTypeMembers) {
       this.sessionFactory = sessionFactory;
       this.includedTypeMembers = includedTypeMembers;

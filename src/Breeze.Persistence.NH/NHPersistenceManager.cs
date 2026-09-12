@@ -363,7 +363,7 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Persist the changes to the entities in the saveOrder.
     /// </summary>
-    /// <param name="saveOrder"></param>
+    /// <param name="saveOrder">Entities in the order they should be saved</param>
     protected void ProcessSaves(List<EntityInfo> saveOrder) {
 
       var sessionFactory = session.SessionFactory;
@@ -378,7 +378,8 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Persist the changes to the entities in the saveOrder.
     /// </summary>
-    /// <param name="saveOrder"></param>
+    /// <param name="saveOrder">Entities in the order they should be saved</param>
+    /// <param name="cancellationToken">Cancels the save</param>
     protected async Task ProcessSavesAsync(List<EntityInfo> saveOrder, CancellationToken cancellationToken) {
 
       var sessionFactory = session.SessionFactory;
@@ -394,7 +395,8 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Add, update, or delete the entity according to its EntityState.
     /// </summary>
-    /// <param name="entityInfo"></param>
+    /// <param name="entityInfo">The entity, and the state it should be put into</param>
+    /// <param name="classMeta">NHibernate metadata for the entity class</param>
     protected void ProcessEntity(EntityInfo entityInfo, IClassMetadata classMeta) {
       var entity = entityInfo.Entity;
       var state = entityInfo.EntityState;
@@ -481,7 +483,9 @@ namespace Breeze.Persistence.NH {
     /// <summary>
     /// Record the value of the temporary key in EntityKeyMapping
     /// </summary>
-    /// <param name="entityInfo"></param>
+    /// <param name="entityInfo">The entity whose temporary key is recorded</param>
+    /// <param name="type">The entity type</param>
+    /// <param name="meta">NHibernate metadata for that type</param>
     protected void AddKeyMapping(EntityInfo entityInfo, Type type, IClassMetadata meta) {
       if (entityInfo.EntityState != EntityState.Added) return;
       var entity = entityInfo.Entity;
@@ -574,7 +578,8 @@ namespace Breeze.Persistence.NH {
     /// </summary>
     /// TODO make this faster
     /// TODO make this optional
-    /// <param name="saveMap"></param>
+    /// <param name="saveMap">The entities that were saved</param>
+    /// <param name="cancellationToken">Cancels the refresh</param>
     protected async Task RefreshFromSessionAsync(Dictionary<Type, List<EntityInfo>> saveMap, CancellationToken cancellationToken) {
       foreach (var kvp in saveMap) {
         foreach (var entityInfo in kvp.Value) {

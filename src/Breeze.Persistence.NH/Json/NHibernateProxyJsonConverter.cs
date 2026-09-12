@@ -8,7 +8,7 @@ namespace Breeze.Persistence.NH {
   /// JsonConverter for handling NHibernate proxies.  
   /// Only serializes the object if it is initialized, i.e. the proxied object has been loaded.
   /// </summary>
-  /// <see cref="http://james.newtonking.com/projects/json/help/html/T_Newtonsoft_Json_JsonConverter.htm"/>
+  /// <seealso href="http://james.newtonking.com/projects/json/help/html/T_Newtonsoft_Json_JsonConverter.htm">Newtonsoft.Json JsonConverter</seealso>
   public class NHibernateProxyJsonConverter : JsonConverter {
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
       if (NHibernateUtil.IsInitialized(value)) {

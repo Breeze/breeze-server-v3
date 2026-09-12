@@ -14,7 +14,7 @@ using System.Text;
 namespace Breeze.Persistence.NH {
   /// <summary>
   /// Builds a data structure containing the metadata required by Breeze.
-  /// <see cref="http://breeze.github.io/doc-js/metadata-schema.html"/>
+  /// <seealso href="http://breeze.github.io/doc-js/metadata-schema.html">Breeze metadata schema</seealso>
   /// </summary>
   public class NHMetadataBuilder {
     private readonly ISessionFactory _sessionFactory;
@@ -635,9 +635,9 @@ namespace Breeze.Persistence.NH {
     /// Creates an association name from two entity names.
     /// For consistency, puts the entity names in alphabetical order.
     /// </summary>
-    /// <param name="name1"></param>
-    /// <param name="name2"></param>
-    /// <param name="propType">Used to ensure the association name is unique for a type</param>
+    /// <param name="name1">Name of one entity in the association</param>
+    /// <param name="name2">Name of the other entity</param>
+    /// <param name="columnNames">Columns the association is built on, which keep the name unique for a type</param>
     /// <returns></returns>
     static string GetAssociationName(string name1, string name2, IEnumerable<string> columnNames) {
       var cols = CatColumnNames(columnNames, '_');

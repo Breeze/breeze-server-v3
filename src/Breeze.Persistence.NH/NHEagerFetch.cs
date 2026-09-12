@@ -24,7 +24,6 @@ namespace Breeze.Persistence.NH {
     /// </summary>
     /// <param name="queryable">The query to expand</param>
     /// <param name="expandsQueryString">Comma-separated list of properties to expand.  May include nested paths of the form "Property/SubProperty"</param>
-    /// <param name="sessionFactory">Provides the NHibernate metadata for the classes</param>
     /// <param name="expandMap">Will be populated with the names of the expanded properties for each type.</param>
     /// <param name="expandCollections">If true, eagerly fetch collections. Caution: this causes problems with $skip and $top operations.  
     ///     Default is false.  expandMap will still be populated with the collection property, so it will be lazy loaded.
@@ -43,12 +42,11 @@ namespace Breeze.Persistence.NH {
     /// </summary>
     /// <param name="queryable">The query to expand</param>
     /// <param name="expandPaths">The names of the properties to expand.  May include nested paths of the form "Property/SubProperty"</param>
-    /// <param name="sessionFactory">Provides the NHibernate metadata for the classes</param>
     /// <param name="expandMap">Will be populated with the names of the expanded properties for each type.</param>
     /// <param name="expandCollections">If true, eagerly fetch collections. Caution: this causes problems with $skip and $top operations.  
     ///     Default is false.  expandMap will still be populated with the collection property, so it will be lazy loaded.
     ///     Be sure to set default_batch_fetch_size in the configuration for lazy loaded collections.</param>
-    /// <returns></returns>
+    /// <returns>The query with the Fetch clauses applied</returns>
     public IQueryable ApplyExpansions(IQueryable queryable, string[] expandPaths, ExpandTypeMap expandMap, bool expandCollections = false) {
       if (queryable == null) throw new ArgumentException("Query cannot be null");
 

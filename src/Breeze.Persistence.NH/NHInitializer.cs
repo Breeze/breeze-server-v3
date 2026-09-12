@@ -10,7 +10,7 @@ namespace Breeze.Persistence.NH {
     /// Recursively forces loading of each NHibernate proxy in the tree that matches an entry in the map.
     /// </summary>
     /// <param name="list">Top-level collection of objects</param>
-    /// <param name="expandMap">Properties to initialize for each type</param>
+    /// <param name="expandPaths">Property paths to initialize, e.g. "OrderDetails/Product"</param>
     public static void InitializeList<T>(IEnumerable<T> list, params string[] expandPaths) {
       var expandMap = NHEagerFetch.MapExpansions(typeof(T), expandPaths);
 

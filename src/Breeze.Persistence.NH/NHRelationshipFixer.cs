@@ -55,7 +55,6 @@ namespace Breeze.Persistence.NH {
     /// Remove the navigations between entities in the saveMap.  This flattens the JSON
     /// result so Breeze can handle it.
     /// </summary>
-    /// <param name="saveMap">Map of entity types -> entity instances to save</param>
     public void RemoveRelationships() {
       this.removeMode = true;
       ProcessRelationships();
@@ -364,7 +363,7 @@ namespace Breeze.Persistence.NH {
     /// Find the matching entity in the saveMap.  This is for relationship fixup.
     /// </summary>
     /// <param name="entityType">Type of entity, e.g. Order.  The saveMap will be searched for this type and its subtypes.</param>
-    /// <param name="entityId">The entity being found</param>
+    /// <param name="entity">The entity to find</param>
     /// <returns>The EntityInfo, or null if not found</returns>
     private EntityInfo? FindInSaveMapByEntity(Type entityType, object entity) {
       List<EntityInfo> entityInfoList = saveMap.Where(p => entityType.IsAssignableFrom(p.Key)).SelectMany(p => p.Value).ToList();
