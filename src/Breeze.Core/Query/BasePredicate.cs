@@ -7,31 +7,47 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Breeze.Core {
-  /**
-   * Represents a single where clause.
-   * @author IdeaBlade
-   *
-   */
+  /// <summary> A where clause, in the tree the query parser builds from the JSON a client sends. </summary>
+  /// <remarks>
+  /// A predicate is built first and checked afterwards: <see cref="Validate"/> resolves its
+  /// property paths against the entity type, and must run before <see cref="ToExpression"/> or
+  /// <see cref="ToLambda"/> can build anything.
+  /// </remarks>
   public abstract class BasePredicate {
 
+    /// <summary> The operator this predicate applies; exposed by <see cref="Operator"/>. </summary>
     protected Operator _op;
 
+    /// <summary> The operator this predicate applies. </summary>
     public Operator Operator {
       get { return _op; }
     }
 
+    /// <summary> Create a predicate for an operator. </summary>
+    /// <param name="op">The operator being applied.</param>
     public BasePredicate(Operator op) {
       _op = op;
     }
 
+    /// <summary> Resolve this predicate's property paths against the entity type being queried. </summary>
+    /// <remarks> Must run before <see cref="ToExpression"/>. </remarks>
+    /// <param name="entityType">The type the query returns.</param>
+    /// <exception cref="Exception">A path does not resolve, or an operand is not valid for the operator.</exception>
     public abstract void Validate(Type entityType);
 
+    /// <summary> Build this predicate as a lambda over the entity type, ready to pass to Queryable.Where. </summary>
+    /// <param name="entityType">The type the query returns.</param>
+    /// <returns>A lambda of the form ent =&gt; &lt;predicate&gt;.</returns>
     public LambdaExpression ToLambda(Type entityType) {
       var paramExpr = Expression.Parameter(entityType, "ent");
       var expr = ToExpression(paramExpr);
       return Expression.Lambda(expr, paramExpr);
     }
 
+    /// <summary> Build one predicate per entry of a parsed where clause. </summary>
+    /// <param name="map">The where clause as parsed from JSON - property names, or operator names, to values.</param>
+    /// <returns>One predicate per entry, to be combined with <c>and</c>.</returns>
+    /// <exception cref="Exception">An entry uses an operator that is not valid in that position, or a value that cannot be resolved.</exception>
     public static List<BasePredicate> PredicatesFromMap(IDictionary<string, object?> map) {
       return map.Keys.Select(k => PredicateFromKeyValue(k, map[k])).ToList();
     }
@@ -133,6 +149,9 @@ namespace Breeze.Core {
       }
     }
 
+    /// <summary> Build the boolean expression for this predicate.  <see cref="Validate"/> must have run first. </summary>
+    /// <param name="paramExpr">The query's lambda parameter.</param>
+    /// <returns>An expression of type bool.</returns>
     public abstract Expression ToExpression(ParameterExpression paramExpr);
 
   }

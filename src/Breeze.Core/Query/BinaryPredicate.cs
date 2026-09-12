@@ -5,24 +5,35 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Breeze.Core {
-  /**
-   * Represents a where clause that compares two values given a specified operator, the two values are either a property
-   * and a literal value, or two properties.  
-   * @author IdeaBlade
-   *
-   */
+  /// <summary>
+  /// A where clause comparing two operands - a property against a literal, or a property
+  /// against another property.
+  /// </summary>
+  /// <remarks>
+  /// <see cref="Validate"/> does the work of deciding what each side is, including coercing
+  /// literals to the property's type and handling enums and 'in' lists.
+  /// </remarks>
   public class BinaryPredicate : BasePredicate {
+    /// <summary> The left-hand operand as the client wrote it - a property path, or a function call. </summary>
     public Object Expr1Source { get; private set; }
+    /// <summary> The right-hand operand as the client wrote it - a literal, a property path, or an array for 'in'. </summary>
     public Object? Expr2Source { get; private set; }
     // Both blocks are built by Validate(), which must run before ToExpression().
     private BaseBlock _block1 = null!;
     private BaseBlock _block2 = null!;
 
+    /// <summary> Compare two operands with an operator. </summary>
+    /// <param name="op">The comparison to apply.</param>
+    /// <param name="expr1Source">The left-hand operand.</param>
+    /// <param name="expr2Source">The right-hand operand; null compares against null.</param>
     public BinaryPredicate(Operator op, Object expr1Source, Object? expr2Source) : base(op) {
       Expr1Source = expr1Source;
       Expr2Source = expr2Source;
     }
 
+    /// <summary> Resolve both operands against the entity type, coercing the right-hand side to the left's type. </summary>
+    /// <param name="entityType">The type the query returns.</param>
+    /// <exception cref="Exception">The left operand is null or unresolvable, or 'in' was given a right-hand operand that is not an array.</exception>
     public override void Validate(Type entityType) {
       if (Expr1Source == null) {
         throw new Exception("Unable to validate 1st expression: " + this.Expr1Source);
@@ -67,6 +78,9 @@ namespace Breeze.Core {
 
 
 
+    /// <summary> Build the comparison, inserting the nullable conversions the two sides need to be comparable. </summary>
+    /// <param name="paramExpr">The query's lambda parameter.</param>
+    /// <returns>An expression of type bool.</returns>
     public override Expression ToExpression(ParameterExpression paramExpr) {
       // Null only for a BinaryOperator this class does not handle; that has always
       // failed in the caller (Expression.Lambda).

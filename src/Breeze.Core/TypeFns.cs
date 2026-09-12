@@ -353,6 +353,18 @@ namespace Breeze.Core {
       return mi3;
     }
 
+    /// <summary> Find a two-argument method by writing an example call to it, then close it over different types. </summary>
+    /// <remarks>
+    /// Reflection over overloaded generic methods is awkward and easy to get wrong, so the method
+    /// is named by a lambda that calls it - the compiler does the overload resolution - and the
+    /// resulting definition is then re-closed over the types actually wanted.
+    /// </remarks>
+    /// <typeparam name="TIn1">First parameter type of the example call.</typeparam>
+    /// <typeparam name="TIn2">Second parameter type of the example call.</typeparam>
+    /// <typeparam name="TOut">Return type of the example call.</typeparam>
+    /// <param name="prototypeLambda">A lambda whose body is a call to the wanted method.</param>
+    /// <param name="resolvedTypes">The type arguments to close the method over; none leaves it as found.</param>
+    /// <returns>The method, closed over <paramref name="resolvedTypes"/> if it is generic.</returns>
     public static MethodInfo GetMethodByExample<TIn1, TIn2, TOut>(Expression<Func<TIn1, TIn2, TOut>> prototypeLambda, params Type[] resolvedTypes) {
       // The prototype's body must be a method call; anything else fails here, as it always has.
       var mi = (prototypeLambda.Body as MethodCallExpression)!.Method;
@@ -363,6 +375,11 @@ namespace Breeze.Core {
       return mi3;
     }
 
+    /// <summary> Find a method by name on a type, closing the type over the given type arguments first if it is generic. </summary>
+    /// <param name="containingType">The type declaring the method, open if generic - e.g. typeof(List&lt;&gt;).</param>
+    /// <param name="methodName">The method name.</param>
+    /// <param name="genericTypeArgs">Type arguments used to close <paramref name="containingType"/>.</param>
+    /// <returns>The method, or null if the type has none by that name.</returns>
     public static MethodInfo? GetMethodByNameAndType(Type containingType, string methodName, params Type[] genericTypeArgs) {
       MethodInfo? mi;
       if (containingType.IsGenericType) {
@@ -802,6 +819,7 @@ namespace Breeze.Core {
 
   }
 
+  /// <summary> Collection helpers, chiefly an order-sensitive hash code for sequences. </summary>
   public static class EnumerableExtns {
     // Not named GetHashCode to avoid naming conflict; object.GetHashCode would
     // always take precedence

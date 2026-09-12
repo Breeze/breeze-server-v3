@@ -5,6 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Breeze.Core {
+  /// <summary>
+  /// A query as it arrived from a Breeze client: a resource name, a where clause, and the
+  /// orderBy, select, expand, skip and take that go with it.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// A query is parsed from JSON by the <see cref="EntityQuery(string)"/> constructor, checked
+  /// against the entity type by <see cref="Validate"/>, and then applied to an IQueryable by the
+  /// extension methods in <see cref="EntityQueryExtensions"/>.
+  /// </para>
+  /// <para>
+  /// Every clause method returns a new query rather than changing this one, so a query can be
+  /// safely shared and built on.
+  /// </para>
+  /// </remarks>
   public class EntityQuery {
 
     private String? _resourceName;
@@ -26,14 +41,14 @@ namespace Breeze.Core {
       EntityQuery.AfterExecution = (eq, iq, list) => list;
     }
 
+    /// <summary> Create an empty query, to be built up with the clause methods. </summary>
     public EntityQuery() {
 
     }
 
-    /**
-     * Materializes the serialized json representation of an EntityQuery.
-     * @param json The serialized json version of the EntityQuery.
-     */
+    /// <summary> Parse a query from the JSON a Breeze client sent. </summary>
+    /// <param name="json">The serialized query.  Null or empty yields an empty query.</param>
+    /// <exception cref="Exception">The string is not valid JSON, or is not a JSON object.</exception>
     public EntityQuery(String? json) {
       if (json == null || json.Length == 0) {
         return;
@@ -62,10 +77,8 @@ namespace Breeze.Core {
     }
 
 
-    /**
-     * Copy constructor
-     * @param query
-     */
+    /// <summary> Copy a query.  Used by the clause methods, which each return a new query. </summary>
+    /// <param name="query">The query to copy.</param>
     public EntityQuery(EntityQuery query) {
       this._resourceName = query._resourceName;
       this._skipCount = query._skipCount;
@@ -81,11 +94,9 @@ namespace Breeze.Core {
 
 
 
-    /**
-     * Return a new query based on this query with an additional where clause added.
-     * @param json Json representation of the where clause.
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with an additional where clause, parsed from JSON. </summary>
+    /// <param name="json">The where clause as JSON.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Where(String json) {
       var qmap = JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
       var pred = BasePredicate.PredicateFromMap(qmap);
@@ -109,11 +120,9 @@ namespace Breeze.Core {
       }
     }
 
-    /**
-     * Return a new query based on this query with an additional where clause added.
-     * @param predicate A Predicate representing the where clause to add.
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with an additional where clause, combined with the existing one using <c>and</c>. </summary>
+    /// <param name="predicate">The where clause to add.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Where(BasePredicate predicate) {
       EntityQuery eq = new EntityQuery(this);
       if (eq._wherePredicate == null) {
@@ -130,20 +139,16 @@ namespace Breeze.Core {
       return eq;
     }
 
-    /**
-     * Return a new query based on this query with the specified orderBy clauses added.
-     * @param propertyPaths A varargs array of orderBy clauses ( each consisting of a property path and an optional sort direction).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given orderBy clauses appended. </summary>
+    /// <param name="propertyPaths">Property paths, each optionally followed by "desc".</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery OrderBy(params String[] propertyPaths) {
       return OrderBy(propertyPaths.ToList());
     }
 
-    /**
-     * Return a new query based on this query with the specified orderBy clauses added.
-     * @param propertyPaths An List of orderBy clauses ( each consisting of a property path and an optional sort direction).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given orderBy clauses appended. </summary>
+    /// <param name="propertyPaths">Property paths, each optionally followed by "desc".</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery OrderBy(List<String> propertyPaths) {
       EntityQuery eq = new EntityQuery(this);
       if (this._orderByClause == null) {
@@ -156,20 +161,16 @@ namespace Breeze.Core {
       return eq;
     }
 
-    /**
-     * Return a new query based on this query with the specified expand clauses added.
-     * @param propertyPaths A varargs array of expand clauses ( each a dot delimited property path).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given expand clauses appended. </summary>
+    /// <param name="propertyPaths">Navigation paths to load, each dot-delimited.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Expand(params String[] propertyPaths) {
       return Expand(propertyPaths.ToList());
     }
 
-    /**
-     * Return a new query based on this query with the specified expand clauses added.
-     * @param propertyPaths A list of expand clauses (each a dot delimited property path).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given expand clauses appended. </summary>
+    /// <param name="propertyPaths">Navigation paths to load, each dot-delimited.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Expand(List<String> propertyPaths) {
       EntityQuery eq = new EntityQuery(this);
       if (this._expandClause == null) {
@@ -208,20 +209,16 @@ namespace Breeze.Core {
       set;
     }
 
-    /**
-     * Return a new query based on this query with the specified select (projection) clauses added.
-     * @param propertyPaths A varargs array of select clauses (each a dot delimited property path).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given select (projection) clauses appended. </summary>
+    /// <param name="propertyPaths">Property paths to project, each dot-delimited.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Select(params String[] propertyPaths) {
       return Select(propertyPaths.ToList());
     }
 
-    /**
-     * Return a new query based on this query with the specified select (projection) clauses added.
-     * @param propertyPaths A list of select clauses (each a dot delimited property path).
-     * @return A new EntityQuery.
-     */
+    /// <summary> Return a new query with the given select (projection) clauses appended. </summary>
+    /// <param name="propertyPaths">Property paths to project, each dot-delimited.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Select(IEnumerable<String> propertyPaths) {
       EntityQuery eq = new EntityQuery(this);
       if (this._selectClause == null) {
@@ -236,44 +233,36 @@ namespace Breeze.Core {
     }
 
 
-    /**
-     * Return a new query based on this query that limits the results to the first n records.
-     * @param takeCount The number of records to take.
-     * @return A new EntityQuery
-     */
+    /// <summary> Return a new query limited to the first n rows. </summary>
+    /// <param name="takeCount">The number of rows to take.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Take(int takeCount) {
       EntityQuery eq = new EntityQuery(this);
       eq._takeCount = takeCount;
       return eq;
     }
 
-    /**
-     * Return a new query based on this query that skips the first n records.
-     * @param skipCount The number of records to skip.
-     * @return A new EntityQuery
-     */
+    /// <summary> Return a new query that skips the first n rows. </summary>
+    /// <param name="skipCount">The number of rows to skip.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery Skip(int skipCount) {
       EntityQuery eq = new EntityQuery(this);
       eq._skipCount = skipCount;
       return eq;
     }
 
-    /**
-     * Return a new query based on this query that either adds or removes the inline count capability. 
-     * @param inlineCountEnabled Whether to enable inlineCount.
-     * @return A new EntityQuery
-     */
+    /// <summary> Return a new query that does, or does not, ask for the total row count alongside the results. </summary>
+    /// <param name="inlineCountEnabled">True to return the count as well as the rows.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery EnableInlineCount(bool inlineCountEnabled) {
       EntityQuery eq = new EntityQuery(this);
       eq._inlineCountEnabled = inlineCountEnabled;
       return eq;
     }
 
-    /**
-     * Return a new query based on this query with the specified resourceName 
-     * @param resourceName The name of the url resource.
-     * @return A new EntityQuery
-     */
+    /// <summary> Return a new query aimed at a different resource. </summary>
+    /// <param name="resourceName">The name of the url resource to query.</param>
+    /// <returns>A new query; this one is unchanged.</returns>
     public EntityQuery WithResourceName(String resourceName) {
       EntityQuery eq = new EntityQuery(this);
       eq._resourceName = resourceName;
@@ -294,11 +283,10 @@ namespace Breeze.Core {
       throw new Exception("Unable to convert to a List<String>");
     }
 
-    /**
-     * Validates that all of the clauses that make up this query are consistent with the 
-     * specified EntityType.
-     * @param entityType A EntityType
-     */
+    /// <summary> Check every clause of this query against the type being queried, resolving their property paths. </summary>
+    /// <remarks> Must run before the query is applied to an IQueryable.  It also records <see cref="EntityType"/>. </remarks>
+    /// <param name="entityType">The type the query returns.</param>
+    /// <exception cref="Exception">A clause names a property the type does not have, or compares values that cannot be compared.</exception>
     public void Validate(Type entityType) {
       _entityType = entityType;
       if (_wherePredicate != null) {
@@ -313,47 +301,53 @@ namespace Breeze.Core {
     }
 
 
-    /**
-     * Returns the EntityType that this query has been validated against. Not that this property
-     * will return null until the validate method has been called.
-     * @return The EntityType that this query has been validated against.
-     */
+    /// <summary> The type this query was validated against.  Null until <see cref="Validate"/> has run. </summary>
     public Type? EntityType {
       get { return _entityType; }
     }
 
+    /// <summary> The url resource being queried, or null if the query did not name one. </summary>
     public String? ResourceName {
       get { return _resourceName; }
     }
 
+    /// <summary> The where clause, or null if the query has none. </summary>
     public BasePredicate? WherePredicate {
       get { return _wherePredicate; }
     }
 
+    /// <summary> The orderBy clause, or null if the query does not sort. </summary>
     public OrderByClause? OrderByClause {
       get { return _orderByClause; }
     }
 
+    /// <summary> The expand clause, or null if the query expands nothing. </summary>
     public ExpandClause? ExpandClause {
       get { return _expandClause; }
     }
 
+    /// <summary> The select clause, or null if the query returns whole entities. </summary>
     public SelectClause? SelectClause {
       get { return _selectClause; }
     }
 
+    /// <summary> The number of rows to skip, or null if the query does not skip. </summary>
     public int? SkipCount {
       get { return _skipCount; }
     }
 
+    /// <summary> The number of rows to take, or null if the query is unlimited. </summary>
     public int? TakeCount {
       get { return _takeCount; }
     }
 
+    /// <summary> Whether the query asked for the total row count alongside the results. </summary>
     public bool IsInlineCountEnabled {
       get { return _inlineCountEnabled.HasValue && _inlineCountEnabled.Value; }
     }
 
+    /// <summary> The parameters the client sent, for a named query method that takes some. </summary>
+    /// <returns>The parameters by name, or null if the query carried none.</returns>
     public IDictionary<string, object?>? GetParameters() {
       return _parameters;
     }

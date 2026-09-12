@@ -8,9 +8,23 @@ using System.Threading.Tasks;
 
 namespace Breeze.Core {
 
+  /// <summary>
+  /// One side of a comparison in a where clause, once parsed: a property reference
+  /// (<see cref="PropBlock"/>), a literal (<see cref="LitBlock"/>), or a function call
+  /// (<see cref="FnBlock"/>).
+  /// </summary>
   public abstract class BaseBlock {
 
     // will return either a PropBlock or a FnBlock
+    /// <summary> Parse the left-hand side of a predicate. </summary>
+    /// <remarks>
+    /// Only a string is accepted here: either a property path, or a function call such as
+    /// "toupper(CompanyName)". Literals, objects and arrays are legal only on the right.
+    /// </remarks>
+    /// <param name="exprSource">The left-hand side as it arrived from the client.</param>
+    /// <param name="entityType">The entity type being queried.</param>
+    /// <returns>A <see cref="PropBlock"/>, or an <see cref="FnBlock"/> if the string contains a call.</returns>
+    /// <exception cref="Exception">The value is null, an object, an array, or any other non-string.</exception>
     public static BaseBlock CreateLHSBlock(Object exprSource,
         Type entityType) {
       if (exprSource == null) {
@@ -44,6 +58,18 @@ namespace Breeze.Core {
     }
 
     // will return either a PropBlock or a LitBlock
+    /// <summary> Parse the right-hand side of a predicate. </summary>
+    /// <remarks>
+    /// This side is permissive: a literal, the name of another property to compare against, an
+    /// array for an 'in' clause, or an object carrying an explicit "value" together with either
+    /// "dataType" or "isProperty". A bare string is read as a property if the entity type has one
+    /// by that name, and as a literal otherwise.
+    /// </remarks>
+    /// <param name="exprSource">The right-hand side as it arrived from the client; null yields a null literal.</param>
+    /// <param name="entityType">The entity type being queried.  When null, strings are taken as literals.</param>
+    /// <param name="otherExprDataType">The data type of the left-hand side, used to coerce a literal.</param>
+    /// <returns>A <see cref="PropBlock"/> or a <see cref="LitBlock"/>.</returns>
+    /// <exception cref="Exception">The value is an object with no "value" property, or of a type that cannot appear here.</exception>
     public static BaseBlock CreateRHSBlock(Object? exprSource,
         Type entityType, DataType? otherExprDataType) {
 
@@ -108,12 +134,16 @@ namespace Breeze.Core {
     }
 
     // null for a literal whose type is unknown (e.g. a null literal)
+    /// <summary> The data type this side of the comparison yields, or null when it cannot be determined - as for a null literal. </summary>
     public abstract DataType? DataType {
       get;
     }
 
     
 
+    /// <summary> Build the LINQ expression for this block. </summary>
+    /// <param name="inExpr">The query's lambda parameter.</param>
+    /// <returns>The expression that produces this side's value.</returns>
     public abstract Expression ToExpression(Expression inExpr);
 
   }
