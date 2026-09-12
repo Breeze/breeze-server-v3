@@ -15,6 +15,8 @@ namespace Breeze.Persistence.NH {
     // For getting IClassMetadata
     private readonly ISessionFactory sessionFactory;
 
+    /// <summary> Create a fetch builder for a session factory. </summary>
+    /// <param name="sessionFactory">Supplies the NHibernate class metadata that says what each expand path means.</param>
     public NHEagerFetch(ISessionFactory sessionFactory) {
       this.sessionFactory = sessionFactory;
     }
@@ -244,14 +246,19 @@ namespace Breeze.Persistence.NH {
   /// Keeps track of the types and methods used by a query, so it can control the lazy loaded in the JsonFormatter.
   /// </summary>
   public class ExpandTypeMap {
+    /// <summary> The property names expanded for each entity type. </summary>
     public IDictionary<Type, List<string>> map;
+    /// <summary> The depth of the deepest expand path, used to bound the walk that initializes the results. </summary>
     public int maxDepth;
 
+    /// <summary> Create an empty map. </summary>
     public ExpandTypeMap() {
       map = new Dictionary<Type, List<string>>();
       maxDepth = 0;
     }
 
+    /// <summary> Raise <see cref="maxDepth"/> to the given depth, if it is deeper than what is recorded. </summary>
+    /// <param name="newDepth">The depth of a path just added.</param>
     public void Deepen(int newDepth) {
       if (newDepth > maxDepth)
         maxDepth = newDepth;

@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Breeze.Persistence {
+  /// <summary>
+  /// Validates entities on the server with System.ComponentModel.DataAnnotations, turning any
+  /// failures into the <see cref="EntityError"/> list a Breeze client expects.
+  /// </summary>
   public class DataAnnotationsValidator {
 
     private PersistenceManager _persistenceManager;
@@ -16,6 +20,10 @@ namespace Breeze.Persistence {
       this._persistenceManager = persistenceManager;
     }
 
+    /// <summary> Attach a metadata (buddy) class to an entity type, so annotations declared on it are honoured. </summary>
+    /// <remarks> Use this where the entity class is generated and cannot carry the attributes itself. </remarks>
+    /// <param name="entityType">The entity type being validated.</param>
+    /// <param name="metadataType">The class carrying the annotations for it.</param>
     public static void AddDescriptor(Type entityType, Type metadataType) {
       TypeDescriptor.AddProviderTransparent(
         new AssociatedMetadataTypeTypeDescriptionProvider(entityType, metadataType), entityType);

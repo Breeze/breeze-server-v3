@@ -4,6 +4,12 @@ using System.Transactions;
 
 namespace Breeze.Persistence {
 
+  /// <summary> How a save should be wrapped in a transaction: which kind, at what isolation level, and with what timeout. </summary>
+  /// <remarks>
+  /// The transaction spans BeforeSaveEntities, the save itself and AfterSaveEntities, so all of
+  /// them commit or roll back together. Settings come from <see cref="Default"/> unless a save
+  /// passes its own.
+  /// </remarks>
   public class TransactionSettings {
     /// <summary>
     /// Default settings for all saves. 
@@ -164,8 +170,11 @@ namespace Breeze.Persistence {
   ///  None - BeforeSaveEntity/ies, SaveChangesCore, and AfterSaveEntities are not executed in the same transaction.
   /// </list></summary>
   public enum TransactionType {
+    /// <summary> Use an ambient .NET TransactionScope.  Needed for distributed transactions. </summary>
     TransactionScope,
+    /// <summary> Use a transaction on the DbConnection.  Covers that one connection only. </summary>
     DbTransaction,
+    /// <summary> No transaction: the before-save hooks, the save and the after-save hooks are not wrapped together. </summary>
     None
   }
 }

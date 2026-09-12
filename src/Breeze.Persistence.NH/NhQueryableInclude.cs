@@ -47,8 +47,13 @@ namespace Breeze.Persistence.NH {
         : base(si) { }
         //: base(new DefaultQueryProvider(si), Expression.Constant(new NhQueryable<T>(si).WithOptions<T>(opt => opt.SetCacheable(true).SetCacheRegion(cacheRegion)))) { }
 
+    /// <summary> Create a query over an existing provider and expression.  Used by LINQ operators as the query is built up. </summary>
+    /// <param name="provider">The query provider.</param>
+    /// <param name="expr">The expression built so far.</param>
     public NhQueryableInclude(IQueryProvider provider, Expression expr) : base(provider, expr) { }
 
+    /// <summary> The navigation paths added by Include, or null if none were. </summary>
+    /// <returns>The paths, or null.</returns>
     public IList<string>? GetIncludes() {
       return includes;
     }
@@ -70,7 +75,10 @@ namespace Breeze.Persistence.NH {
 
   }
 
+  /// <summary> A query that carries Include paths, so a caller can read them back without knowing the element type. </summary>
   public interface IQueryableInclude : IQueryable {
+    /// <summary> The navigation paths to load with the results, or null if none were added. </summary>
+    /// <returns>The paths, or null.</returns>
     IList<string>? GetIncludes();
   }
 }

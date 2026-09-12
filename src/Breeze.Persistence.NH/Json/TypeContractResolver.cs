@@ -37,6 +37,9 @@ namespace Breeze.Persistence.NH {
       this.includedTypes = new HashSet<Type>(includedTypes);
     }
 
+    /// <summary> Keep only those properties and fields whose type is included, by <see cref="IsIncluded"/>. </summary>
+    /// <param name="objectType">The type being serialized.</param>
+    /// <returns>The members to serialize.</returns>
     protected override List<MemberInfo> GetSerializableMembers(Type objectType) {
       var members = base.GetSerializableMembers(objectType);
 
@@ -55,6 +58,14 @@ namespace Breeze.Persistence.NH {
       return members;
     }
 
+    /// <summary> Whether members of this type should be serialized. </summary>
+    /// <remarks>
+    /// Arrays and generic collections are unwrapped to their item type first.  A type that was
+    /// named explicitly is included; any other type from the same assembly is excluded; types
+    /// from elsewhere are left alone.
+    /// </remarks>
+    /// <param name="type">The member type to test.</param>
+    /// <returns>True to serialize members of this type.</returns>
     protected bool IsIncluded(Type type) {
       // unwrap collections
       if (type.HasElementType) type = type.GetElementType()!;   // never null when HasElementType

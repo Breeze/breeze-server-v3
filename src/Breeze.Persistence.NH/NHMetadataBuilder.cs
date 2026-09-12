@@ -26,6 +26,8 @@ namespace Breeze.Persistence.NH {
     private HashSet<string> _typeNames = new HashSet<string>();
     private List<MetaEnum> _enumList = new List<MetaEnum>();
 
+    /// <summary> Create a metadata builder for a session factory. </summary>
+    /// <param name="sessionFactory">Supplies the NHibernate mappings the Breeze metadata is built from.</param>
     public NHMetadataBuilder(ISessionFactory sessionFactory) {
       _sessionFactory = sessionFactory;
     }

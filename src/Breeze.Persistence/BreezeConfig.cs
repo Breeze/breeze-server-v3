@@ -10,9 +10,17 @@ using System.Threading;
 
 namespace Breeze.Persistence {
 
+  /// <summary> Server-wide Breeze settings: JSON serialization, transactions, and enum handling. </summary>
+  /// <remarks>
+  /// To change any of it, derive from this class and override the member concerned - the
+  /// subclass is found by scanning the loaded assemblies, so nothing needs to register it.
+  /// Exactly one subclass may be present.
+  /// </remarks>
   public class BreezeConfig {
 
     
+    /// <summary> The configuration in force: the one subclass of <see cref="BreezeConfig"/> found in the loaded assemblies, or a default instance if there is none. </summary>
+    /// <exception cref="Exception">More than one subclass was found; only one may be defined.</exception>
     public static BreezeConfig Instance {
       get {
         lock (__lock) {
@@ -36,6 +44,8 @@ namespace Breeze.Persistence {
       }
     }
 
+    /// <summary> The serializer settings used for query results, created once and cached. </summary>
+    /// <returns>The settings.  Override <c>CreateJsonSerializerSettings</c> to change them.</returns>
     public JsonSerializerSettings GetJsonSerializerSettings() {
       lock (__lock) {
         if (_jsonSerializerSettings == null) {
@@ -45,6 +55,8 @@ namespace Breeze.Persistence {
       }
     }
 
+    /// <summary> The serializer settings used for reading a save bundle, created once and cached. </summary>
+    /// <returns>The settings.  Override <c>CreateJsonSerializerSettingsForSave</c> to change them.</returns>
     public JsonSerializerSettings GetJsonSerializerSettingsForSave() {
       lock (__lock) {
         if (_jsonSerializerSettingsForSave == null) {
@@ -54,6 +66,8 @@ namespace Breeze.Persistence {
       }
     }
 
+    /// <summary> The loaded assemblies that Breeze searches for entity types, key generators and a <see cref="BreezeConfig"/> subclass. </summary>
+    /// <remarks> Framework assemblies are excluded, and the list is rebuilt when new assemblies load. </remarks>
     public static ReadOnlyCollection<Assembly> ProbeAssemblies {
       get {
         lock (__lock) {
@@ -111,6 +125,9 @@ namespace Breeze.Persistence {
       return settings;
     }
 
+    /// <summary> Whether an assembly is a framework assembly, and so not worth searching for application types. </summary>
+    /// <param name="assembly">The assembly to test.</param>
+    /// <returns>True for the Microsoft, Entity Framework and NHibernate assemblies, and for anything whose product name is in <see cref="FrameworkProductNames"/>.</returns>
     public static bool IsFrameworkAssembly(Assembly assembly) {
       // Loaded (runtime) assemblies always have a FullName.
       var fullName = assembly.FullName!;
@@ -126,6 +143,10 @@ namespace Breeze.Persistence {
       return FrameworkProductNames.Any(nm => productName.StartsWith(nm));
     }
 
+    /// <summary> The types in an assembly, or an empty array if they cannot all be loaded. </summary>
+    /// <remarks> A failure is traced rather than thrown: one unloadable assembly should not stop the probe. </remarks>
+    /// <param name="assembly">The assembly to read.</param>
+    /// <returns>Its types, or an empty array.</returns>
     protected static IEnumerable<Type> GetTypes(Assembly assembly) {
 
       try {
@@ -142,6 +163,7 @@ namespace Breeze.Persistence {
       }
     }
 
+    /// <summary> Assembly product names treated as framework code by <see cref="IsFrameworkAssembly"/>.  Matched as prefixes. </summary>
     protected static readonly List<String> FrameworkProductNames = new List<String> {
       "Microsoft®",
       "Microsoft (R)",

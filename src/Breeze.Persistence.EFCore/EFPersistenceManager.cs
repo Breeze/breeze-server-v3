@@ -20,7 +20,11 @@ using System.Threading.Tasks;
 namespace Breeze.Persistence.EFCore {
   /// <summary> Interface for providing a DbContext </summary>
   public interface IEFContextProvider {
+    /// <summary> The DbContext being used. </summary>
     DbContext DbContext { get; }
+    /// <summary> The name EF knows an entity type by. </summary>
+    /// <param name="entityType">The entity type.</param>
+    /// <returns>Its name in the EF model.</returns>
     String GetEntitySetName(Type entityType);
   }
 
@@ -38,10 +42,15 @@ namespace Breeze.Persistence.EFCore {
       EntityQuery.ApplyCustomLogic = EFExtensions.ApplyAsNoTracking;
     }
 
+    /// <summary> Create a manager with no context. </summary>
+    /// <remarks> Every member that needs a context throws until one is supplied; use <see cref="EFPersistenceManager{T}(T)"/> unless you have a reason not to. </remarks>
     public EFPersistenceManager() {
       _context = null;
     }
 
+    /// <summary> Create a manager over a DbContext. </summary>
+    /// <remarks> Cascade deletes and orphan deletes are deferred to save time, so that Breeze decides the order in which entities are saved. </remarks>
+    /// <param name="context">The context to save through and read metadata from.</param>
     public EFPersistenceManager(T context) {
       _context = context;
       // Added for EF Core 3
@@ -49,12 +58,14 @@ namespace Breeze.Persistence.EFCore {
       _context.ChangeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
     }
 
+    /// <summary> The context, as a DbContext. </summary>
     public DbContext DbContext {
       get {
         return _context!;
       }
     }
 
+    /// <summary> The context, as its own type. </summary>
     public T Context {
       get {
         return _context!;
@@ -143,6 +154,8 @@ namespace Breeze.Persistence.EFCore {
 
     #region Base implementation overrides
 
+    /// <summary> Build the Breeze metadata JSON from the EF model, including anything <c>BuildAltJsonMetadata</c> supplies. </summary>
+    /// <returns>The metadata as JSON, camel-cased, with enums written as strings.</returns>
     protected override string BuildJsonMetadata() {
       var metadata = MetadataBuilder.BuildFrom(DbContext);
       var jss = new JsonSerializerSettings {
@@ -599,6 +612,9 @@ namespace Breeze.Persistence.EFCore {
     #endregion
 
 
+    /// <summary> The name EF knows an entity type by. </summary>
+    /// <param name="entityType">A mapped entity type.</param>
+    /// <returns>Its name in the EF model.</returns>
     public String GetEntitySetName(Type entityType) {
       // Types in a save map are mapped entity types; any other type fails here, as it always has.
       return this.Context.Model.FindEntityType(entityType)!.Name;
@@ -606,6 +622,7 @@ namespace Breeze.Persistence.EFCore {
 
   }
 
+  /// <summary> An <see cref="EntityInfo"/> carrying the Entity Framework state for an entity while it is being saved. </summary>
   public class EFEntityInfo : EntityInfo {
     internal EFEntityInfo() {
     }
@@ -616,7 +633,13 @@ namespace Breeze.Persistence.EFCore {
     internal EntityEntry? EntityEntry;
   }
 
+  /// <summary> An <see cref="EntityError"/> that fills in the entity type name and key values from the entity it concerns. </summary>
   public class EFEntityError : EntityError {
+    /// <summary> Create an error, taking the type name and key values from the entity if one is given. </summary>
+    /// <param name="entityInfo">The entity the error concerns, or null if it does not concern one.</param>
+    /// <param name="errorName">Short name for the error, e.g. "ValidationError".</param>
+    /// <param name="errorMessage">The message shown to the client.</param>
+    /// <param name="propertyName">The property at fault, or null if the error is not about one property.</param>
     public EFEntityError(EntityInfo? entityInfo, String errorName, String errorMessage, String? propertyName) {
 
 

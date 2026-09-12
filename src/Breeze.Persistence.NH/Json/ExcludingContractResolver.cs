@@ -23,6 +23,9 @@ namespace Breeze.Persistence.NH {
       excludedMemberNames = excludedMembers.ToList();
     }
 
+    /// <summary> Drop the excluded properties from the members Json.NET would otherwise serialize. </summary>
+    /// <param name="objectType">The type being serialized.</param>
+    /// <returns>The members to serialize, minus any matched by name or by declaring type and name.</returns>
     protected override List<MemberInfo> GetSerializableMembers(Type objectType) {
       var members = base.GetSerializableMembers(objectType);
 

@@ -7,14 +7,26 @@ using System.Linq;
 
 namespace Breeze.Persistence {
 
+  /// <summary> Generates numeric primary keys from a single-row <c>NextId</c> table in the database. </summary>
+  /// <remarks>
+  /// Ids are handed out in blocks so that most saves need no database round trip. Claiming a
+  /// block is a select followed by a conditional update, retried if another process took the
+  /// block first, so several servers can share one table.
+  /// </remarks>
   public class NumericKeyGenerator : IKeyGenerator {
 
+    /// <summary> Create a generator drawing ids from the <c>NextId</c> table on a connection. </summary>
+    /// <param name="dbConnection">The connection to use.  It is opened and closed as needed if it is not already open.</param>
     public NumericKeyGenerator(DbConnection dbConnection) {
       _connection = dbConnection;
     }
 
     private DbConnection _connection;
 
+    /// <summary> Assign a real key value to each entity, converted to that key property's type. </summary>
+    /// <param name="keys">The entities needing keys.</param>
+    /// <exception cref="NotSupportedException">A key property is of a type a number cannot be converted to.</exception>
+    /// <exception cref="Exception">The <c>NextId</c> row is missing, or could not be claimed after several attempts.</exception>
     public void UpdateKeys(List<TempKeyInfo> keys) {
 
       long nextId = GetNextId(keys.Count);

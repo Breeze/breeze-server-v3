@@ -12,6 +12,7 @@ namespace Breeze.Persistence.NH {
   /// Code copied from https://github.com/PeteGoo/NHibernate.QueryService
   /// </summary>
   public class NHibernateContractResolver : DefaultContractResolver {
+    /// <summary> A shared instance.  The resolver holds no per-serialization state, so one is enough. </summary>
     public static readonly NHibernateContractResolver Instance = new NHibernateContractResolver();
 
     /*

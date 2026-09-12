@@ -10,8 +10,16 @@ using System.Reflection;
 namespace Breeze.Persistence.EFCore {
 
 
+  /// <summary> Builds the Breeze metadata a client needs from an Entity Framework model. </summary>
+  /// <remarks>
+  /// Owned types become Breeze complex types, and appear once each however many entities
+  /// reference them. Enums used by any mapped property are collected as well.
+  /// </remarks>
   public class MetadataBuilder {
 
+    /// <summary> Build the Breeze metadata for a context's model. </summary>
+    /// <param name="dbContext">The context whose model is described.</param>
+    /// <returns>The metadata, ready to be serialized and sent to the client.</returns>
     public static BreezeMetadata BuildFrom(DbContext dbContext) {
       return new MetadataBuilder().GetMetadataFromContext(dbContext);
     }

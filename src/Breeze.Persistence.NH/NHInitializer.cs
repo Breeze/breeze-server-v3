@@ -5,6 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Breeze.Persistence.NH {
+  /// <summary>
+  /// Forces NHibernate lazy proxies to load, so that expanded entities are present before the
+  /// session closes and the results are serialized.
+  /// </summary>
   public class NHInitializer {
     /// <summary>
     /// Recursively forces loading of each NHibernate proxy in the tree that matches an entry in the map.
