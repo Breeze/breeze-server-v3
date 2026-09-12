@@ -30,9 +30,11 @@ Companion repo: **`breeze-client-v3`**. The client test suite runs against the s
 - `Breeze.slnx` builds all 14 projects, **0 errors**. The NHibernate host now builds
   alongside the EF Core one, which it could not do in the old layout.
 - Fixed two `<see cref="http://...">` XML-doc errors in `NhQueryableInclude.cs`.
-- `CS1591` (missing XML comment) is suppressed in `src/Directory.Build.props` — ~546 are
-  missing and that is its own task. Other doc warnings stay visible because they indicate
-  *malformed* docs. ~52 unique warnings remain, all pre-existing.
+- **XML documentation is complete and enforced.** Every public member of all five shipping
+  packages carries a doc comment, so the `CS1591` suppression was removed from
+  `src/Directory.Build.props` rather than narrowed — adding an undocumented public member
+  is now a warning. `Breeze.slnx` builds with **0 errors and 0 warnings** across net8.0,
+  net9.0 and net10.0.
 
 ## The single test database
 
@@ -88,7 +90,21 @@ into a real application.**
   delete failed with FK error `Msg 547`. Rebuilding from `BreezeTestDb.sql` once per run,
   and reverting to a database snapshot before each client test file, replaced it.
 - GitHub Actions for build + pack.
-- Fix the ~52 malformed XML-doc warnings.
+- ~~Fix the malformed XML-doc warnings~~ **done.** Every one was a doc that was *wrong*
+  rather than missing: a URL used as a `cref` (which never binds), param tags naming
+  parameters that no longer exist, and documented methods missing a tag for one parameter.
+  `Breeze.Core/Query/IEntityType.cs` was deleted with them — unreferenced, its body was
+  entirely commented-out Java, and its braces did not balance, yet it still reached the
+  generated site.
+
+Two things worth fixing, found while documenting the query model and deliberately left
+alone in a documentation-only change:
+
+- `Operator.AddOperator` iterates each operator's aliases but keys every entry by
+  `op.Name`, so only the first alias is ever registered. `Operator.FromString("eq")`
+  resolves; `"=="`, `"&&"`, `"some"` and `"every"` return null. Clients send the first
+  form, which is why nothing has noticed.
+- `BinaryOperator.Expression` is never assigned and so is always null.
 
 **Newtonsoft.Json stays.** Moving to `System.Text.Json` changes JSON shape at the edges
 (`$type`/`$id`, `DateTimeOffset` formatting, dictionary key casing) and the client's
@@ -134,5 +150,5 @@ dotnet run --project tools/DbScripter -- tests/Databases/BreezeTestDb.sql
 
 A DocFX site documents the five packages in `src/` (net10.0 metadata). `dotnet tool
 restore`, then `dotnet docfx docs/docfx.json --serve` and open http://localhost:8080/. See
-DOCS.md. Not published yet. 273 public types and members have no XML doc comment (188 of
-them in Breeze.Core) — a candidate for a documentation pass.
+DOCS.md. Not published yet. Every public type and member carries an XML doc comment, so
+the site has no blank entries.

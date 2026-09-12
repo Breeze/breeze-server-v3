@@ -36,7 +36,6 @@
     <!-- CS1591 (missing XML comment on a public member) is NOT suppressed: every public
          member of every shipping package is documented, and the warning is what keeps it
          that way. If you add a public member, document it. -->
-
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <Authors>Jay Traband, IdeaBlade</Authors>
     <Company>IdeaBlade</Company>
