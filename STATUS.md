@@ -221,6 +221,85 @@ consumer ignores, but it does name the assembly.
 
 Verified with the breeze-client integration and browser tiers against this host.
 
+
+## Client tests blocked on server work
+
+The breeze-client suite has tests that cannot run against this host. Each was verified against the
+running server rather than assumed — the probe results are quoted below. Listed here so the client
+side does not silently lose the coverage; the tests were removed from breeze-client-v3 in
+`53162ca` and can be restored from that commit's parent.
+
+### 1. Server-side entity validation is not implemented
+
+Three client tests need a save to come back with `EntityErrors` produced by *the server's own*
+validation, rather than by an explicitly thrown `EntityErrorsException`:
+
+| Test | What it does |
+|---|---|
+| `save-exceptions` — "with server side entity level validation error" | sets `Customer.companyName = "error"`, expects one entity error, and expects it to land on the customer |
+| `save-exceptions` — "…+ repeat" | the same, saved twice, checking errors do not accumulate |
+| `save-exceptions` — "custom data annotation validation" | sets `Customer.contactName = "Error"`, expects a message matching `/the word 'Error'/` |
+
+The client half of this already works and is covered — `save-exceptions` "adds with
+EntityErrorsException" and "mods with EntityErrorsException" both run green, and prove that server
+errors reach the right entities as validation errors. What is missing is the server *producing*
+them from model validation:
+
+- a data-annotation or `IValidatableObject` rule on `Customer` — reject `ContactName` containing
+  the word "Error", and `CompanyName == "error"`
+- `PersistenceManager` running those rules during save and reporting the failures as
+  `EntityErrors`, the way `EntityErrorsException` does today
+
+EF Core does not validate on `SaveChanges` the way EF6's `ObjectContext` did, so this is a
+deliberate implementation, not a switch to flip.
+
+### 2. An array of complex objects does not bind from the query string
+
+`query-named-on-server` — "withParameters using a array of objects" posts
+
+```ts
+EntityQuery.from("SearchCustomers2").withParameters({ qbeList: [ {...}, {...} ] })
+```
+
+The endpoint exists — `SearchCustomers2([FromQuery] CustomerQBE[] qbeList)` in
+`NorthwindIBModelController` — and is reached, so this is a binding problem, not a missing method.
+Probed against the running server:
+
+```
+SearchCustomers2: FAILED 500  "all least two items must be passed in"
+```
+
+The method's own guard fired, so `qbeList` arrived with fewer than two items: ASP.NET Core's query
+binder is not reading the array of complex objects out of the shape breeze-client serializes. Needs
+either a model binder for it, or a `[FromBody]`/POST form.
+
+### 3. Unknown query parameters are accepted silently
+
+`query-named-on-server` — "with bad parameters" calls `CustomersStartingWith` with
+`{ foo: "C" }` instead of `companyName`, and expects an error naming `foo`. Probed:
+
+```
+bad parameters: server ACCEPTED an unknown parameter (no error)
+```
+
+ASP.NET Core model binding ignores parameters it does not recognize, so the query succeeds with
+`companyName` unbound. Making this an error would mean validating the supplied parameter names
+against the action's signature in `[BreezeQueryFilter]`. Worth deciding whether it *should* be an
+error before implementing it — silently ignoring a misspelled filter is the behaviour that bites,
+but it is also ordinary ASP.NET Core behaviour.
+
+### Not blocked, after checking
+
+Two things on this list turned out not to need any server work, and are now covered in
+breeze-client-v3:
+
+- **`EntityQuery.executeCount`** is `take(0).inlineCount(true)` underneath and needs nothing
+  `inlineCount` does not already provide. It returned 5 against the live server; it now has tests
+  in `query-misc.spec.ts`.
+- **A null parameter value** (`withParameters({ companyName: null })`) works and returns 93 rows.
+  That test had been skipped with "TODO: need to review this one later"; the skip was stale and it
+  is running again.
+
 ## Concurrency conflicts are a distinct problem type (done)
 
 Measured before the change, through a real two-manager conflict on `Customer.rowVersion`:
