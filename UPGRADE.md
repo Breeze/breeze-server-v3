@@ -65,20 +65,94 @@ Set `BreezeConfig.Instance.IncludeLegacyErrorMembers = false` to drop `Code`, `M
 `EntityErrors` once every client reads the RFC 9457 members. Entity errors then move to a
 lowercase `entityErrors` extension member, which breeze-client 3.0 also reads.
 
-### A hook for mapping exceptions to status codes
+### Mapping exceptions to status codes
 
 `GlobalExceptionFilter.StatusCodeForException` turns an exception into a status code; anything it
-does not map stays 500, as before. The obvious use is a duplicate key:
+does not map stays 500, as before. It is off unless you set it. For SQL Server there is a
+ready-made mapping that turns a duplicate-key or foreign-key violation into 409 Conflict:
 
 ```csharp
 o.Filters.Add(new GlobalExceptionFilter {
-  StatusCodeForException = ex => ex.GetBaseException() is SqlException { Number: 2627 or 2601 or 547 }
-    ? HttpStatusCode.Conflict : null
+  StatusCodeForException = DbExceptionMappers.SqlServer
 });
 ```
 
-Those numbers are SQL Server's, which is why this is a hook rather than something built in:
-PostgreSQL uses SQLSTATE `23505` and `23503`, and Breeze also supports NHibernate.
+409 says more than a blanket 500 - the request conflicts with the current state of the resource -
+and unlike a 500 a client will not retry it.
+
+### Mapping exceptions for other providers
+
+`StatusCodeForException` is a `Func<Exception, HttpStatusCode?>` — return a status to override the
+default, or `null` to leave it alone. Only SQL Server ships with a mapping, because these codes
+belong to the provider and no Breeze package references a database client library. Writing one for
+another provider is a single expression, and there are three things to get right whichever it is:
+
+1. **Unwrap first.** EF Core wraps the provider's exception in a `DbUpdateException`, NHibernate in
+   a `GenericADOException`. `GetBaseException()` reaches the innermost one either way.
+2. **Match the exception type, not just the number.** Plenty of unrelated exceptions have a
+   `Number` property.
+3. **Return `null` for anything you do not recognise**, so unrelated failures keep their 500.
+
+PostgreSQL, via Npgsql — the code is `SqlState`, a five-character SQLSTATE:
+
+```csharp
+using Npgsql;
+
+static HttpStatusCode? Postgres(Exception ex) =>
+  ex.GetBaseException() is PostgresException { SqlState: "23505" or "23503" }
+    ? HttpStatusCode.Conflict : null;   // 23505 unique_violation, 23503 foreign_key_violation
+```
+
+MySQL and MariaDB, via MySqlConnector:
+
+```csharp
+using MySqlConnector;
+
+static HttpStatusCode? MySql(Exception ex) =>
+  ex.GetBaseException() is MySqlException { Number: 1062 or 1451 or 1452 }
+    ? HttpStatusCode.Conflict : null;   // 1062 duplicate entry, 1451/1452 foreign key
+```
+
+Oracle, via Oracle.ManagedDataAccess:
+
+```csharp
+using Oracle.ManagedDataAccess.Client;
+
+static HttpStatusCode? Oracle(Exception ex) =>
+  ex.GetBaseException() is OracleException { Number: 1 or 2291 or 2292 }
+    ? HttpStatusCode.Conflict : null;   // ORA-00001 unique, ORA-02291/02292 foreign key
+```
+
+SQLite, via Microsoft.Data.Sqlite, reports both through `SqliteErrorCode` 19:
+
+```csharp
+using Microsoft.Data.Sqlite;
+
+static HttpStatusCode? Sqlite(Exception ex) =>
+  ex.GetBaseException() is SqliteException { SqliteErrorCode: 19 }
+    ? HttpStatusCode.Conflict : null;   // SQLITE_CONSTRAINT
+```
+
+`DbExceptionMappers.SqlServer` does the same thing by type name and reflection rather than by
+referencing `Microsoft.Data.SqlClient`. That is a cost Breeze pays so that its packages stay free
+of provider dependencies; your own application already references its provider, so match on the
+concrete type as above.
+
+Conflicts are not the only thing worth mapping. The delegate sees every exception the filter
+catches, so your own domain exceptions can carry a status too, and mappers compose:
+
+```csharp
+StatusCodeForException = ex =>
+  ex is NotFoundException       ? HttpStatusCode.NotFound
+  : ex is UnauthorizedException ? HttpStatusCode.Forbidden
+  : DbExceptionMappers.SqlServer(ex);
+```
+
+One caveat about the message. A raw provider message ("The INSERT statement conflicted with the
+FOREIGN KEY constraint `FK_Order_Customer`…") names your tables and constraints to the caller. That
+is what reaches the client as the problem document's `detail`, and it is the same trade as
+`IncludeStackTraceInErrors` — fine internally, worth catching and rethrowing with a message of your
+own on a public API.
 
 ### Otherwise
 

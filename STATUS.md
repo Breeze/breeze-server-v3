@@ -185,12 +185,31 @@ Three behaviour changes, all visible above:
 client is known to read the RFC ones; entity errors then move to a lowercase `entityErrors`
 extension member, which breeze-client 3.0 already understands.
 
-### 409 Conflict is a hook, not a rule
+### 409 Conflict is a hook, with SQL Server supplied
 
 `GlobalExceptionFilter.StatusCodeForException` maps an exception to a status; unmapped exceptions
-stay 500. Duplicate-key and foreign-key detection means reading provider-specific numbers — 2627,
-2601, 547 on SQL Server; SQLSTATE 23505, 23503 on PostgreSQL — so it does not belong in a filter
-that knows nothing about the database, especially with NHibernate also supported.
+stay 500, and nothing is mapped unless the host sets the delegate. Duplicate-key and foreign-key
+detection means reading provider-specific numbers — 2627, 2601, 547 on SQL Server; SQLSTATE 23505,
+23503 on PostgreSQL — so it does not belong in a filter that knows nothing about the database,
+especially with NHibernate also supported.
+
+`DbExceptionMappers.SqlServer` is the ready-made SQL Server mapping, and the test host wires it up:
+
+```csharp
+o.Filters.Add(new GlobalExceptionFilter { StatusCodeForException = DbExceptionMappers.SqlServer });
+```
+
+It finds the `SqlException` through `GetBaseException()` — past EF Core's `DbUpdateException` or
+NHibernate's `GenericADOException` — and reads `Number` by type name and reflection, so
+`Breeze.AspNetCore.NetCore` still does not reference `Microsoft.Data.SqlClient`. Both
+`Microsoft.Data.SqlClient.SqlException` and the older `System.Data.SqlClient` one are recognised.
+UPGRADE.md shows the equivalent for Npgsql, MySqlConnector, Oracle and SQLite, which applications
+should write against the concrete type since they already reference their provider.
+
+Proved end to end by `test/integration/save-conflict.spec.ts` in breeze-client-v3: an `Order` with
+a `customerID` matching no `Customer` comes back 409 with the constraint name in `detail`, while
+`SaveAndThrow` is still 500. A duplicate *primary* key does not work as a probe — `Customer`'s key
+is client-generated and remapped on save, so the colliding insert never reaches the database.
 
 ### `$type` is still there
 

@@ -87,7 +87,16 @@ namespace Test.AspNetCore {
       });
 
 
-      mvcBuilder.AddMvcOptions(o => { o.Filters.Add(new GlobalExceptionFilter()); });
+      // Duplicate-key and foreign-key violations come back as 409 Conflict rather than 500.
+      // DbExceptionMappers.SqlServer is provider-specific by nature; see its remarks for how to
+      // write the equivalent for another database.
+      mvcBuilder.AddMvcOptions(o => {
+        o.Filters.Add(new GlobalExceptionFilter { StatusCodeForException = DbExceptionMappers.SqlServer });
+      });
+
+      // The test host is a development server: let it return stack traces. A deployed server
+      // should leave this false, which is the default.
+      BreezeConfig.Instance.IncludeStackTraceInErrors = true;
 
       // All test models share a single database (BreezeTestDb).
       // See Tests/Databases/README.md for how to create it.
