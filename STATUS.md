@@ -152,3 +152,52 @@ A DocFX site documents the five packages in `src/` (net10.0 metadata). `dotnet t
 restore`, then `dotnet docfx docs/docfx.json --serve` and open http://localhost:8080/. See
 DOCS.md. Not published yet. Every public type and member carries an XML doc comment, so
 the site has no blank entries.
+
+## Error responses are RFC 9457 problem details (done)
+
+`GlobalExceptionFilter` returns a problem details document as `application/problem+json`, and by
+default also carries the pre-3.0 `Code`, `Message` and `EntityErrors` members. RFC 9457 §3.2
+permits extension members and requires consumers to ignore unrecognised ones, so the document is
+conformant with them present — which means **no flag has to be coordinated with the client and no
+client upgrade has to be scheduled**. `breeze-client` 2.x and 3.0 read it unchanged; that is
+pinned from the other side by `test/unit/server-error-shapes.spec.ts` in breeze-client-v3.
+
+Measured on the test host, `POST /breeze/NorthwindIBModel/SaveAndThrow`:
+
+```
+before  2849 bytes  {"$id":"1","$type":"...","Code":0,"Message":"Deliberately thrown exception",
+                     "StackTrace":"   at ...C:\GitHub\breeze-server-v3\tests\...","EntityErrors":null}
+after    270 bytes  {"$type":"...","type":"https://breeze.github.io/problems/server-error",
+                     "title":"Internal Server Error","status":500,
+                     "detail":"Deliberately thrown exception","Code":500,"Message":"..."}
+```
+
+Three behaviour changes, all visible above:
+
+- **The stack trace is gone by default** (`BreezeConfig.IncludeStackTraceInErrors`, default
+  `false`). It was unconditional, and it named source files, line numbers and the build machine's
+  directory layout to every caller — an information disclosure, and most of those 2849 bytes.
+- **`Code` carries the real status.** It was only assigned for `EntityErrorsException`, so a
+  generic failure sent `Code: 0` while the HTTP status said 500. Confirmed live before the change.
+- **The content type is `application/problem+json`**, not `application/json`.
+
+`BreezeConfig.IncludeLegacyErrorMembers` (default `true`) drops the capitalised members when every
+client is known to read the RFC ones; entity errors then move to a lowercase `entityErrors`
+extension member, which breeze-client 3.0 already understands.
+
+### 409 Conflict is a hook, not a rule
+
+`GlobalExceptionFilter.StatusCodeForException` maps an exception to a status; unmapped exceptions
+stay 500. Duplicate-key and foreign-key detection means reading provider-specific numbers — 2627,
+2601, 547 on SQL Server; SQLSTATE 23505, 23503 on PostgreSQL — so it does not belong in a filter
+that knows nothing about the database, especially with NHibernate also supported.
+
+### `$type` is still there
+
+`JsonSerializationFns` sets `TypeNameHandling.Objects` and `PreserveReferencesHandling.Objects`
+globally, because entity payloads need `$type` for inheritance and `$id`/`$ref` for object graphs.
+`[JsonObject(IsReference = false)]` on `ErrorDto` removes `$id`; removing `$type` for one type
+would take a custom converter. It is a harmless RFC 9457 extension member that a problem+json
+consumer ignores, but it does name the assembly.
+
+Verified with the breeze-client integration and browser tiers against this host.

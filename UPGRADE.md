@@ -30,7 +30,59 @@ net9.0, 10 on net10.0.
 
 ## 2. API changes
 
-**None so far.** 8.0 is a cleanup and modernization release, not a rewrite.
+### Error responses are RFC 9457 problem details
+
+An error response is now a [problem details](https://www.rfc-editor.org/rfc/rfc9457) document,
+sent as `Content-Type: application/problem+json`:
+
+```json
+{
+  "type":   "https://breeze.github.io/problems/entity-errors",
+  "title":  "Forbidden",
+  "status": 403,
+  "detail": "Order validation failed",
+
+  "Code":    403,
+  "Message": "Order validation failed",
+  "EntityErrors": [ ... ]
+}
+```
+
+**Existing clients keep working.** The capitalised members are what Breeze sent before, and they
+are still there by default. RFC 9457 §3.2 permits extension members and requires consumers to
+ignore ones they do not recognise, so the document is conformant with them present — there is no
+flag to coordinate and no client upgrade to schedule.
+
+Three things did change:
+
+| | |
+|---|---|
+| **The stack trace is no longer sent.** | It named source files, line numbers and the build machine's directory layout, to every caller. `BreezeConfig.Instance.IncludeStackTraceInErrors = env.IsDevelopment();` gets it back where you want it. |
+| **`Code` now holds the real status.** | It was left at `0` for anything that was not an `EntityErrorsException`, while the HTTP status said 500. |
+| **The content type is `application/problem+json`.** | It was `application/json`. |
+
+Set `BreezeConfig.Instance.IncludeLegacyErrorMembers = false` to drop `Code`, `Message` and
+`EntityErrors` once every client reads the RFC 9457 members. Entity errors then move to a
+lowercase `entityErrors` extension member, which breeze-client 3.0 also reads.
+
+### A hook for mapping exceptions to status codes
+
+`GlobalExceptionFilter.StatusCodeForException` turns an exception into a status code; anything it
+does not map stays 500, as before. The obvious use is a duplicate key:
+
+```csharp
+o.Filters.Add(new GlobalExceptionFilter {
+  StatusCodeForException = ex => ex.GetBaseException() is SqlException { Number: 2627 or 2601 or 547 }
+    ? HttpStatusCode.Conflict : null
+});
+```
+
+Those numbers are SQL Server's, which is why this is a hook rather than something built in:
+PostgreSQL uses SQLSTATE `23505` and `23503`, and Breeze also supports NHibernate.
+
+### Otherwise
+
+**No other API changes.** 8.0 is a cleanup and modernization release, not a rewrite.
 `PersistenceManager`, `[BreezeQueryFilter]`, `EFPersistenceManager`, `SaveResult`,
 `SaveOptions`, the metadata format and the JSON wire format are all unchanged.
 

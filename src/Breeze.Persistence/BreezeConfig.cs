@@ -98,6 +98,28 @@ namespace Breeze.Persistence {
     /// </summary>
     public virtual string? QueryParamName { get => _queryParamName; set => _queryParamName = value; }
 
+    private bool _includeStackTraceInErrors;
+    /// <summary>
+    /// Whether an error response includes the exception's stack trace.<br/>
+    /// Default is <b>false</b>. A stack trace names source files, line numbers and the directory
+    /// layout of the machine that built the assembly, so returning it to every caller is an
+    /// information disclosure. Turn it on deliberately, for development only:
+    /// <code>BreezeConfig.Instance.IncludeStackTraceInErrors = env.IsDevelopment();</code>
+    /// </summary>
+    public virtual bool IncludeStackTraceInErrors { get => _includeStackTraceInErrors; set => _includeStackTraceInErrors = value; }
+
+    private bool _includeLegacyErrorMembers = true;
+    /// <summary>
+    /// Whether an error response also carries the pre-3.0 <c>Code</c>, <c>Message</c> and
+    /// <c>EntityErrors</c> members alongside the RFC 9457 ones.<br/>
+    /// Default is <b>true</b>, and it costs only a little duplication. RFC 9457 section 3.2 permits
+    /// extension members and requires consumers to ignore ones they do not recognize, so the
+    /// response is conformant either way; leaving this on means a breeze-client 2.x or 3.0
+    /// application reads errors exactly as it always has, with no coordinated upgrade.<br/>
+    /// Turn it off once every client is known to read the RFC 9457 members.
+    /// </summary>
+    public virtual bool IncludeLegacyErrorMembers { get => _includeLegacyErrorMembers; set => _includeLegacyErrorMembers = value; }
+
     static void CurrentDomain_AssemblyLoad(object? sender, AssemblyLoadEventArgs args) {
       Interlocked.Increment(ref __assemblyLoadedCount);
     }
