@@ -726,6 +726,7 @@ namespace Breeze.Persistence {
   //  }
   //  public String Message { get; protected set; }
   //  public List<EntityError> EntityErrors { get; protected set; }
+
   //}
 
   /// <summary> Exception thrown during validation and save </summary>
@@ -747,6 +748,20 @@ namespace Breeze.Persistence {
     public HttpStatusCode StatusCode { get; set; }
     /// <summary> Errors causing the exception </summary>
     public List<EntityError> EntityErrors { get; protected set; }
+
+    /// <summary>
+    /// URI identifying the kind of problem, sent as the RFC 9457 <c>type</c> member. Null leaves
+    /// the choice to <c>GlobalExceptionFilter</c>, which is what an ordinary validation failure
+    /// wants.
+    /// </summary>
+    /// <remarks>
+    /// Set this when the status code alone does not say what went wrong. An optimistic-concurrency
+    /// conflict and a duplicate key are both 409, but a client recovers from them differently -
+    /// re-read and merge for the first, change the data for the second - so it has to be able to
+    /// tell them apart without matching on the message text. See
+    /// <see cref="ConcurrencyErrorsException"/>.
+    /// </remarks>
+    public string? ProblemType { get; set; }
   }
 
   /// <summary> Entity-specific error (such as validation error) that occur during save. </summary>

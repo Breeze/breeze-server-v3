@@ -220,3 +220,52 @@ would take a custom converter. It is a harmless RFC 9457 extension member that a
 consumer ignores, but it does name the assembly.
 
 Verified with the breeze-client integration and browser tiers against this host.
+
+## Concurrency conflicts are a distinct problem type (done)
+
+Measured before the change, through a real two-manager conflict on `Customer.rowVersion`:
+
+```
+status      : 500
+message     : The database operation was expected to affect 1 row(s), but actually affected
+              0 row(s)... See https://go.microsoft.com/fwlink/?LinkId=527962
+problem type: undefined
+entityErrors: undefined
+```
+
+Nothing there distinguishes a stale read from any other server failure, so a client could only
+recognize it by matching EF Core's wording - which differs on NHibernate and changes between
+versions. After:
+
+```
+status      : 409
+message     : The save failed because 1 record was changed or deleted by another user after it
+              was read.
+problemType : https://breeze.github.io/problems/concurrency-conflict
+conflicted  : ConcurrencyError on Customer eef42f9f-9d9d-4a38-96e8-0ad2200bccf0
+entityState : Modified   (the pending edit survives, to merge against a fresh read)
+```
+
+`ConcurrencyErrorsException` is raised by both persistence managers - `EFPersistenceManager` from
+`DbUpdateConcurrencyException` (using `e.Entries`), `NHPersistenceManager` from
+`StaleObjectStateException` (using `EntityName` and `Identifier`). It subclasses
+`EntityErrorsException`, so the per-row errors travel the path that already existed for validation
+failures and land as validation errors on the right entities.
+
+### Why not just 409
+
+A duplicate key is also 409, and the recoveries are opposite: re-read and merge for a conflict,
+change the data for a duplicate. The status cannot carry that, so `EntityErrorsException` gained an
+optional `ProblemType` which the filter sends as the RFC 9457 `type`. Null - every pre-existing
+throw site - behaves exactly as before.
+
+`type` is the right member for this under RFC 9457 §3.1: it identifies the problem *kind*, while
+`status` is only the HTTP semantics. Application code can use it for its own domain failures too.
+
+NHibernate's plain `StaleStateException` (batched flush) knows a row was stale but not which one;
+that still carries the status and the type, with no per-entity error.
+
+Covered by `test/integration/save-concurrency.spec.ts` (conflict, recovery by re-read, and a
+deleted row) and the `Concurrency conflicts` block in `test/unit/server-error-shapes.spec.ts`
+(discrimination from a duplicate-key 409, and the honest `false` for a server that sends no `type`)
+in breeze-client-v3.

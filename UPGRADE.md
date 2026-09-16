@@ -154,6 +154,52 @@ is what reaches the client as the problem document's `detail`, and it is the sam
 `IncludeStackTraceInErrors` — fine internally, worth catching and rethrowing with a message of your
 own on a public API.
 
+### Concurrency conflicts are isolated
+
+An optimistic concurrency conflict now reaches the client as **409 Conflict** with the RFC 9457
+type `https://breeze.github.io/problems/concurrency-conflict`, whichever ORM is underneath. It was
+a 500 carrying the ORM's own words, which a client could only recognize by matching on the text.
+
+`ConcurrencyErrorsException` is what both persistence managers raise:
+
+| ORM | was | now |
+|---|---|---|
+| EF Core | `DbUpdateConcurrencyException`, rethrown as 500 | caught in `SaveChangesCore`, converted using `e.Entries` |
+| NHibernate | `StaleObjectStateException`, rethrown as 500 | caught in `SaveChangesCore`, converted using `EntityName` and `Identifier` |
+
+It subclasses `EntityErrorsException`, so it also carries one `EntityError` per conflicting row -
+entity type name and key values, `ErrorName` of `ConcurrencyError`, and no property name, since the
+row is stale as a whole. A breeze client resolves each back to the entity it already holds and
+attaches a validation error to it, which is what lets an application point at the records that went
+stale instead of failing the save with one message.
+
+The message is Breeze's, not the ORM's: *"The save failed because 1 record was changed or deleted
+by another user after it was read."*
+
+**This is automatic.** Nothing to register, no flag. It does need a concurrency column to detect
+the conflict with - `[ConcurrencyCheck]`, or a `rowversion`/`timestamp` - which Breeze already
+reports in metadata as `concurrencyMode: "Fixed"`.
+
+NHibernate's plain `StaleStateException`, raised for a batched flush, says a row was stale but not
+which one. That still produces the status and the problem type, just with no per-entity error.
+
+### Naming your own problem types
+
+`EntityErrorsException.ProblemType` is new and optional. Set it when the status code alone does not
+say what went wrong, and the filter sends it as the problem document's `type` instead of choosing
+one:
+
+```csharp
+throw new EntityErrorsException("That order is already shipped", errors) {
+  StatusCode = HttpStatusCode.Conflict,
+  ProblemType = "https://example.com/problems/order-already-shipped"
+};
+```
+
+Left null - which is every existing throw site - the filter behaves exactly as before. This is what
+separates a concurrency conflict from a duplicate key, since both are 409 and the client recovers
+from them differently.
+
 ### Otherwise
 
 **No other API changes.** 8.0 is a cleanup and modernization release, not a rewrite.

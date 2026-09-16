@@ -45,17 +45,21 @@ namespace Breeze.AspNetCore {
 
       var statusCode = 500;
       List<EntityError>? entityErrors = null;
+      string? problemType = null;
 
       if (ex is EntityErrorsException eeEx) {
         statusCode = (int)eeEx.StatusCode;
         entityErrors = eeEx.EntityErrors;
+        // An exception that knows what kind of problem it is names its own type; a concurrency
+        // conflict does, because 409 alone does not distinguish it from a duplicate key.
+        problemType = eeEx.ProblemType;
       } else {
         var mapped = StatusCodeForException?.Invoke(ex);
         if (mapped != null) statusCode = (int)mapped.Value;
       }
 
       var response = new ErrorDto {
-        Type = ProblemTypeFor(statusCode, entityErrors != null),
+        Type = problemType ?? ProblemTypeFor(statusCode, entityErrors != null),
         Title = ReasonPhrase(statusCode),
         Status = statusCode,
         Detail = msg,

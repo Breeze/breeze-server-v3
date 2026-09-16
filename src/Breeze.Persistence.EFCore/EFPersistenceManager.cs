@@ -217,6 +217,11 @@ namespace Breeze.Persistence.EFCore {
 
       try {
         DbContext.SaveChanges();
+      } catch (DbUpdateConcurrencyException e) {
+        // Must precede the DbUpdateException catch below - it is a subclass, and unlike the
+        // general case it has no inner provider exception to unwrap: EF Core raises it because
+        // the UPDATE matched no rows, not because the database complained.
+        throw CreateConcurrencyErrorsException(e);
       } catch (DbUpdateException e) {
         var nextException = (Exception)e;
         while (nextException.InnerException != null) {
@@ -256,6 +261,11 @@ namespace Breeze.Persistence.EFCore {
 
       try {
         await DbContext.SaveChangesAsync(cancellationToken);
+      } catch (DbUpdateConcurrencyException e) {
+        // Must precede the DbUpdateException catch below - it is a subclass, and unlike the
+        // general case it has no inner provider exception to unwrap: EF Core raises it because
+        // the UPDATE matched no rows, not because the database complained.
+        throw CreateConcurrencyErrorsException(e);
       } catch (DbUpdateException e) {
         var nextException = (Exception)e;
         while (nextException.InnerException != null) {
@@ -283,6 +293,27 @@ namespace Breeze.Persistence.EFCore {
 
     }
 
+
+    /// <summary>
+    /// Turn EF Core's concurrency exception into Breeze's, so a conflict reaches the client as
+    /// 409 with a stable problem type instead of a 500 carrying EF's message text.
+    /// </summary>
+    /// <param name="e">The exception EF Core raised when an UPDATE or DELETE matched no rows.</param>
+    /// <returns>An exception naming every entity that conflicted.</returns>
+    private static ConcurrencyErrorsException CreateConcurrencyErrorsException(DbUpdateConcurrencyException e) {
+      // e.Entries is the rows whose UPDATE or DELETE matched nothing. It can be empty - the
+      // contract does not promise otherwise - in which case the client still gets the status and
+      // the problem type, just not a per-entity error.
+      var entityErrors = e.Entries.Select(entry => {
+        var key = entry.Metadata.FindPrimaryKey();
+        var keyValues = key?.Properties
+          .Select(p => entry.Property(p.Name).CurrentValue)
+          .ToArray();
+        return ConcurrencyErrorsException.CreateEntityError(entry.Entity.GetType().FullName, keyValues);
+      }).ToList();
+
+      return new ConcurrencyErrorsException(ConcurrencyErrorsException.CreateMessage(entityErrors.Count), entityErrors);
+    }
     #endregion
 
     #region Save related methods
