@@ -778,6 +778,11 @@ namespace Test.AspNetCore.Controllers {
     public NorthwindPersistenceManager(NHSessionProvider<NorthwindPersistenceManager> provider) : base(provider.OpenSession()) { }
 #endif
 
+    // Once, not per save: see DataAnnotationsValidator.AddDescriptor.
+    static NorthwindPersistenceManager() {
+      DataAnnotationsValidator.AddDescriptor(typeof(Customer), typeof(Customer));
+    }
+
     protected override void AfterSaveEntities(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> keyMappings) {
       var tag = (string)SaveOptions.Tag;
       if (tag == "CommentKeyMappings.After") {
@@ -1051,7 +1056,6 @@ namespace Test.AspNetCore.Controllers {
         }
       }
 
-      DataAnnotationsValidator.AddDescriptor(typeof(Customer), typeof(Customer));
       var validator = new DataAnnotationsValidator(this);
       validator.ValidateEntities(saveMap, true);
 

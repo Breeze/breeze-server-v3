@@ -21,13 +21,25 @@ namespace Breeze.Persistence {
     }
 
     /// <summary> Attach a metadata (buddy) class to an entity type, so annotations declared on it are honoured. </summary>
-    /// <remarks> Use this where the entity class is generated and cannot carry the attributes itself. </remarks>
+    /// <remarks>
+    /// Use this where the entity class is generated and cannot carry the attributes itself.
+    /// Calling it again for the same pair does nothing, so it is safe to call before every save.
+    /// </remarks>
     /// <param name="entityType">The entity type being validated.</param>
     /// <param name="metadataType">The class carrying the annotations for it.</param>
     public static void AddDescriptor(Type entityType, Type metadataType) {
-      TypeDescriptor.AddProviderTransparent(
-        new AssociatedMetadataTypeTypeDescriptionProvider(entityType, metadataType), entityType);
+      // TypeDescriptor keeps every provider it is given, and each one wraps the last. Registering
+      // the pair on every save - as the test server did - grew the chain for the life of the
+      // process, and validating the type walked all of it: saving a Customer took half a second
+      // after a few thousand saves. So each pair is registered once.
+      lock (_describedTypes) {
+        if (!_describedTypes.Add((entityType, metadataType))) return;
+        TypeDescriptor.AddProviderTransparent(
+          new AssociatedMetadataTypeTypeDescriptionProvider(entityType, metadataType), entityType);
+      }
     }
+
+    private static readonly HashSet<(Type, Type)> _describedTypes = new HashSet<(Type, Type)>();
 
     /// <summary>
     /// Validate all the entities in the saveMap.
