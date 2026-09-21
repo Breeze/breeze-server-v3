@@ -27,8 +27,18 @@
         ],
         "exclude": [
           "_site/**",
-          "obj/**"
+          "obj/**",
+          "api-landing/**",
+          "snippets/**"
         ]
+      },
+      {
+        "_comment": "The landing page for the generated API section. docs/api/ is generated and gitignored, so the source sits outside it and is published into it. Without this, /api/ has no index and 404s - DocFX's own nav resolves 'api/' through the toc at runtime, which a direct link cannot do.",
+        "files": [
+          "index.md"
+        ],
+        "src": "api-landing",
+        "dest": "api"
       }
     ],
     "output": "_site",

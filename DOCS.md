@@ -115,6 +115,7 @@ docs/
   guide/                    hand-written pages
     toc.yml                 their order in the Guide tab
   snippets/                 the C# the guide shows - a real project, compiled
+  api-landing/index.md      the API section's landing page, published into api/
   api/                      GENERATED metadata (YAML) - do not edit, not committed
   _site/                    GENERATED site - not committed
 ```
@@ -133,6 +134,11 @@ docs/
   `"properties": { "TargetFramework": "net10.0" }` in `docfx.json`. The public API is the same on every target;
   only the Entity Framework Core version behind `Breeze.Persistence.EFCore` differs. Change the property if that ever
   stops being true.
+- **The API section's landing page** is `docs/api-landing/index.md`, which the second `content` entry in
+  `docfx.json` publishes to `api/index.html`. It lives outside `docs/api/` because that folder is generated and
+  gitignored. Without it `/api/` returns 404: DocFX's own *API reference* tab resolves `api/` through the table of
+  contents at runtime, which works from inside the site but not for a link from anywhere else - and the client site
+  has one.
 - **Namespaces, not assemblies.** The table of contents is by namespace. They line up with the packages, except that
   `Breeze.AspNetCore.NetCore` puts its public types in the `Breeze.AspNetCore` namespace. Each type page names its
   assembly.
