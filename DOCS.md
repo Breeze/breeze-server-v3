@@ -1,9 +1,12 @@
 # Building and viewing the docs
 
-The .NET API reference for the Breeze server packages is a [DocFX](https://dotnet.github.io/docfx/) site,
-generated from the XML doc comments in `src/`. The configuration lives in `docs/`.
+The Breeze server documentation is one [DocFX](https://dotnet.github.io/docfx/) site: a hand-written guide
+under `docs/guide`, plus an API reference generated from the XML doc comments in `src/`. Both live in `docs/`
+and share one navigation and one search box. The guide's C# is compiled - see
+[The C# in the guide](#the-c-in-the-guide).
 
-Nothing is published yet. For now you view the site locally.
+The site is published to GitHub Pages at https://breeze.github.io/breeze-server-v3/, by hand:
+see [Publishing](#publishing).
 
 ---
 
@@ -12,9 +15,59 @@ Nothing is published yet. For now you view the site locally.
 ```bash
 dotnet tool restore                       # once - installs DocFX from .config/dotnet-tools.json
 dotnet docfx docs/docfx.json --serve      # then open http://localhost:8080/
+scripts/publish-docs.sh                   # build the site and push it to GitHub Pages
 ```
 
 Stop the server with Ctrl+C.
+
+---
+
+## Publishing
+
+```bash
+scripts/publish-docs.sh                 # build, commit to the gh-pages branch, push
+scripts/publish-docs.sh --no-push       # build and commit; push later with: git push origin gh-pages
+scripts/publish-docs.sh --force         # publish again from a commit that is already published
+```
+
+The site is whatever was last published, not what is on `master`: nothing publishes it
+automatically. So publish after pushing a change to the docs, or to the doc comments in `src/`.
+
+`scripts/publish-docs.sh`:
+
+1. **Refuses uncommitted changes**, so the published site always matches a commit. Commit or
+   stash first.
+2. **Builds** the site in two steps - `dotnet docfx metadata` then `dotnet docfx build` - rather than as
+   one command, so that warnings can stop the publish. The metadata step's two known warnings are
+   tolerated; the build step must report **none**. A dead link, an unresolved `xref` or a missing code-snippet
+   region shows up there, and DocFX calls all three a warning rather than an error, so without this check
+   they would go live. See [Checks](#checks).
+3. **Commits the built site to `gh-pages`**, in a temporary worktree, so the branch you are on
+   and your working copy are never touched. `gh-pages` holds only the built site. Its commits
+   are named after the source commit: `Publish docs from 0a837f5`.
+4. **Pushes `gh-pages`**, unless you passed `--no-push`. Pages updates a minute or two later.
+
+If `gh-pages` was already published from the commit you are on, it does nothing, or only
+pushes a publish that `--no-push` left behind. It decides that by commit, not by comparing
+files: DocFX writes its search index in the order pages finish rendering, so two builds of
+the same source are never byte-identical.
+
+**No base path is set**, unlike the client's equivalent script. DocFX emits entirely relative links, so the
+site serves correctly from `/breeze-server-v3/` with no configuration. There is nothing to change if it
+later moves to a different path or a custom domain.
+
+### One-time setup
+
+- The repository must be **public**. Pages on a private repository needs a paid plan.
+- After the first publish, set **Settings -> Pages -> Source** to *Deploy from a branch*, branch
+  `gh-pages`, folder `/ (root)`. The branch is not in that list until it has been pushed once.
+
+### Moving to GitHub Actions later
+
+Keep the build (`dotnet tool restore && dotnet docfx docs/docfx.json`), upload `docs/_site` with
+`actions/upload-pages-artifact`, deploy it with `actions/deploy-pages`, and set the Pages source to
+*GitHub Actions*. The runner needs the .NET SDK (`actions/setup-dotnet`) because DocFX reads the
+projects through Roslyn and MSBuild. `gh-pages` is then no longer needed.
 
 ---
 
@@ -30,6 +83,7 @@ Run them from the repo root.
 | `dotnet docfx metadata docs/docfx.json` | regenerates only the API metadata (YAML) | `docs/api/` |
 | `dotnet docfx build docs/docfx.json` | builds the site from the **existing** metadata, skipping Roslyn | `docs/_site/` |
 | `dotnet docfx serve docs/_site` | serves the last build, without rebuilding | http://localhost:8080/ |
+| `scripts/publish-docs.sh` | builds the site for GitHub Pages and pushes it to `gh-pages` - see [Publishing](#publishing) | https://breeze.github.io/breeze-server-v3/ |
 
 The API reference is under `/api/` - for example
 http://localhost:8080/api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html and
@@ -212,7 +266,8 @@ It currently reports **exactly two warnings**, both known:
 
 Both come from the `metadata` step, so `dotnet docfx build docs/docfx.json` - which skips it - should report **0
 warnings**. That makes the build-only command the sharper check while you are editing prose: any warning it prints is
-yours, and is usually a broken link or an `xref` that did not resolve.
+yours, and is usually a broken link or an `xref` that did not resolve. `scripts/publish-docs.sh` relies on exactly
+that: it runs the two steps separately and refuses to publish if the build step warns at all.
 
 Any other warning is new. The compiler's doc-comment warnings (CS1570, CS1572, CS1573, CS1584, CS1587, CS1591) show
 up in `dotnet build` too.
@@ -239,13 +294,12 @@ Add `--port 8081` (or any free port).
 
 ## Not set up yet
 
-- **Publishing.** The site is not deployed anywhere. `dotnet docfx docs/docfx.json` produces a static site in
-  `docs/_site/` that any static host (GitHub Pages, for example) can serve; deploying it is still to be done.
-  Until then the client site cannot link to a page here, only to this repo - see below.
+- **Automatic publishing.** Publishing is by hand, with `scripts/publish-docs.sh`; see
+  [Moving to GitHub Actions later](#moving-to-github-actions-later).
 - **Linking from the client docs.** The client site's *Server* menu points at
   [/server/dotnet](https://github.com/Breeze/breeze-client-v3/blob/master/docs/server/dotnet.md), a page there that
-  says what this server gives a client and how to build this site locally. Point it straight at the published site
-  once there is one, and trim that page's *Reading the server docs* section to a link.
+  says what this server gives a client and how to build this site. Now that this site is published, that page's
+  *Reading the server docs* section can shrink to a link to it.
 - **More guide pages.** The guide covers getting started, the `PersistenceManager`, querying, saving, metadata and
   error handling. Not yet written: NHibernate specifics beyond what *Getting started* mentions, inheritance
   mapping, complex types, and a migration page for 7.x users (for now, `UPGRADE.md`).
