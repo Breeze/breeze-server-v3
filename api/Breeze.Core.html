@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Namespace Breeze.Core | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Namespace Breeze.Core | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Core">
+
+  <h1 id="Breeze_Core" data-uid="Breeze.Core" class="text-break">Namespace Breeze.Core</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+
+    <h3 id="classes">
+Classes
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.AndOrPredicate.html">AndOrPredicate</a></dt>
+      <dd><p>A where clause joining two or more predicates with <code>and</code> or <code>or</code>.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.AnyAllPredicate.html">AnyAllPredicate</a></dt>
+      <dd><p>A where clause that quantifies over a collection navigation property - &quot;any order detail
+costs more than 100&quot;, &quot;all of them shipped&quot;.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.BaseBlock.html">BaseBlock</a></dt>
+      <dd><p>One side of a comparison in a where clause, once parsed: a property reference
+(<a class="xref" href="Breeze.Core.PropBlock.html">PropBlock</a>), a literal (<a class="xref" href="Breeze.Core.LitBlock.html">LitBlock</a>), or a function call
+(<a class="xref" href="Breeze.Core.FnBlock.html">FnBlock</a>).</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.BasePredicate.html">BasePredicate</a></dt>
+      <dd><p>A where clause, in the tree the query parser builds from the JSON a client sends.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+      <dd><p>An operator that compares two operands, such as <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_Equals">Equals</a> or <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_StartsWith">StartsWith</a>.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.BinaryPredicate.html">BinaryPredicate</a></dt>
+      <dd><p>A where clause comparing two operands - a property against a literal, or a property
+against another property.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.ByteArrayConverter.html">ByteArrayConverter</a></dt>
+      <dd><p>only needed because this functionality seems to be broken in JSON.NET 10.0.3</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.DataType.html">DataType</a></dt>
+      <dd><p>The set of data types a Breeze query can refer to, and the conversions between the loosely
+typed values that arrive in a query and the CLR types an expression needs.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.DynamicTypeBase.html">DynamicTypeBase</a></dt>
+      <dd><p>For internal use only.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.DynamicTypeInfo.html">DynamicTypeInfo</a></dt>
+      <dd><p>Internal use only.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a></dt>
+      <dd><p>A query as it arrived from a Breeze client: a resource name, a where clause, and the
+orderBy, select, expand, skip and take that go with it.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.EntityQueryExtensions.html">EntityQueryExtensions</a></dt>
+      <dd><p>Applies the clauses of an <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a> to an IQueryable, one clause at a time.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.EnumerableExtns.html">EnumerableExtns</a></dt>
+      <dd><p>Collection helpers, chiefly an order-sensitive hash code for sequences.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.ExpandClause.html">ExpandClause</a></dt>
+      <dd><p>The expand clause of an <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a> - the related entities the client asked
+to have loaded along with the results.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.FnBlock.html">FnBlock</a></dt>
+      <dd><p>A function call in a query, such as &quot;toupper(CompanyName)&quot; or &quot;year(OrderDate)&quot;.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.JsonHelper.html">JsonHelper</a></dt>
+      <dd><p>Turns JSON into plain CLR values, which is the form the query parser reads.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.JsonSerializationFns.html">JsonSerializationFns</a></dt>
+      <dd><p>Static functions related to JSON serialization</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.LitBlock.html">LitBlock</a></dt>
+      <dd><p>A literal value in a query, coerced on construction to the data type it is being compared against.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.NoAnonSerializationBinder.html">NoAnonSerializationBinder</a></dt>
+      <dd><p>Serialization binder for anonymous types, such as query projections.<br>
+Removes the verbose type name from the serialized JSON to reduce payload size.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+      <dd><p>An operator that may appear in a query - a comparison, a boolean connective, or a
+collection quantifier - identified by the name a client sends for it.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.OrderByClause.html">OrderByClause</a></dt>
+      <dd><p>The orderBy clause of an <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a> - the properties to sort by, and their directions.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.OrderByClause.OrderByItem.html">OrderByClause.OrderByItem</a></dt>
+      <dd><p>One property to sort by, and whether it sorts descending.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.PropBlock.html">PropBlock</a></dt>
+      <dd><p>A reference to a property in a query, resolved against the entity type on construction.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.PropertySignature.html">PropertySignature</a></dt>
+      <dd><p>A property path such as &quot;Customer.Address.City&quot;, resolved against a starting type into the
+chain of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a> it names, and buildable into the LINQ expression that
+reads it.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.QueryBuilder.html">QueryBuilder</a></dt>
+      <dd><p>Used to build up a Queryable.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.QueryResult.html">QueryResult</a></dt>
+      <dd><p>A page of query results together with the total row count, which is what a query with inlineCount returns.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.SelectClause.html">SelectClause</a></dt>
+      <dd><p>The select clause of an <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a> - the properties to project, in place of
+whole entities.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.TakeFinder.html">TakeFinder</a></dt>
+      <dd><p>Sets MinTake to the minimum Take() value in the queryable Expression</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.TimeSpanConverter.html">TimeSpanConverter</a></dt>
+      <dd><p>Serializes <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> as an XML Schema duration - &quot;PT2H30M&quot; - which is the form
+the Breeze client reads and writes.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.TypeFns.html">TypeFns</a></dt>
+      <dd><p>A collection of static methods used to provide additional <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a> related services.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.UnaryPredicate.html">UnaryPredicate</a></dt>
+      <dd><p>A where clause that negates another predicate.</p>
+</dd>
+    </dl>
+    <h3 id="enums">
+Enums
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Breeze.Core.OperatorType.html">OperatorType</a></dt>
+      <dd><p>The kind of predicate an <a class="xref" href="Breeze.Core.Operator.html">Operator</a> builds, which decides how its operands are read.</p>
+</dd>
+    </dl>
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

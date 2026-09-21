@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PropertySignature | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PropertySignature | Breeze Server for .NET ">
+      
+      <meta name="description" content="A property path such as &amp;quot;Customer.Address.City&amp;quot;, resolved against a starting type into the chain of  it names, and buildable into the LINQ expression that reads it.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Core_PropertySignature.md&amp;value=---%0Auid%3A%20Breeze.Core.PropertySignature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Core.PropertySignature">
+
+
+
+  <h1 id="Breeze_Core_PropertySignature" data-uid="Breeze.Core.PropertySignature" class="text-break">
+Class PropertySignature  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A property path such as &quot;Customer.Address.City&quot;, resolved against a starting type into the
+chain of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a> it names, and buildable into the LINQ expression that
+reads it.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PropertySignature</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PropertySignature</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Breeze_Core_PropertySignature_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>Query clauses - where, orderBy, select, expand - all address properties by path, so each of
+them resolves its paths through this class.  Resolution happens in the constructor, so an
+instance that was constructed successfully always holds a valid chain.</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Breeze_Core_PropertySignature__ctor_" data-uid="Breeze.Core.PropertySignature.#ctor*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature__ctor_System_Type_System_String_" data-uid="Breeze.Core.PropertySignature.#ctor(System.Type,System.String)">
+  PropertySignature(Type, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resolve a property path against a type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PropertySignature(Type instanceType, string propertyPath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type the path starts from.</p>
+</dd>
+    <dt><code>propertyPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A property name, or several joined with '.' to walk into related types.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>A segment of the path does not name a public instance property or field of the type it is applied to.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Core_PropertySignature_ElementType_" data-uid="Breeze.Core.PropertySignature.ElementType*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_ElementType" data-uid="Breeze.Core.PropertySignature.ElementType">
+  ElementType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>For a path ending in a collection, the type of its items; null for a scalar property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type? ElementType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_InstanceType_" data-uid="Breeze.Core.PropertySignature.InstanceType*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_InstanceType" data-uid="Breeze.Core.PropertySignature.InstanceType">
+  InstanceType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The type the path starts from.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type InstanceType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_IsDataProperty_" data-uid="Breeze.Core.PropertySignature.IsDataProperty*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_IsDataProperty" data-uid="Breeze.Core.PropertySignature.IsDataProperty">
+  IsDataProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether the path ends in a value - a predefined type or an enum - rather than in another entity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDataProperty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_IsNavigationProperty_" data-uid="Breeze.Core.PropertySignature.IsNavigationProperty*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_IsNavigationProperty" data-uid="Breeze.Core.PropertySignature.IsNavigationProperty">
+  IsNavigationProperty
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether the path ends in another entity, or a collection of them, rather than in a value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNavigationProperty { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_Name_" data-uid="Breeze.Core.PropertySignature.Name*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_Name" data-uid="Breeze.Core.PropertySignature.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The path with its segments joined by '_', giving a name usable as an identifier - &quot;Customer_Address_City&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_Properties_" data-uid="Breeze.Core.PropertySignature.Properties*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_Properties" data-uid="Breeze.Core.PropertySignature.Properties">
+  Properties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The resolved chain, one entry per segment of the path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;PropertyInfo&gt; Properties { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_PropertyPath_" data-uid="Breeze.Core.PropertySignature.PropertyPath*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_PropertyPath" data-uid="Breeze.Core.PropertySignature.PropertyPath">
+  PropertyPath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The path as it was written, e.g. &quot;Customer.Address.City&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string PropertyPath { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_ReturnType_" data-uid="Breeze.Core.PropertySignature.ReturnType*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_ReturnType" data-uid="Breeze.Core.PropertySignature.ReturnType">
+  ReturnType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The type of the last property in the chain - what reading the path yields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ReturnType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Core_PropertySignature_BuildMemberExpression_" data-uid="Breeze.Core.PropertySignature.BuildMemberExpression*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_BuildMemberExpression_System_Linq_Expressions_ParameterExpression_" data-uid="Breeze.Core.PropertySignature.BuildMemberExpression(System.Linq.Expressions.ParameterExpression)">
+  BuildMemberExpression(ParameterExpression)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Build the expression that reads this path off a parameter - for the path &quot;Address.City&quot; and parameter x, the expression x.Address.City.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Expression BuildMemberExpression(ParameterExpression parmExpr)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>parmExpr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.parameterexpression">ParameterExpression</a></dt>
+    <dd><p>The parameter the path is read from, typically the lambda parameter of the query.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></dt>
+    <dd><p>The member access expression.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_BuildPropertyExpression_" data-uid="Breeze.Core.PropertySignature.BuildPropertyExpression*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_BuildPropertyExpression_System_Linq_Expressions_Expression_System_Reflection_PropertyInfo_" data-uid="Breeze.Core.PropertySignature.BuildPropertyExpression(System.Linq.Expressions.Expression,System.Reflection.PropertyInfo)">
+  BuildPropertyExpression(Expression, PropertyInfo)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Build a single property access - one step of the chain that <a class="xref" href="Breeze.Core.PropertySignature.html#Breeze_Core_PropertySignature_BuildMemberExpression_System_Linq_Expressions_ParameterExpression_">BuildMemberExpression(ParameterExpression)</a> assembles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Expression BuildPropertyExpression(Expression baseExpr, PropertyInfo property)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>baseExpr</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></dt>
+    <dd><p>The expression the property is read from.</p>
+</dd>
+    <dt><code>property</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></dt>
+    <dd><p>The property to read.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></dt>
+    <dd><p>The member access expression.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_PropertySignature_GetProperties_" data-uid="Breeze.Core.PropertySignature.GetProperties*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_GetProperties_System_Type_System_String_System_Boolean_" data-uid="Breeze.Core.PropertySignature.GetProperties(System.Type,System.String,System.Boolean)">
+  GetProperties(Type, string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Walk a property path, yielding the property behind each segment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;PropertyInfo&gt; GetProperties(Type instanceType, string propertyPath, bool throwOnError = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type the path starts from.</p>
+</dd>
+    <dt><code>propertyPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A property name, or several joined with '.'.</p>
+</dd>
+    <dt><code>throwOnError</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>When true an unresolvable segment throws; when false the walk stops there, yielding only the segments that did resolve.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a>&gt;</dt>
+    <dd><p>The properties named by the path, in order.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>A segment does not resolve and <code class="paramref">throwOnError</code> is true.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Breeze_Core_PropertySignature_IsProperty_" data-uid="Breeze.Core.PropertySignature.IsProperty*"></a>
+
+  <h3 id="Breeze_Core_PropertySignature_IsProperty_System_Type_System_String_" data-uid="Breeze.Core.PropertySignature.IsProperty(System.Type,System.String)">
+  IsProperty(Type, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/PropertySignature.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether a property path resolves against a type, without throwing if it does not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsProperty(Type instanceType, string propertyPath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type the path starts from.</p>
+</dd>
+    <dt><code>propertyPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The path to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the path resolves.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

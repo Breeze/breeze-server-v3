@@ -1,0 +1,1542 @@
+{
+  "source_base_path": "C:/GitHub/breeze-server-v3/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.BreezeAsyncQueryFilterAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.BreezeAsyncQueryFilterAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.BreezeAsyncQueryFilterAttribute",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.BreezeAsyncQueryFilterAttribute.yml\" sourcestartlinenumber=\"1\">Attribute to apply the request's query string to the returned IQueryable and execute it asynchronously.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.BreezeQueryFilterAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.BreezeQueryFilterAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.BreezeQueryFilterAttribute",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.BreezeQueryFilterAttribute.yml\" sourcestartlinenumber=\"1\">Attribute to apply the request's query string to the returned IQueryable and execute it synchronously.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.DbExceptionMappers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.DbExceptionMappers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.DbExceptionMappers",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.DbExceptionMappers.yml\" sourcestartlinenumber=\"1\">Ready-made mappings from a database exception to an HTTP status code, for\n<xref href=\"Breeze.AspNetCore.GlobalExceptionFilter.StatusCodeForException\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.ErrorDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.ErrorDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.ErrorDto",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.ErrorDto.yml\" sourcestartlinenumber=\"1\">Error object returned to the client, as an RFC 9457 problem details document.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.GlobalExceptionFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.GlobalExceptionFilter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.GlobalExceptionFilter",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.GlobalExceptionFilter.yml\" sourcestartlinenumber=\"1\">Filter to capture and return entity errors</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.QueryFns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.QueryFns.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore.QueryFns",
+      "Summary": "<p sourcefile=\"api/Breeze.AspNetCore.QueryFns.yml\" sourcestartlinenumber=\"1\">Static utility functions for processing queries</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.AspNetCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.AspNetCore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.AspNetCore",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.AndOrPredicate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.AndOrPredicate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.AndOrPredicate",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.AndOrPredicate.yml\" sourcestartlinenumber=\"1\">A where clause joining two or more predicates with <code>and</code> or <code>or</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.AnyAllPredicate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.AnyAllPredicate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.AnyAllPredicate",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.AnyAllPredicate.yml\" sourcestartlinenumber=\"1\">A where clause that quantifies over a collection navigation property - &quot;any order detail\ncosts more than 100&quot;, &quot;all of them shipped&quot;.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.BaseBlock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.BaseBlock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.BaseBlock",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.BaseBlock.yml\" sourcestartlinenumber=\"1\">One side of a comparison in a where clause, once parsed: a property reference\n(<xref href=\"Breeze.Core.PropBlock\" data-throw-if-not-resolved=\"false\"></xref>), a literal (<xref href=\"Breeze.Core.LitBlock\" data-throw-if-not-resolved=\"false\"></xref>), or a function call\n(<xref href=\"Breeze.Core.FnBlock\" data-throw-if-not-resolved=\"false\"></xref>).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.BasePredicate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.BasePredicate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.BasePredicate",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.BasePredicate.yml\" sourcestartlinenumber=\"1\">A where clause, in the tree the query parser builds from the JSON a client sends.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.BinaryOperator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.BinaryOperator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.BinaryOperator",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.BinaryOperator.yml\" sourcestartlinenumber=\"1\">An operator that compares two operands, such as <xref href=\"Breeze.Core.Operator.Equals\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Breeze.Core.Operator.StartsWith\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.BinaryPredicate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.BinaryPredicate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.BinaryPredicate",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.BinaryPredicate.yml\" sourcestartlinenumber=\"1\">A where clause comparing two operands - a property against a literal, or a property\nagainst another property.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.ByteArrayConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.ByteArrayConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.ByteArrayConverter",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.ByteArrayConverter.yml\" sourcestartlinenumber=\"1\">only needed because this functionality seems to be broken in JSON.NET 10.0.3</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.DataType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.DataType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.DataType",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.DataType.yml\" sourcestartlinenumber=\"1\">The set of data types a Breeze query can refer to, and the conversions between the loosely\ntyped values that arrive in a query and the CLR types an expression needs.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.DynamicTypeBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.DynamicTypeBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.DynamicTypeBase",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.DynamicTypeBase.yml\" sourcestartlinenumber=\"1\">For internal use only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.DynamicTypeInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.DynamicTypeInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.DynamicTypeInfo",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.DynamicTypeInfo.yml\" sourcestartlinenumber=\"1\">Internal use only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.EntityQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.EntityQuery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.EntityQuery",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.EntityQuery.yml\" sourcestartlinenumber=\"1\">A query as it arrived from a Breeze client: a resource name, a where clause, and the\norderBy, select, expand, skip and take that go with it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.EntityQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.EntityQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.EntityQueryExtensions",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.EntityQueryExtensions.yml\" sourcestartlinenumber=\"1\">Applies the clauses of an <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> to an IQueryable, one clause at a time.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.EnumerableExtns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.EnumerableExtns.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.EnumerableExtns",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.EnumerableExtns.yml\" sourcestartlinenumber=\"1\">Collection helpers, chiefly an order-sensitive hash code for sequences.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.ExpandClause.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.ExpandClause.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.ExpandClause",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.ExpandClause.yml\" sourcestartlinenumber=\"1\">The expand clause of an <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> - the related entities the client asked\nto have loaded along with the results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.FnBlock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.FnBlock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.FnBlock",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.FnBlock.yml\" sourcestartlinenumber=\"1\">A function call in a query, such as &quot;toupper(CompanyName)&quot; or &quot;year(OrderDate)&quot;.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.IEntityType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.IEntityType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.IEntityType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.JsonHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.JsonHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.JsonHelper",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.JsonHelper.yml\" sourcestartlinenumber=\"1\">Turns JSON into plain CLR values, which is the form the query parser reads.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.JsonSerializationFns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.JsonSerializationFns.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.JsonSerializationFns",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.JsonSerializationFns.yml\" sourcestartlinenumber=\"1\">Static functions related to JSON serialization</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.LitBlock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.LitBlock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.LitBlock",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.LitBlock.yml\" sourcestartlinenumber=\"1\">A literal value in a query, coerced on construction to the data type it is being compared against.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.NoAnonSerializationBinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.NoAnonSerializationBinder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.NoAnonSerializationBinder",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.NoAnonSerializationBinder.yml\" sourcestartlinenumber=\"1\">Serialization binder for anonymous types, such as query projections.<br>\nRemoves the verbose type name from the serialized JSON to reduce payload size.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.Operator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.Operator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.Operator",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.Operator.yml\" sourcestartlinenumber=\"1\">An operator that may appear in a query - a comparison, a boolean connective, or a\ncollection quantifier - identified by the name a client sends for it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.OperatorType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.OperatorType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.OperatorType",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.OperatorType.yml\" sourcestartlinenumber=\"1\">The kind of predicate an <xref href=\"Breeze.Core.Operator\" data-throw-if-not-resolved=\"false\"></xref> builds, which decides how its operands are read.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.OrderByClause.OrderByItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.OrderByClause.OrderByItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.OrderByClause.OrderByItem",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.OrderByClause.OrderByItem.yml\" sourcestartlinenumber=\"1\">One property to sort by, and whether it sorts descending.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.OrderByClause.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.OrderByClause.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.OrderByClause",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.OrderByClause.yml\" sourcestartlinenumber=\"1\">The orderBy clause of an <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> - the properties to sort by, and their directions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.PropBlock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.PropBlock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.PropBlock",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.PropBlock.yml\" sourcestartlinenumber=\"1\">A reference to a property in a query, resolved against the entity type on construction.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.PropertySignature.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.PropertySignature.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.PropertySignature",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.PropertySignature.yml\" sourcestartlinenumber=\"1\">A property path such as &quot;Customer.Address.City&quot;, resolved against a starting type into the\nchain of <xref href=\"System.Reflection.PropertyInfo\" data-throw-if-not-resolved=\"false\"></xref> it names, and buildable into the LINQ expression that\nreads it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.QueryBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.QueryBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.QueryBuilder",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.QueryBuilder.yml\" sourcestartlinenumber=\"1\">Used to build up a Queryable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.QueryResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.QueryResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.QueryResult",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.QueryResult.yml\" sourcestartlinenumber=\"1\">A page of query results together with the total row count, which is what a query with inlineCount returns.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.SelectClause.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.SelectClause.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.SelectClause",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.SelectClause.yml\" sourcestartlinenumber=\"1\">The select clause of an <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> - the properties to project, in place of\nwhole entities.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.TakeFinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.TakeFinder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.TakeFinder",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.TakeFinder.yml\" sourcestartlinenumber=\"1\">Sets MinTake to the minimum Take() value in the queryable Expression</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.TimeSpanConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.TimeSpanConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.TimeSpanConverter",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.TimeSpanConverter.yml\" sourcestartlinenumber=\"1\">Serializes <xref href=\"System.TimeSpan\" data-throw-if-not-resolved=\"false\"></xref> as an XML Schema duration - &quot;PT2H30M&quot; - which is the form\nthe Breeze client reads and writes.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.TypeFns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.TypeFns.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.TypeFns",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.TypeFns.yml\" sourcestartlinenumber=\"1\">A collection of static methods used to provide additional <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> related services.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.UnaryPredicate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.UnaryPredicate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.UnaryPredicate",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.UnaryPredicate.yml\" sourcestartlinenumber=\"1\">A where clause that negates another predicate.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.AutoGeneratedKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.AutoGeneratedKey.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.AutoGeneratedKey",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.AutoGeneratedKey.yml\" sourcestartlinenumber=\"1\">Server-generated keys for new entities</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.AutoGeneratedKeyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.AutoGeneratedKeyType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.AutoGeneratedKeyType",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.AutoGeneratedKeyType.yml\" sourcestartlinenumber=\"1\">Types of key generation for new entities</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.BreezeConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.BreezeConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.BreezeConfig",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.BreezeConfig.yml\" sourcestartlinenumber=\"1\">Server-wide Breeze settings: JSON serialization, transactions, and enum handling.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.BreezeEntityValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.BreezeEntityValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.BreezeEntityValidator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.BreezeEntityValidator.yml\" sourcestartlinenumber=\"1\">Validates entities using Breeze metadata.  This duplicates the validation performed on the Breeze client.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.BreezeMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.BreezeMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.BreezeMetadata",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.BreezeMetadata.yml\" sourcestartlinenumber=\"1\">Metadata structure sent to the client</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.ConcurrencyErrorsException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.ConcurrencyErrorsException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.ConcurrencyErrorsException",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.ConcurrencyErrorsException.yml\" sourcestartlinenumber=\"1\">Thrown when a save fails because a row was changed or removed by someone else after it was\nread - an optimistic concurrency conflict.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.DataAnnotationsValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.DataAnnotationsValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.DataAnnotationsValidator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.DataAnnotationsValidator.yml\" sourcestartlinenumber=\"1\">Validates entities on the server with System.ComponentModel.DataAnnotations, turning any\nfailures into the <xref href=\"Breeze.Persistence.EntityError\" data-throw-if-not-resolved=\"false\"></xref> list a Breeze client expects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFEntityError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFEntityError.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFEntityError",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFEntityError.yml\" sourcestartlinenumber=\"1\">An <xref href=\"Breeze.Persistence.EntityError\" data-throw-if-not-resolved=\"false\"></xref> that fills in the entity type name and key values from the entity it concerns.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFEntityInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFEntityInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFEntityInfo",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFEntityInfo.yml\" sourcestartlinenumber=\"1\">An <xref href=\"Breeze.Persistence.EntityInfo\" data-throw-if-not-resolved=\"false\"></xref> carrying the Entity Framework state for an entity while it is being saved.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFExtensions",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFExtensions.yml\" sourcestartlinenumber=\"1\">The Entity Framework implementations of the query steps <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> leaves to the persistence layer.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFPersistenceManager-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFPersistenceManager<T>",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFPersistenceManager-1.yml\" sourcestartlinenumber=\"1\">Manages persistence for Breeze entity models using Entity Framework</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFQueryBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFQueryBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFQueryBuilder",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFQueryBuilder.yml\" sourcestartlinenumber=\"1\">Builds the EF query operators for an element type that is only known at runtime.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.IEFContextProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.IEFContextProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.IEFContextProvider",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.IEFContextProvider.yml\" sourcestartlinenumber=\"1\">Interface for providing a DbContext</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.MetadataBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.MetadataBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.MetadataBuilder",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.MetadataBuilder.yml\" sourcestartlinenumber=\"1\">Builds the Breeze metadata a client needs from an Entity Framework model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EntityError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EntityError.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EntityError",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EntityError.yml\" sourcestartlinenumber=\"1\">Entity-specific error (such as validation error) that occur during save.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EntityErrorsException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EntityErrorsException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EntityErrorsException",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EntityErrorsException.yml\" sourcestartlinenumber=\"1\">Exception thrown during validation and save</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EntityInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EntityInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EntityInfo",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EntityInfo.yml\" sourcestartlinenumber=\"1\">All info for the entity on the server</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EntityKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EntityKey.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EntityKey",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EntityKey.yml\" sourcestartlinenumber=\"1\">Unique identifier for an entity</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EntityState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EntityState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EntityState",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EntityState.yml\" sourcestartlinenumber=\"1\">The state of the entity</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.IKeyGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.IKeyGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.IKeyGenerator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.IKeyGenerator.yml\" sourcestartlinenumber=\"1\">Server-side key generator</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.JsonPropertyFixupWriter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.JsonPropertyFixupWriter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.JsonPropertyFixupWriter",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.JsonPropertyFixupWriter.yml\" sourcestartlinenumber=\"1\">JsonTextWriter that alters property names coming from EF's mapping XML</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.KeyMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.KeyMapping.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.KeyMapping",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.KeyMapping.yml\" sourcestartlinenumber=\"1\">For server-generated keys.  Maps temporary key (from the client) to the real key (generated on the server)</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MaxLengthMetaValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MaxLengthMetaValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MaxLengthMetaValidator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MaxLengthMetaValidator.yml\" sourcestartlinenumber=\"1\">Validator for the maximum length of a string</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaDataProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaDataProperty.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaDataProperty",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaDataProperty.yml\" sourcestartlinenumber=\"1\">Data Property</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaEnum.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaEnum",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaEnum.yml\" sourcestartlinenumber=\"1\">Represents a C# enum type, which can be a value for a DataProperty</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaNavProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaNavProperty.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaNavProperty",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaNavProperty.yml\" sourcestartlinenumber=\"1\">Navigation Property</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaProperty.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaProperty",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaProperty.yml\" sourcestartlinenumber=\"1\">Base class for Data and Navigation properties</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaType",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaType.yml\" sourcestartlinenumber=\"1\">EntityType or ComplexType</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.MetaValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.MetaValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.MetaValidator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.MetaValidator.yml\" sourcestartlinenumber=\"1\">Validators for data types</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.ExcludingContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.ExcludingContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.ExcludingContractResolver",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.ExcludingContractResolver.yml\" sourcestartlinenumber=\"1\">Newtonsoft.Json ContractResolver that can be configured to exclude certain properties by name.\nAllows JSON serializer to skip certain properties, thus preventing the serializer from trying to\nserialize the entire object graph.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.ExpandTypeMap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.ExpandTypeMap.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.ExpandTypeMap",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.ExpandTypeMap.yml\" sourcestartlinenumber=\"1\">Keeps track of the types and methods used by a query, so it can control the lazy loaded in the JsonFormatter.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.IQueryableInclude.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.IQueryableInclude.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.IQueryableInclude",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.IQueryableInclude.yml\" sourcestartlinenumber=\"1\">A query that carries Include paths, so a caller can read them back without knowing the element type.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.IncludingContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.IncludingContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.IncludingContractResolver",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.IncludingContractResolver.yml\" sourcestartlinenumber=\"1\">Newtonsoft.Json ContractResolver that can be configured to include properties by name.\nAllows JSON serializer to skip certain properties, thus preventing the serializer from trying to\nserialize the entire object graph.\nSerializes value types and System types by default, but excludes all collections and other\ntypes unless explicitly included.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHBreezeMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHBreezeMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHBreezeMetadata",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHBreezeMetadata.yml\" sourcestartlinenumber=\"1\">Metadata describing the entity model.  Converted to JSON to send to Breeze client.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHEagerFetch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHEagerFetch.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHEagerFetch",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHEagerFetch.yml\" sourcestartlinenumber=\"1\">Converts OData-style $expand clauses into NHibernate Fetch commands.\nAdapted from NhQueryableEnumeratorAttribute.cs found in <a href=\"https://github.com/PeteGoo/NHibernate.QueryService\" sourcefile=\"api/Breeze.Persistence.NH.NHEagerFetch.yml\" sourcestartlinenumber=\"2\">https://github.com/PeteGoo/NHibernate.QueryService</a></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHExpander.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHExpander.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHExpander",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHExpander.yml\" sourcestartlinenumber=\"1\">Initializes Hibernate proxies and collections prior to serialization.\nThis is used to implement the OData $expand operation.</p>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHExpander.yml\" sourcestartlinenumber=\"4\">Be sure to set the default_batch_fetch_size property in your NH config file (or Web.config), e.g.</p>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHExpander.yml\" sourcestartlinenumber=\"6\">&lt;property name=&quot;default_batch_fetch_size&quot;&gt;32&lt;/property&gt;</p>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHExpander.yml\" sourcestartlinenumber=\"8\">so that lazy loading happens in batches, instead of one at a time.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHIncludingContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHIncludingContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHIncludingContractResolver",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHIncludingContractResolver.yml\" sourcestartlinenumber=\"1\">Newtonsoft.Json ContractResolver that can be configured to include properties by name.\nAllows JSON serializer to skip certain properties, thus preventing the serializer from trying to\nserialize the entire object graph.\nUses the ClassMetaData from the SessionFactory to determine which types should be serialized by default.\nExcludes association properties by default, unless explicitly included.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHInitializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHInitializer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHInitializer",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHInitializer.yml\" sourcestartlinenumber=\"1\">Forces NHibernate lazy proxies to load, so that expanded entities are present before the\nsession closes and the results are serialized.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHMetadataBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHMetadataBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHMetadataBuilder",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHMetadataBuilder.yml\" sourcestartlinenumber=\"1\">Builds a data structure containing the metadata required by Breeze.\n<a href=\"http://breeze.github.io/doc-js/metadata-schema.html\">Breeze metadata schema</a></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHPersistenceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHPersistenceManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHPersistenceManager",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHPersistenceManager.yml\" sourcestartlinenumber=\"1\">Manage persistence for NHibernate entity models</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHQueryHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHQueryHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHQueryHelper",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHQueryHelper.yml\" sourcestartlinenumber=\"1\">Query helpers for NHibernate: an Include operator, and the hooks Breeze calls around query execution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHQueryProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHQueryProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHQueryProvider",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHQueryProvider.yml\" sourcestartlinenumber=\"1\">An NHibernate query provider that also carries the Include paths for a query, since they\ncannot be put in the expression tree.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHRelationshipFixer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHRelationshipFixer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHRelationshipFixer",
+      "Summary": "<pre><code sourcefile=\"api/Breeze.Persistence.NH.NHRelationshipFixer.yml\" sourcestartlinenumber=\"1\">Utility class for re-establishing the relationships between entities prior to saving them in Nhibernate.\n\nBreeze requires many-to-one relationships to have properties both the related entity and its ID, and it \nsends only the ID in the save bundle.  To make it work with NH, we map the \n</code></pre>\n<pre><code class=\"lang-csharp\">many-to-one</code></pre>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHRelationshipFixer.yml\" sourcestartlinenumber=\"6\">entity, and map the\nforeign key ID with</p>\n<pre><code class=\"lang-csharp\">insert=\"false\" update=\"false\"</code></pre>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHRelationshipFixer.yml\" sourcestartlinenumber=\"9\">, so the</p>\n<pre><code class=\"lang-csharp\">many-to-one</code></pre>\n<p sourcefile=\"api/Breeze.Persistence.NH.NHRelationshipFixer.yml\" sourcestartlinenumber=\"11\">entity must\nbe populated in order for the foreign key value to be saved in the DB.  To work\naround this problem, this class uses the IDs sent by Breeze to re-connect the related entities.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHTransactionWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHTransactionWrapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHTransactionWrapper",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHTransactionWrapper.yml\" sourcestartlinenumber=\"1\">Presents an NHibernate ITransaction as an <xref href=\"System.Data.IDbTransaction\" data-throw-if-not-resolved=\"false\"></xref>, which is what the\nsave pipeline in <xref href=\"Breeze.Persistence.PersistenceManager\" data-throw-if-not-resolved=\"false\"></xref> works with.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHibernateContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHibernateContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHibernateContractResolver",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHibernateContractResolver.yml\" sourcestartlinenumber=\"1\">Newtonsoft.Json ContractResolver for NHibernate objects.\nAllows JSON serializer to skip properties that are not already resolved, thus preventing the\nserializer from trying to serialize the entire object graph.\nCode copied from <a href=\"https://github.com/PeteGoo/NHibernate.QueryService\" sourcefile=\"api/Breeze.Persistence.NH.NHibernateContractResolver.yml\" sourcestartlinenumber=\"4\">https://github.com/PeteGoo/NHibernate.QueryService</a></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHibernateProxyJsonConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHibernateProxyJsonConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHibernateProxyJsonConverter",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHibernateProxyJsonConverter.yml\" sourcestartlinenumber=\"1\">JsonConverter for handling NHibernate proxies.<br>\nOnly serializes the object if it is initialized, i.e. the proxied object has been loaded.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NhQueryableInclude-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NhQueryableInclude-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NhQueryableInclude<T>",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NhQueryableInclude-1.yml\" sourcestartlinenumber=\"1\">Extends NhQueryable to add an Include function.</p>\n<p sourcefile=\"api/Breeze.Persistence.NH.NhQueryableInclude-1.yml\" sourcestartlinenumber=\"3\">Include supports the OData $expand implementation, which retrieves related entities by following navigation properties.\nNote that Include is not the same as Fetch.  Fetch performs a join operation, while Include causes as second query.\nFetch can be faster, but Include preserves the row count sematics of the original query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.TypeContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.TypeContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.TypeContractResolver",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.TypeContractResolver.yml\" sourcestartlinenumber=\"1\">Newtonsoft.Json ContractResolver that only includes certain types from a given assembly.\nAll other types from that assembly are excluded.  This allows control over which custom\ntypes are serialized.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NumericKeyGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NumericKeyGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NumericKeyGenerator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NumericKeyGenerator.yml\" sourcestartlinenumber=\"1\">Generates numeric primary keys from a single-row <code>NextId</code> table in the database.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.PersistenceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.PersistenceManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.PersistenceManager",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.PersistenceManager.yml\" sourcestartlinenumber=\"1\">Manages persistence for Breeze entity models.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.SaveOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.SaveOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.SaveOptions",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.SaveOptions.yml\" sourcestartlinenumber=\"1\">Options passed from client</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.SaveResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.SaveResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.SaveResult",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.SaveResult.yml\" sourcestartlinenumber=\"1\">Type returned to client as JSON.  Either Errors, or the other three, are set.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.SaveWorkState.EntityGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.SaveWorkState.EntityGroup.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.SaveWorkState.EntityGroup",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.SaveWorkState.EntityGroup.yml\" sourcestartlinenumber=\"1\">The entities of one type, as they arrived in the save bundle.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.SaveWorkState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.SaveWorkState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.SaveWorkState",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.SaveWorkState.yml\" sourcestartlinenumber=\"1\">Data structure and methods for processing entities during save</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.TempKeyInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.TempKeyInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.TempKeyInfo",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.TempKeyInfo.yml\" sourcestartlinenumber=\"1\">Instances of this are sent to KeyGenerator</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.TransactionSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.TransactionSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.TransactionSettings",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.TransactionSettings.yml\" sourcestartlinenumber=\"1\">How a save should be wrapped in a transaction: which kind, at what isolation level, and with what timeout.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.TransactionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.TransactionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.TransactionType",
+      "Summary": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/error-handling.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/error-handling.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/metadata.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/metadata.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/persistence-manager.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/persistence-manager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/querying.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/querying.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "guide/saving.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/saving.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "guide/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "guide/toc.html"
+        },
+        ".json": {
+          "relative_path": "guide/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

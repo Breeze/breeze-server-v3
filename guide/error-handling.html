@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Error handling | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Error handling | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/error-handling.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="error-handling">Error handling</h1>
+
+<p>When a save fails, the client needs more than a 500. It needs to know <strong>which entity</strong> failed and
+<strong>why</strong>, so it can attach the message to the right record rather than showing one dialog for the
+whole batch.</p>
+<p><a class="xref" href="../api/Breeze.AspNetCore.GlobalExceptionFilter.html">GlobalExceptionFilter</a> turns an exception into a response that carries that
+detail.</p>
+<h2 id="install-the-filter">Install the filter</h2>
+<pre><code class="lang-csharp">builder.Services.AddControllers().AddMvcOptions(o =&gt; {
+  o.Filters.Add(new GlobalExceptionFilter());
+});
+</code></pre>
+<p>Without it, an <a class="xref" href="../api/Breeze.Persistence.EntityErrorsException.html">EntityErrorsException</a> reaches the client as an
+unremarkable 500 and the per-entity detail is lost.</p>
+<h2 id="the-response">The response</h2>
+<p>An <strong>RFC 9457 problem details</strong> document, sent as <code>application/problem+json</code>:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;https://breeze.github.io/problems/entity-errors&quot;,
+  &quot;title&quot;: &quot;Forbidden&quot;,
+  &quot;status&quot;: 403,
+  &quot;detail&quot;: &quot;Validation errors&quot;,
+  &quot;entityErrors&quot;: [
+    {
+      &quot;ErrorName&quot;: &quot;RequiredValidator&quot;,
+      &quot;EntityTypeName&quot;: &quot;Customer:#Northwind.Models&quot;,
+      &quot;KeyValues&quot;: [&quot;729de505-ea6d-4cdf-89f6-0360ad37bde7&quot;],
+      &quot;PropertyName&quot;: &quot;CompanyName&quot;,
+      &quot;ErrorMessage&quot;: &quot;CompanyName is required&quot;
+    }
+  ]
+}
+</code></pre>
+<p><code>type</code>, <code>title</code>, <code>status</code> and <code>detail</code> are the RFC's own members. <code>entityErrors</code> is an extension
+member — RFC 9457 §3.2 permits them and requires consumers to ignore ones they do not recognize —
+because nothing standard can say <em>which instance of which type</em> failed, which is exactly what the
+client needs.</p>
+<p><code>KeyValues</code> is how the client finds the entity it already holds in its cache, and <code>PropertyName</code> is
+how the error lands on the right field. Omit <code>PropertyName</code> and the error attaches to the entity as
+a whole.</p>
+<h3 id="problem-types">Problem types</h3>
+<table>
+<thead>
+<tr>
+<th><code>type</code></th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.../problems/entity-errors</code></td>
+<td>per-entity errors are present</td>
+</tr>
+<tr>
+<td><code>.../problems/concurrency-conflict</code></td>
+<td>an optimistic concurrency conflict</td>
+</tr>
+<tr>
+<td><code>.../problems/server-error</code></td>
+<td>an unhandled 500</td>
+</tr>
+<tr>
+<td><code>about:blank</code></td>
+<td>the status code is the whole story</td>
+</tr>
+</tbody>
+</table>
+<p>A client matches on <code>type</code>, not on message text, which is what makes the distinction stable.</p>
+<h2 id="reporting-validation-errors">Reporting validation errors</h2>
+<p>Throw an <code>EntityErrorsException</code> with one <code>EntityError</code> per problem:</p>
+<pre><code class="lang-csharp">private static bool CheckFreight(EntityInfo info) {
+  if (info.Entity is Order order &amp;&amp; order.Freight &gt; 1000) {
+    throw new EntityErrorsException(&quot;Validation errors&quot;, new[] {
+      new EntityError {
+        ErrorName = &quot;FreightTooHigh&quot;,
+        EntityTypeName = typeof(Order).FullName,
+        KeyValues = new object[] { order.OrderID },
+        PropertyName = &quot;Freight&quot;,
+        ErrorMessage = &quot;Freight may not exceed 1000&quot;,
+      }
+    });
+  }
+  return true;
+}
+</code></pre>
+<p>It defaults to <strong>403 Forbidden</strong>; set <code>StatusCode</code> for something else. The
+<a href="saving.html#validation">DataAnnotationsValidator</a> throws this for you from your model's annotations.</p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>This is how you <em>reject</em> a change. Returning <code>false</code> from <code>BeforeSaveEntity</code> drops the entity
+from the save silently, and the client goes on believing it was saved.</p>
+</div>
+<h2 id="concurrency-conflicts">Concurrency conflicts</h2>
+<p><a class="xref" href="../api/Breeze.Persistence.ConcurrencyErrorsException.html">ConcurrencyErrorsException</a> is an <code>EntityErrorsException</code> that returns
+<strong>409 Conflict</strong> with its own problem type. A persistence manager raises it in place of whatever the
+ORM threw, so EF Core's <code>DbUpdateConcurrencyException</code> and NHibernate's <code>StaleObjectStateException</code>
+reach the client identically.</p>
+<p>It matters that this is distinguishable, because a duplicate key is <em>also</em> 409 and the recovery
+differs — re-read and merge for a conflict, change the data for a duplicate.</p>
+<p>It carries one error per conflicting row, so the client can mark exactly the records the user must
+look at:</p>
+<pre><code class="lang-csharp">var errors = conflicts.Select(c =&gt;
+  ConcurrencyErrorsException.CreateEntityError(c.TypeName, c.KeyValues));
+throw new ConcurrencyErrorsException(
+  ConcurrencyErrorsException.CreateMessage(conflicts.Count), errors);
+</code></pre><h2 id="database-errors">Database errors</h2>
+<p>A duplicate key or a foreign-key violation should be <strong>409 Conflict</strong>, not 500 — it is the client's
+data that is wrong, not the server. Recognizing one means reading a provider-specific error number,
+which the filter deliberately does not know how to do. Supply the mapping:</p>
+<pre><code class="lang-csharp">o.Filters.Add(new GlobalExceptionFilter {
+  StatusCodeForException = DbExceptionMappers.SqlServer
+});
+</code></pre>
+<p><a class="xref" href="../api/Breeze.AspNetCore.DbExceptionMappers.html#Breeze_AspNetCore_DbExceptionMappers_SqlServer_">SqlServer</a> recognizes SQL Server's 2627, 2601 and 547.
+For another database, write the equivalent — PostgreSQL uses SQLSTATE 23505 and 23503:</p>
+<pre><code class="lang-csharp">StatusCodeForException = ex =&gt; ex.GetBaseException() is PostgresException { SqlState: &quot;23505&quot; or &quot;23503&quot; }
+  ? HttpStatusCode.Conflict : null
+</code></pre>
+<p>Return <code>null</code> to accept the default of 500.</p>
+<h2 id="stack-traces">Stack traces</h2>
+<p>Off by default. Turn them on for development only:</p>
+<pre><code class="lang-csharp">BreezeConfig.Instance.IncludeStackTraceInErrors = true;   // NOT in production
+</code></pre><h2 id="older-clients">Older clients</h2>
+<p><a class="xref" href="../api/Breeze.Persistence.BreezeConfig.html#Breeze_Persistence_BreezeConfig_IncludeLegacyErrorMembers">IncludeLegacyErrorMembers</a> is <code>true</code> by default, which adds
+the pre-3.0 <code>Code</code>, <code>Message</code> and <code>EntityErrors</code> members alongside the RFC 9457 ones. A
+<code>breeze-client</code> 2.x application therefore reads the new document unchanged — <strong>no client upgrade
+has to be scheduled</strong> to adopt this server.</p>
+<p>Set it to <code>false</code> once every client is 3.0 or later, and the document becomes RFC 9457 and nothing
+else. Entity errors survive as the <code>entityErrors</code> extension member either way.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="saving.html">Saving</a></li>
+<li><a href="persistence-manager.html">The PersistenceManager</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

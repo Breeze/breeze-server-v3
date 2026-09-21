@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TransactionSettings | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TransactionSettings | Breeze Server for .NET ">
+      
+      <meta name="description" content="How a save should be wrapped in a transaction: which kind, at what isolation level, and with what timeout.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Persistence_TransactionSettings.md&amp;value=---%0Auid%3A%20Breeze.Persistence.TransactionSettings%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Persistence.TransactionSettings">
+
+
+
+  <h1 id="Breeze_Persistence_TransactionSettings" data-uid="Breeze.Persistence.TransactionSettings" class="text-break">
+Class TransactionSettings  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Persistence.html">Persistence</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Persistence.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>How a save should be wrapped in a transaction: which kind, at what isolation level, and with what timeout.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TransactionSettings</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TransactionSettings</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Breeze_Persistence_TransactionSettings_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>The transaction spans BeforeSaveEntities, the save itself and AfterSaveEntities, so all of
+them commit or roll back together. Settings come from <a class="xref" href="Breeze.Persistence.TransactionSettings.html#Breeze_Persistence_TransactionSettings_Default">Default</a> unless a save
+passes its own.</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Breeze_Persistence_TransactionSettings__ctor_" data-uid="Breeze.Persistence.TransactionSettings.#ctor*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings__ctor" data-uid="Breeze.Persistence.TransactionSettings.#ctor">
+  TransactionSettings()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a TransactionSettings object using default settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransactionSettings()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings__ctor_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Defaults the <a class="xref" href="Breeze.Persistence.TransactionSettings.html#Breeze_Persistence_TransactionSettings_IsolationLevel">IsolationLevel</a> to ReadCommitted,
+the <a class="xref" href="Breeze.Persistence.TransactionSettings.html#Breeze_Persistence_TransactionSettings_Timeout">Timeout</a> to TransactionManager.DefaultTimeout (which is usually 1 minute),
+and <a class="xref" href="Breeze.Persistence.TransactionSettings.html#Breeze_Persistence_TransactionSettings_TransactionType">TransactionType</a> to TransactionType.None (which means the other settings have no effect).<br>
+These settings are not Breeze requirements and can be changed using the appropriate constructor or setter.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings__ctor_" data-uid="Breeze.Persistence.TransactionSettings.#ctor*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings__ctor_System_Transactions_IsolationLevel_System_TimeSpan_Breeze_Persistence_TransactionType_" data-uid="Breeze.Persistence.TransactionSettings.#ctor(System.Transactions.IsolationLevel,System.TimeSpan,Breeze.Persistence.TransactionType)">
+  TransactionSettings(IsolationLevel, TimeSpan, TransactionType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create a TransactionSettings object with the specified settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransactionSettings(IsolationLevel isolationLevel, TimeSpan timeout, TransactionType transactionType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isolationLevel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.transactions.isolationlevel">IsolationLevel</a></dt>
+    <dd></dd>
+    <dt><code>timeout</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+    <dt><code>transactionType</code> <a class="xref" href="Breeze.Persistence.TransactionType.html">TransactionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings__ctor_System_Transactions_IsolationLevel_System_TimeSpan_Breeze_Persistence_TransactionType__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Note that IsolationLevel and Timeout have no affect if TransactionType is None.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Persistence_TransactionSettings_Default_" data-uid="Breeze.Persistence.TransactionSettings.Default*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_Default" data-uid="Breeze.Persistence.TransactionSettings.Default">
+  Default
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Default settings for all saves.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[AllowNull]
+public static TransactionSettings Default { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.TransactionSettings.html">TransactionSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings_Default_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The <b>Default</b> provides default transaction settings for all SaveChanges actions.<br>
+Override BreezeConfig to return a different TransactionSettings value.
+You can supply settings for a particular save with the TransactionSettings passed in the SaveChanges call.
+Setting it to null restores the default settings.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_IsolationLevel_" data-uid="Breeze.Persistence.TransactionSettings.IsolationLevel*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_IsolationLevel" data-uid="Breeze.Persistence.TransactionSettings.IsolationLevel">
+  IsolationLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the transaction locking behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IsolationLevel IsolationLevel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.transactions.isolationlevel">IsolationLevel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings_IsolationLevel_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><pre><code>Only applicable if &lt;xref href=&quot;Breeze.Persistence.TransactionSettings.TransactionType&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; is not 
+</code></pre>
+<pre><code class="lang-csharp">None</code></pre>
+<p>.  The default IsolationLevel is ReadCommitted.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_IsolationLevelAs_" data-uid="Breeze.Persistence.TransactionSettings.IsolationLevelAs*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_IsolationLevelAs" data-uid="Breeze.Persistence.TransactionSettings.IsolationLevelAs">
+  IsolationLevelAs
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the transaction locking behavior as a System.Data.IsolationLevel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IsolationLevel IsolationLevelAs { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.isolationlevel">IsolationLevel</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings_IsolationLevelAs_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><pre><code>Only applicable if &lt;xref href=&quot;Breeze.Persistence.TransactionSettings.TransactionType&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; is not 
+</code></pre>
+<pre><code class="lang-csharp">None</code></pre>
+<p>.  The default IsolationLevel is ReadCommitted.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_Timeout_" data-uid="Breeze.Persistence.TransactionSettings.Timeout*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_Timeout" data-uid="Breeze.Persistence.TransactionSettings.Timeout">
+  Timeout
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the timeout period for the TransactionScope transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan Timeout { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_TransactionSettings_Timeout_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><pre><code>Only applicable if &lt;xref href=&quot;Breeze.Persistence.TransactionSettings.TransactionType&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; is 
+</code></pre>
+<pre><code class="lang-csharp">TransactionScope</code></pre>
+<p>.
+The default Timeout is TransactionManager.DefaultTimeout which is usually 1 minute.
+See <a href="http://stackoverflow.com/questions/6402031/transactionscope-maximumtimeout">http://stackoverflow.com/questions/6402031/transactionscope-maximumtimeout</a></p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_TransactionType_" data-uid="Breeze.Persistence.TransactionSettings.TransactionType*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_TransactionType" data-uid="Breeze.Persistence.TransactionSettings.TransactionType">
+  TransactionType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>What type of transaction to use when performing saves.
+The transaction wraps the BeforeSaveEntity/ies, SaveChangesCore, and AfterSaveEntities methods
+so all work can be commited or rolled back together.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransactionType TransactionType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.TransactionType.html">TransactionType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Persistence_TransactionSettings_Equals_" data-uid="Breeze.Persistence.TransactionSettings.Equals*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_Equals_System_Object_" data-uid="Breeze.Persistence.TransactionSettings.Equals(System.Object)">
+  Equals(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>See <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Equals(object)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_GetHashCode_" data-uid="Breeze.Persistence.TransactionSettings.GetHashCode*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_GetHashCode" data-uid="Breeze.Persistence.TransactionSettings.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>See <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">GetHashCode()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A hash code for the current <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_TransactionSettings_ToTransactionOptions_" data-uid="Breeze.Persistence.TransactionSettings.ToTransactionOptions*"></a>
+
+  <h3 id="Breeze_Persistence_TransactionSettings_ToTransactionOptions" data-uid="Breeze.Persistence.TransactionSettings.ToTransactionOptions">
+  ToTransactionOptions()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/TransactionSettings.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts the TransactionSettings to a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.transactions.transactionoptions">TransactionOptions</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransactionOptions ToTransactionOptions()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.transactions.transactionoptions">TransactionOptions</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

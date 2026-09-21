@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>The PersistenceManager | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="The PersistenceManager | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/persistence-manager.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="the-persistencemanager">The PersistenceManager</h1>
+
+<p><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html">PersistenceManager</a> is the server side of Breeze. It does two things a
+plain <code>DbContext</code> or NHibernate <code>ISession</code> does not:</p>
+<ol>
+<li><strong>Describes the model</strong> — turns your mapping into the JSON metadata document the client builds
+its entity types from.</li>
+<li><strong>Applies a save bundle</strong> — takes the JSON a client sends, turns it back into entities in the
+right states, saves them in one transaction, and reports back the server-assigned keys.</li>
+</ol>
+<p>It is abstract. You use the subclass for your ORM.</p>
+<table>
+<thead>
+<tr>
+<th>ORM</th>
+<th>Class</th>
+<th>Constructed from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entity Framework Core</td>
+<td><a class="xref" href="../api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html">EFPersistenceManager&lt;T&gt;</a></td>
+<td>your <code>DbContext</code></td>
+</tr>
+<tr>
+<td>NHibernate</td>
+<td><a class="xref" href="../api/Breeze.Persistence.NH.NHPersistenceManager.html">NHPersistenceManager</a></td>
+<td>an <code>ISession</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="subclassing-it">Subclassing it</h2>
+<p>Write one per context. Even with no members it is worth having, because interceptors and metadata
+overrides go here rather than in the controller:</p>
+<pre><code class="lang-csharp">using Breeze.Persistence.EFCore;
+
+public class NorthwindPersistenceManager : EFPersistenceManager&lt;NorthwindContext&gt; {
+  public NorthwindPersistenceManager(NorthwindContext context) : base(context) { }
+}
+</code></pre>
+<p><a class="xref" href="../api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html#Breeze_Persistence_EFCore_EFPersistenceManager_1_Context">Context</a> gives the typed <code>DbContext</code> back,
+which is what query actions return sets from:</p>
+<pre><code class="lang-csharp">[HttpGet]
+public IQueryable&lt;Customer&gt; Customers() =&gt; _pm.Context.Customers;
+</code></pre><h2 id="lifetime">Lifetime</h2>
+<p><strong>Create one per request</strong>, in the controller's constructor, from a <code>DbContext</code> that DI has already
+scoped to the request:</p>
+<pre><code class="lang-csharp">public PersistenceManagerGuideController(NorthwindContext context) {
+  _pm = new NorthwindPersistenceManager(context);
+}
+</code></pre>
+<p>It wraps a <code>DbContext</code>, so it inherits the <code>DbContext</code>'s rules: not thread-safe, and not meant to
+outlive the request. Registering one as a singleton shares one change-tracker between every
+concurrent request.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>A <code>PersistenceManager</code> is built for <strong>one save</strong>. It keeps the state of the save in progress, and
+a second <code>SaveChanges</code> on the same instance rebuilds that state rather than adding to it. This is
+the ordinary case — one instance, one request, one save — but it is worth knowing before you
+reach for a longer-lived one.</p>
+</div>
+<p>NHibernate is the same shape with an <code>ISession</code> in place of the <code>DbContext</code>; the test server builds
+an <code>ISessionFactory</code> once as a singleton and opens a session per request from it.</p>
+<h2 id="what-you-get-without-writing-anything">What you get without writing anything</h2>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_Metadata">Metadata()</a></td>
+<td>the JSON metadata document, built from your mapping</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChangesAsync_">SaveChangesAsync</a></td>
+<td>applies a save bundle in a transaction, returns a <a class="xref" href="../api/Breeze.Persistence.SaveResult.html">SaveResult</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChanges_">SaveChanges</a></td>
+<td>the synchronous form</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveOptions">SaveOptions</a></td>
+<td>what the client sent alongside the changes, including its <code>Tag</code></td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_KeyGenerator">KeyGenerator</a></td>
+<td>how temporary client keys become real ones</td>
+</tr>
+</tbody>
+</table>
+<h2 id="two-ways-to-intercept-a-save">Two ways to intercept a save</h2>
+<p>Every hook exists both as a <strong>delegate property</strong>, set per request, and as a <strong>virtual method</strong>,
+overridden once in your subclass. They do the same work; pick by how widely the rule applies.</p>
+<pre><code class="lang-csharp">[HttpPost]
+public Task&lt;SaveResult&gt; SaveWithAudit([FromBody] JObject saveBundle) {
+  _pm.BeforeSaveEntityDelegate = SetAuditFields;
+  return _pm.SaveChangesAsync(saveBundle);
+}
+</code></pre>
+<p>Once, in the subclass — a rule for every save through this manager:</p>
+<pre><code class="lang-csharp">public class AuditedPersistenceManager : EFPersistenceManager&lt;NorthwindContext&gt; {
+  public AuditedPersistenceManager(NorthwindContext context) : base(context) { }
+
+  protected override bool BeforeSaveEntity(EntityInfo entityInfo) {
+    // return false to drop this entity from the save
+    return true;
+  }
+}
+</code></pre>
+<p><a href="saving.html">Saving</a> covers what each hook receives and when it runs.</p>
+<h2 id="generated-keys">Generated keys</h2>
+<p>When a client adds an entity it invents a temporary key, and the server has to tell it what the
+real one turned out to be. For an identity column the ORM already knows, and Breeze reports the
+mapping back with no help from you — see <a href="saving.html#key-mappings">key mappings</a>.</p>
+<p>For a key the database does <em>not</em> generate, set a
+<a class="xref" href="../api/Breeze.Persistence.IKeyGenerator.html">IKeyGenerator</a>. <a class="xref" href="../api/Breeze.Persistence.NumericKeyGenerator.html">NumericKeyGenerator</a> is the one
+that ships, which draws from a <code>NextId</code> table:</p>
+<pre><code class="lang-csharp">_pm.KeyGenerator = new NumericKeyGenerator((DbConnection)_pm.GetDbConnection());
+</code></pre><h2 id="metadata-from-somewhere-else">Metadata from somewhere else</h2>
+<p><code>EFPersistenceManager&lt;T&gt;</code> builds metadata from the EF model. To supply your own instead — a
+hand-written document, or one for types EF does not map — override
+<code>BuildAltJsonMetadata()</code>; returning <code>null</code>, the default, keeps the generated document. See
+<a href="metadata.html#supplying-your-own">Metadata</a>.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

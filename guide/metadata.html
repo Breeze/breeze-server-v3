@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Metadata | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Metadata | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/metadata.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="metadata">Metadata</h1>
+
+<p>A Breeze client does not know your model until the server describes it. That description is the
+<strong>metadata document</strong>: entity types, their properties and data types, keys, and the navigation
+properties that join them. The client builds its <code>MetadataStore</code> from it, and everything else —
+typed queries, change tracking, validation, relationship fixup — depends on it.</p>
+<pre><code class="lang-csharp">[HttpGet]
+public IActionResult Metadata() =&gt; Ok(_pm.Metadata());
+</code></pre>
+<p><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_Metadata">Metadata()</a> returns it as a JSON string, generated from
+your ORM mapping. You do not write it by hand.</p>
+<h2 id="what-is-in-it">What is in it</h2>
+<p><a class="xref" href="../api/Breeze.Persistence.BreezeMetadata.html">BreezeMetadata</a> is the shape:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structuralTypes</code></td>
+<td>one <a class="xref" href="../api/Breeze.Persistence.MetaType.html">MetaType</a> per entity and complex type</td>
+</tr>
+<tr>
+<td><code>enumTypes</code></td>
+<td>the C# enums a property can hold</td>
+</tr>
+<tr>
+<td><code>namingConvention</code></td>
+<td>which name translation the client should use, if the server wants to choose</td>
+</tr>
+<tr>
+<td><code>metadataVersion</code></td>
+<td>the document's own version</td>
+</tr>
+</tbody>
+</table>
+<p>Each <code>MetaType</code> carries its <code>shortName</code> and <code>namespace</code>, its <code>baseTypeName</code> for an inheritance
+hierarchy, its <code>defaultResourceName</code> — the endpoint a query for that type goes to — and its
+<code>autoGeneratedKeyType</code>, plus its data and navigation properties.</p>
+<p>A data property carries the things a client needs in order to validate before it ever reaches the
+server: <code>dataType</code>, <code>isPartOfKey</code>, <code>isNullable</code>, <code>maxLength</code>, <code>defaultValue</code>, <code>concurrencyMode</code>, and
+any <code>validators</code>.</p>
+<h2 id="how-it-is-generated">How it is generated</h2>
+<p>For EF Core, from the <code>DbContext</code>'s model — the same mapping EF itself uses, so it already reflects
+your fluent configuration and data annotations. <code>autoGeneratedKeyType</code> becomes <code>Identity</code> when the
+key is an identity column and <code>None</code> otherwise. For NHibernate it comes from the NHibernate mapping.</p>
+<p>Nothing is cached across requests. A <code>PersistenceManager</code> builds the document the first time
+<code>Metadata()</code> is called on it and holds it for that instance's lifetime — and since the manager is
+per request, that means once per request that asks for it. Clients fetch metadata once at startup,
+so this is rarely worth attention; if it becomes so, cache the string yourself.</p>
+<h2 id="naming">Naming</h2>
+<p><code>CompanyName</code> on the server conventionally becomes <code>companyName</code> on the client. That translation is
+the <strong>client's</strong> job, done by its <code>NamingConvention</code>, which defaults to camelCase. The server sends
+its own names, and the metadata's <code>nameOnServer</code> for each property is what the client translates
+from.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Do not also turn on camel casing in the JSON serializer. The second argument of
+<a class="xref" href="../api/Breeze.Core.JsonSerializationFns.html#Breeze_Core_JsonSerializationFns_UpdateWithDefaults_">UpdateWithDefaults</a> defaults to <code>false</code>; leave it there.
+Setting it means the names are camel-cased on the wire <em>and</em> translated again on arrival, and
+properties stop matching the metadata.</p>
+</div>
+<p>If your server genuinely sends the names the client should use, the fix belongs on the client —
+<code>NamingConvention.none</code> — not here.</p>
+<h2 id="enums">Enums</h2>
+<p>A property whose CLR type is an enum is described by name, and the enum itself appears in
+<code>enumTypes</code> with its values. Whether the <em>values</em> travel as strings or integers is a serializer
+setting:</p>
+<pre><code class="lang-csharp">BreezeConfig.Instance.UseIntEnums = false;   // the default: strings
+</code></pre>
+<p>It has to agree with what the client expects, so change it before anything serializes — at startup,
+alongside the rest of your JSON configuration.</p>
+<h2 id="supplying-your-own">Supplying your own</h2>
+<p>Two reasons to override the generated document: your model includes types the ORM does not map, or
+you want to add information of your own for the client to read.</p>
+<p><code>EFPersistenceManager&lt;T&gt;</code> calls <code>BuildAltJsonMetadata()</code>, which returns <code>null</code> by default. Return a
+JSON string and it is merged into the document under <code>altMetadata</code>, <strong>alongside</strong> the generated
+metadata rather than in place of it:</p>
+<pre><code class="lang-csharp">public class AltMetadataPersistenceManager : EFPersistenceManager&lt;NorthwindContext&gt; {
+  public AltMetadataPersistenceManager(NorthwindContext context) : base(context) { }
+
+  protected override string? BuildAltJsonMetadata() {
+    return &quot;{ \&quot;uiHints\&quot;: { \&quot;Customer\&quot;: { \&quot;icon\&quot;: \&quot;person\&quot; } } }&quot;;
+  }
+}
+</code></pre>
+<p>To replace the document outright, override <code>BuildJsonMetadata()</code> instead and return whatever you
+like — including a document read from a file, which is how a model with no ORM behind it is
+described.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Hand-written metadata is a client-side option too: a client can be given its metadata directly
+and never call this endpoint. That is the usual route for a non-Breeze server.</p>
+</div>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="persistence-manager.html">The PersistenceManager</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

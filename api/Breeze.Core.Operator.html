@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Operator | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Operator | Breeze Server for .NET ">
+      
+      <meta name="description" content="An operator that may appear in a query - a comparison, a boolean connective, or a collection quantifier - identified by the name a client sends for it.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Core_Operator.md&amp;value=---%0Auid%3A%20Breeze.Core.Operator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Core.Operator">
+
+
+
+  <h1 id="Breeze_Core_Operator" data-uid="Breeze.Core.Operator" class="text-break">
+Class Operator  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>An operator that may appear in a query - a comparison, a boolean connective, or a
+collection quantifier - identified by the name a client sends for it.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Operator</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Operator</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Breeze_Core_Operator_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>Every operator is a singleton declared as one of the static fields below, and
+constructing one registers it so that <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_FromString_System_String_">FromString(string)</a> can find it. The names
+are part of the wire format and cannot be changed without breaking clients.</p>
+</div>
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Breeze_Core_Operator__ctor_" data-uid="Breeze.Core.Operator.#ctor*"></a>
+
+  <h3 id="Breeze_Core_Operator__ctor_System_String_Breeze_Core_OperatorType_" data-uid="Breeze.Core.Operator.#ctor(System.String,Breeze.Core.OperatorType)">
+  Operator(string, OperatorType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create an operator and register it for lookup by <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_FromString_System_String_">FromString(string)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Operator(string aliases, OperatorType opType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aliases</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Comma-separated names for the operator; the first becomes its <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_Name">Name</a>.</p>
+</dd>
+    <dt><code>opType</code> <a class="xref" href="Breeze.Core.OperatorType.html">OperatorType</a></dt>
+    <dd><p>Which kind of predicate the operator builds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Breeze_Core_Operator_All" data-uid="Breeze.Core.Operator.All">
+  All
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True when every item of a collection satisfies the inner predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator All</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_And" data-uid="Breeze.Core.Operator.And">
+  And
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Boolean conjunction of two or more predicates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator And</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_Any" data-uid="Breeze.Core.Operator.Any">
+  Any
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True when at least one item of a collection satisfies the inner predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator Any</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_Contains" data-uid="Breeze.Core.Operator.Contains">
+  Contains
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Substring test, compiled to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string.contains#system-string-contains(system-string)">Contains(string)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator Contains</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_EndsWith" data-uid="Breeze.Core.Operator.EndsWith">
+  EndsWith
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>String suffix test, compiled to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string.endswith#system-string-endswith(system-string)">EndsWith(string)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator EndsWith</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_Equals" data-uid="Breeze.Core.Operator.Equals">
+  Equals
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Equality.  Declared <code>new</code> because it hides the inherited <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Equals(object)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator Equals</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_GreaterThan" data-uid="Breeze.Core.Operator.GreaterThan">
+  GreaterThan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ordered comparison, strictly greater than.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator GreaterThan</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_GreaterThanOrEqual" data-uid="Breeze.Core.Operator.GreaterThanOrEqual">
+  GreaterThanOrEqual
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ordered comparison, greater than or equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator GreaterThanOrEqual</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_In" data-uid="Breeze.Core.Operator.In">
+  In
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Set membership.  Its right-hand argument must be an array, and compiles to List&lt;T&gt;.Contains.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator In</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_LessThan" data-uid="Breeze.Core.Operator.LessThan">
+  LessThan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ordered comparison, strictly less than.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator LessThan</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_LessThanOrEqual" data-uid="Breeze.Core.Operator.LessThanOrEqual">
+  LessThanOrEqual
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ordered comparison, less than or equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator LessThanOrEqual</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_Not" data-uid="Breeze.Core.Operator.Not">
+  Not
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Boolean negation of a single predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator Not</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_NotEquals" data-uid="Breeze.Core.Operator.NotEquals">
+  NotEquals
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inequality.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator NotEquals</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_Or" data-uid="Breeze.Core.Operator.Or">
+  Or
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Boolean disjunction of two or more predicates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator Or</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator_StartsWith" data-uid="Breeze.Core.Operator.StartsWith">
+  StartsWith
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>String prefix test, compiled to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string.startswith#system-string-startswith(system-string)">StartsWith(string)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BinaryOperator StartsWith</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.BinaryOperator.html">BinaryOperator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator__aliases" data-uid="Breeze.Core.Operator._aliases">
+  _aliases
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The names this operator was declared with; the first of them is its <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_Name">Name</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; _aliases</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Breeze_Core_Operator__opMap" data-uid="Breeze.Core.Operator._opMap">
+  _opMap
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Every registered operator, keyed by its lower-cased <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_Name">Name</a>.  Prefer <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_FromString_System_String_">FromString(string)</a> over reaching into this.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Dictionary&lt;string, Operator&gt; _opMap</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="Breeze.Core.Operator.html">Operator</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Core_Operator_Name_" data-uid="Breeze.Core.Operator.Name*"></a>
+
+  <h3 id="Breeze_Core_Operator_Name" data-uid="Breeze.Core.Operator.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The operator's primary name - the first of the aliases it was declared with, e.g. &quot;eq&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_Operator_OpType_" data-uid="Breeze.Core.Operator.OpType*"></a>
+
+  <h3 id="Breeze_Core_Operator_OpType" data-uid="Breeze.Core.Operator.OpType">
+  OpType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Which kind of predicate this operator builds, and so how its operands are read.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OperatorType OpType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.OperatorType.html">OperatorType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Core_Operator_FromString_" data-uid="Breeze.Core.Operator.FromString*"></a>
+
+  <h3 id="Breeze_Core_Operator_FromString_System_String_" data-uid="Breeze.Core.Operator.FromString(System.String)">
+  FromString(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/Query/Operator.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Look up an operator by the name a client sent.  Matching is case-insensitive and is done on <a class="xref" href="Breeze.Core.Operator.html#Breeze_Core_Operator_Name">Name</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Operator? FromString(string op)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>op</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The operator name, e.g. &quot;eq&quot; or &quot;startswith&quot;.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Core.Operator.html">Operator</a></dt>
+    <dd><p>The operator, or null if no operator is registered under that name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

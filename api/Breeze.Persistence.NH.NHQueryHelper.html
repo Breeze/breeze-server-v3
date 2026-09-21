@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class NHQueryHelper | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class NHQueryHelper | Breeze Server for .NET ">
+      
+      <meta name="description" content="Query helpers for NHibernate: an Include operator, and the hooks Breeze calls around query execution.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Persistence_NH_NHQueryHelper.md&amp;value=---%0Auid%3A%20Breeze.Persistence.NH.NHQueryHelper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Persistence.NH.NHQueryHelper">
+
+
+
+  <h1 id="Breeze_Persistence_NH_NHQueryHelper" data-uid="Breeze.Persistence.NH.NHQueryHelper" class="text-break">
+Class NHQueryHelper  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence.NH/NHQueryHelper.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Persistence.html">Persistence</a>.<a class="xref" href="Breeze.Persistence.NH.html">NH</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Persistence.NH.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Query helpers for NHibernate: an Include operator, and the hooks Breeze calls around query execution.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class NHQueryHelper</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">NHQueryHelper</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Persistence_NH_NHQueryHelper_Include_" data-uid="Breeze.Persistence.NH.NHQueryHelper.Include*"></a>
+
+  <h3 id="Breeze_Persistence_NH_NHQueryHelper_Include__1_System_Linq_IQueryable___0__System_String_" data-uid="Breeze.Persistence.NH.NHQueryHelper.Include``1(System.Linq.IQueryable{``0},System.String)">
+  Include&lt;TEntity&gt;(IQueryable&lt;TEntity&gt;, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence.NH/NHQueryHelper.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Record a navigation path to be loaded with the results, in the manner of Entity Framework's Include.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IQueryable&lt;TEntity&gt; Include&lt;TEntity&gt;(this IQueryable&lt;TEntity&gt; source, string navigationPropertyPath) where TEntity : class</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1">IQueryable</a>&lt;TEntity&gt;</dt>
+    <dd><p>The query.</p>
+</dd>
+    <dt><code>navigationPropertyPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The navigation path to load, e.g. &quot;Orders&quot;.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1">IQueryable</a>&lt;TEntity&gt;</dt>
+    <dd><p>A query carrying the recorded path; the original if its provider is not an NHibernate one.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEntity</code></dt>
+    <dd><p>The element type of the query.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_NH_NHQueryHelper_Include__1_System_Linq_IQueryable___0__System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The path is not added to the expression tree - NHibernate's LINQ parser would reject it -
+but kept on the query provider and applied after the query runs.  Unlike Fetch, this issues
+a second query rather than a join, which keeps the row count of the original query intact.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_NH_NHQueryHelper_NeedsExecution_" data-uid="Breeze.Persistence.NH.NHQueryHelper.NeedsExecution*"></a>
+
+  <h3 id="Breeze_Persistence_NH_NHQueryHelper_NeedsExecution_System_String_System_Linq_IQueryable_" data-uid="Breeze.Persistence.NH.NHQueryHelper.NeedsExecution(System.String,System.Linq.IQueryable)">
+  NeedsExecution(string?, IQueryable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence.NH/NHQueryHelper.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether Breeze should execute the queryable itself, rather than leave it to the framework.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool NeedsExecution(string? queryString, IQueryable? queryable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>queryString</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The Breeze query string, or null if the request carried none.</p>
+</dd>
+    <dt><code>queryable</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable">IQueryable</a></dt>
+    <dd><p>The queryable, or null if the action did not return one.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True when there is a queryable and either a query string or an NHibernate provider to run it with.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_NH_NHQueryHelper_PostExecuteQuery_" data-uid="Breeze.Persistence.NH.NHQueryHelper.PostExecuteQuery*"></a>
+
+  <h3 id="Breeze_Persistence_NH_NHQueryHelper_PostExecuteQuery_Breeze_Core_EntityQuery_System_Linq_IQueryable_System_Collections_IList_" data-uid="Breeze.Persistence.NH.NHQueryHelper.PostExecuteQuery(Breeze.Core.EntityQuery,System.Linq.IQueryable,System.Collections.IList)">
+  PostExecuteQuery(EntityQuery, IQueryable, IList)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence.NH/NHQueryHelper.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>After a query runs, load the expanded properties and close the session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IList PostExecuteQuery(this EntityQuery eq, IQueryable queryable, IList result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eq</code> <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a></dt>
+    <dd><p>The query that was executed.</p>
+</dd>
+    <dt><code>queryable</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable">IQueryable</a></dt>
+    <dd><p>The queryable it was executed against.</p>
+</dd>
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">IList</a></dt>
+    <dd><p>The rows returned.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">IList</a></dt>
+    <dd><p>The same rows, with their expanded properties loaded.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_NH_NHQueryHelper_PostExecuteQuery_Breeze_Core_EntityQuery_System_Linq_IQueryable_System_Collections_IList__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Lazy proxies must be resolved before the session closes, or serializing the results would
+fail. Paths come from both the query's expand clause and any <a class="xref" href="Breeze.Persistence.NH.NHQueryHelper.html#Breeze_Persistence_NH_NHQueryHelper_Include__1_System_Linq_IQueryable___0__System_String_">Include&lt;TEntity&gt;(IQueryable&lt;TEntity&gt;, string)</a> calls.</p>
+</div>
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

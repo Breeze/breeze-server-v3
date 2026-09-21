@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PersistenceManager | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PersistenceManager | Breeze Server for .NET ">
+      
+      <meta name="description" content="Manages persistence for Breeze entity models.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Persistence_PersistenceManager.md&amp;value=---%0Auid%3A%20Breeze.Persistence.PersistenceManager%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Persistence.PersistenceManager">
+
+
+
+  <h1 id="Breeze_Persistence_PersistenceManager" data-uid="Breeze.Persistence.PersistenceManager" class="text-break">
+Class PersistenceManager  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Persistence.html">Persistence</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Persistence.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Manages persistence for Breeze entity models.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PersistenceManager</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PersistenceManager</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Breeze.Persistence.EFCore.EFPersistenceManager-1.html">EFPersistenceManager&lt;T&gt;</a></div>
+      <div><a class="xref" href="Breeze.Persistence.NH.NHPersistenceManager.html">NHPersistenceManager</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Breeze_Persistence_PersistenceManager_KeyGeneratorType" data-uid="Breeze.Persistence.PersistenceManager.KeyGeneratorType">
+  KeyGeneratorType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L426"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get an IKeyGenerator implementation from loaded assemblies</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static Lazy&lt;Type&gt; KeyGeneratorType</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.lazy-1">Lazy</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesAsyncDelegate_" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesAsyncDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesAsyncDelegate" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesAsyncDelegate">
+  AfterSaveEntitiesAsyncDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L277"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called after all entities are saved using SaveChangesAsync.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, List&lt;KeyMapping&gt;, CancellationToken, Task&gt;? AfterSaveEntitiesAsyncDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.KeyMapping.html">KeyMapping</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesDelegate_" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesDelegate" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesDelegate">
+  AfterSaveEntitiesDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called after all entities are saved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Action&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, List&lt;KeyMapping&gt;&gt;? AfterSaveEntitiesDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.KeyMapping.html">KeyMapping</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesAsyncDelegate_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesAsyncDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesAsyncDelegate" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesAsyncDelegate">
+  BeforeSaveEntitiesAsyncDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called before entities are saved using SaveChangesAsync.  Entities in the dictionary can be added, removed, or changed before saving.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, CancellationToken, Task&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;&gt;&gt;? BeforeSaveEntitiesAsyncDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesDelegate_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesDelegate" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesDelegate">
+  BeforeSaveEntitiesDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called before entities are saved.  Entities in the dictionary can be added, removed, or changed before saving.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;&gt;? BeforeSaveEntitiesDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityAsyncDelegate_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityAsyncDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityAsyncDelegate" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityAsyncDelegate">
+  BeforeSaveEntityAsyncDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L269"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called before each entity is saved using SaveChangesAsync.  If the function returns false, the entity will not be saved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;EntityInfo, CancellationToken, Task&lt;bool&gt;&gt;? BeforeSaveEntityAsyncDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityDelegate_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityDelegate*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityDelegate" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityDelegate">
+  BeforeSaveEntityDelegate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>If assigned, this function is called before each entity is saved.  If the function returns false, the entity will not be saved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Func&lt;EntityInfo, bool&gt;? BeforeSaveEntityDelegate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_JsonSerializer_" data-uid="Breeze.Persistence.PersistenceManager.JsonSerializer*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_JsonSerializer" data-uid="Breeze.Persistence.PersistenceManager.JsonSerializer">
+  JsonSerializer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L441"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The configured serializer for reading the save payload</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected JsonSerializer JsonSerializer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JsonSerializer</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_KeyGenerator_" data-uid="Breeze.Persistence.PersistenceManager.KeyGenerator*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_KeyGenerator" data-uid="Breeze.Persistence.PersistenceManager.KeyGenerator">
+  KeyGenerator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates primary key values for new entities.  Null until one is assigned or first needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IKeyGenerator? KeyGenerator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.IKeyGenerator.html">IKeyGenerator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveOptions_" data-uid="Breeze.Persistence.PersistenceManager.SaveOptions*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveOptions" data-uid="Breeze.Persistence.PersistenceManager.SaveOptions">
+  SaveOptions
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Options for the current save operation; null before a save starts</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SaveOptions? SaveOptions { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.SaveOptions.html">SaveOptions</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveWorkState_" data-uid="Breeze.Persistence.PersistenceManager.SaveWorkState*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveWorkState" data-uid="Breeze.Persistence.PersistenceManager.SaveWorkState">
+  SaveWorkState
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L438"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The SaveWorkState representing the save in progress; null before the first save</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SaveWorkState? SaveWorkState { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.SaveWorkState.html">SaveWorkState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Persistence_PersistenceManager_AfterSaveEntities_" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntities*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_AfterSaveEntities_System_Collections_Generic_Dictionary_System_Type_System_Collections_Generic_List_Breeze_Persistence_EntityInfo___System_Collections_Generic_List_Breeze_Persistence_KeyMapping__" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntities(System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.List{Breeze.Persistence.EntityInfo}},System.Collections.Generic.List{Breeze.Persistence.KeyMapping})">
+  AfterSaveEntities(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, List&lt;KeyMapping&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L348"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after the entities have been saved, and all the temporary keys have been replaced by real keys.
+The base implementation calls AfterSaveEntitiesDelegate, or does nothing if AfterSaveEntitiesDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AfterSaveEntities(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap, List&lt;KeyMapping&gt; keyMappings)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;</dt>
+    <dd><p>The same saveMap that was returned from BeforeSaveEntities</p>
+</dd>
+    <dt><code>keyMappings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.KeyMapping.html">KeyMapping</a>&gt;</dt>
+    <dd><p>The mapping of temporary keys to real keys</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesAsync_" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_AfterSaveEntitiesAsync_System_Collections_Generic_Dictionary_System_Type_System_Collections_Generic_List_Breeze_Persistence_EntityInfo___System_Collections_Generic_List_Breeze_Persistence_KeyMapping__System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.AfterSaveEntitiesAsync(System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.List{Breeze.Persistence.EntityInfo}},System.Collections.Generic.List{Breeze.Persistence.KeyMapping},System.Threading.CancellationToken)">
+  AfterSaveEntitiesAsync(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, List&lt;KeyMapping&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after the entities have been saved using SaveChangesAsync, and all the temporary keys have been replaced by real keys.
+The base implementation calls AfterSaveEntitiesAsyncDelegate, or does nothing if AfterSaveEntitiesAsyncDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task AfterSaveEntitiesAsync(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap, List&lt;KeyMapping&gt; keyMappings, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;</dt>
+    <dd><p>The same saveMap that was returned from BeforeSaveEntities</p>
+</dd>
+    <dt><code>keyMappings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.KeyMapping.html">KeyMapping</a>&gt;</dt>
+    <dd><p>The mapping of temporary keys to real keys</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntities_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntities*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntities_System_Collections_Generic_Dictionary_System_Type_System_Collections_Generic_List_Breeze_Persistence_EntityInfo___" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntities(System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.List{Breeze.Persistence.EntityInfo}})">
+  BeforeSaveEntities(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L317"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after BeforeSaveEntity, and before saving the entities to the persistence layer.
+Allows adding, changing, and removing entities prior to save.
+The base implementation returns the result of BeforeSaveEntitiesDelegate, or the unchanged
+saveMap if BeforeSaveEntitiesDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; BeforeSaveEntities(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;</dt>
+    <dd><p>A List of EntityInfo for each Type</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;</dt>
+    <dd><p>The EntityInfo for each entity that should be saved</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesAsync_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesAsync_System_Collections_Generic_Dictionary_System_Type_System_Collections_Generic_List_Breeze_Persistence_EntityInfo___System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntitiesAsync(System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.List{Breeze.Persistence.EntityInfo}},System.Threading.CancellationToken)">
+  BeforeSaveEntitiesAsync(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after BeforeSaveEntity, and before saving the entities to the persistence layer using SaveChangesAsync.
+Allows adding, changing, and removing entities prior to save.
+The base implementation returns the result of BeforeSaveEntitiesAsyncDelegate, or the unchanged
+saveMap if BeforeSaveEntitiesAsyncDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;&gt; BeforeSaveEntitiesAsync(Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveMap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;</dt>
+    <dd><p>A List of EntityInfo for each Type</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a>&gt;&gt;&gt;</dt>
+    <dd><p>The EntityInfo for each entity that should be saved</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntity_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntity*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntity_Breeze_Persistence_EntityInfo_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntity(Breeze.Persistence.EntityInfo)">
+  BeforeSaveEntity(EntityInfo)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The method is called for each entity to be saved before the save occurs.  If this method returns 'false'
+then the entity will be excluded from the save.  The base implementation returns the result of BeforeSaveEntityDelegate,
+or 'true' if BeforeSaveEntityDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool BeforeSaveEntity(EntityInfo entityInfo)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entityInfo</code> <a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>true to include the entity in the save, false to exclude</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityAsync_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeforeSaveEntityAsync_Breeze_Persistence_EntityInfo_System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.BeforeSaveEntityAsync(Breeze.Persistence.EntityInfo,System.Threading.CancellationToken)">
+  BeforeSaveEntityAsync(EntityInfo, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The method is called for each entity to be saved before the save occurs using SaveChangeAsync.  If this method returns 'false'
+then the entity will be excluded from the save.  The base implementation returns the result of BeforeSaveEntityAsyncDelegate,
+or 'true' if BeforeSaveEntityAsyncDelegate is null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;bool&gt; BeforeSaveEntityAsync(EntityInfo entityInfo, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entityInfo</code> <a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>true to include the entity in the save, false to exclude</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeginTransaction_" data-uid="Breeze.Persistence.PersistenceManager.BeginTransaction*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeginTransaction_System_Data_IsolationLevel_" data-uid="Breeze.Persistence.PersistenceManager.BeginTransaction(System.Data.IsolationLevel)">
+  BeginTransaction(IsolationLevel)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begin a transaction before saving entities; null if there is no connection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IDbTransaction? BeginTransaction(IsolationLevel isolationLevel)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isolationLevel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.isolationlevel">IsolationLevel</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.idbtransaction">IDbTransaction</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BeginTransactionAsync_" data-uid="Breeze.Persistence.PersistenceManager.BeginTransactionAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BeginTransactionAsync_System_Data_IsolationLevel_System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.BeginTransactionAsync(System.Data.IsolationLevel,System.Threading.CancellationToken)">
+  BeginTransactionAsync(IsolationLevel, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begin a transaction before saving entities</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task&lt;IDbTransaction&gt; BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isolationLevel</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.isolationlevel">IsolationLevel</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.idbtransaction">IDbTransaction</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_BuildJsonMetadata_" data-uid="Breeze.Persistence.PersistenceManager.BuildJsonMetadata*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_BuildJsonMetadata" data-uid="Breeze.Persistence.PersistenceManager.BuildJsonMetadata">
+  BuildJsonMetadata()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Build the metadata from the entity model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract string BuildJsonMetadata()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_CloseDbConnection_" data-uid="Breeze.Persistence.PersistenceManager.CloseDbConnection*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_CloseDbConnection" data-uid="Breeze.Persistence.PersistenceManager.CloseDbConnection">
+  CloseDbConnection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L220"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Internal use only.  Should only be called by PersistenceManager during SaveChanges.
+Closes the DbConnection used by the PersistenceManager's implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void CloseDbConnection()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_CloseDbConnectionAsync_" data-uid="Breeze.Persistence.PersistenceManager.CloseDbConnectionAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_CloseDbConnectionAsync" data-uid="Breeze.Persistence.PersistenceManager.CloseDbConnectionAsync">
+  CloseDbConnectionAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Internal use only.  Should only be called by PersistenceManager during SaveChangesAsync.
+Closes the DbConnection used by the PersistenceManager's implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task CloseDbConnectionAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_CreateEntityInfo_" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfo*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_CreateEntityInfo" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfo">
+  CreateEntityInfo()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create an EntityInfo instance (override to return a subclass)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual EntityInfo CreateEntityInfo()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_CreateEntityInfo_" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfo*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_CreateEntityInfo_System_Object_Breeze_Persistence_EntityState_" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfo(System.Object,Breeze.Persistence.EntityState)">
+  CreateEntityInfo(object, EntityState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Create an EntityInfo instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EntityInfo CreateEntityInfo(object entity, EntityState entityState = EntityState.Added)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>entityState</code> <a class="xref" href="Breeze.Persistence.EntityState.html">EntityState</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_CreateEntityInfoFromJson_" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfoFromJson*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_CreateEntityInfoFromJson_System_Object_System_Type_" data-uid="Breeze.Persistence.PersistenceManager.CreateEntityInfoFromJson(System.Object,System.Type)">
+  CreateEntityInfoFromJson(dynamic, Type)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L372"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Build an EntityInfo from the JObject</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EntityInfo CreateEntityInfoFromJson(dynamic jo, Type entityType)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>jo</code> <span class="xref">dynamic</span></dt>
+    <dd></dd>
+    <dt><code>entityType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_ExtractSaveOptions_" data-uid="Breeze.Persistence.PersistenceManager.ExtractSaveOptions*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_ExtractSaveOptions_System_Object_" data-uid="Breeze.Persistence.PersistenceManager.ExtractSaveOptions(System.Object)">
+  ExtractSaveOptions(dynamic)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the SaveOptions from the JSON save bundle; null if the bundle's saveOptions is JSON null</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SaveOptions? ExtractSaveOptions(dynamic dynSaveBundle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dynSaveBundle</code> <span class="xref">dynamic</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.SaveOptions.html">SaveOptions</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_GetDbConnection_" data-uid="Breeze.Persistence.PersistenceManager.GetDbConnection*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_GetDbConnection" data-uid="Breeze.Persistence.PersistenceManager.GetDbConnection">
+  GetDbConnection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Should only be called from BeforeSaveEntities and AfterSaveEntities.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDbConnection GetDbConnection()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.idbconnection">IDbConnection</a></dt>
+    <dd><p>Open DbConnection used by the PersistenceManager's implementation</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_GetKeyValues_" data-uid="Breeze.Persistence.PersistenceManager.GetKeyValues*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_GetKeyValues_Breeze_Persistence_EntityInfo_" data-uid="Breeze.Persistence.PersistenceManager.GetKeyValues(Breeze.Persistence.EntityInfo)">
+  GetKeyValues(EntityInfo)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L248"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the primary key values from the entity</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual object[] GetKeyValues(EntityInfo entityInfo)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entityInfo</code> <a class="xref" href="Breeze.Persistence.EntityInfo.html">EntityInfo</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_HandleSaveException_" data-uid="Breeze.Persistence.PersistenceManager.HandleSaveException*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_HandleSaveException_System_Exception_Breeze_Persistence_SaveWorkState_" data-uid="Breeze.Persistence.PersistenceManager.HandleSaveException(System.Exception,Breeze.Persistence.SaveWorkState)">
+  HandleSaveException(Exception, SaveWorkState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allows subclasses to plug in own save exception handling.
+Either throw an exception here, return false, or return true and modify the saveWorkState.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool HandleSaveException(Exception e, SaveWorkState saveWorkState)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>e</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+    <dt><code>saveWorkState</code> <a class="xref" href="Breeze.Persistence.SaveWorkState.html">SaveWorkState</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_InitializeSaveState_" data-uid="Breeze.Persistence.PersistenceManager.InitializeSaveState*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_InitializeSaveState_Newtonsoft_Json_Linq_JObject_" data-uid="Breeze.Persistence.PersistenceManager.InitializeSaveState(Newtonsoft.Json.Linq.JObject)">
+  InitializeSaveState(JObject)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Prepare the SaveWorkState from the JSON payload</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[MemberNotNull(&quot;SaveWorkState&quot;)]
+protected void InitializeSaveState(JObject saveBundle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveBundle</code> <span class="xref">JObject</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_LookupEntityType_" data-uid="Breeze.Persistence.PersistenceManager.LookupEntityType*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_LookupEntityType_System_String_" data-uid="Breeze.Persistence.PersistenceManager.LookupEntityType(System.String)">
+  LookupEntityType(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L408"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Find the Type from the entityTypeName</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Type LookupEntityType(string entityTypeName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entityTypeName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_Metadata_" data-uid="Breeze.Persistence.PersistenceManager.Metadata*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_Metadata" data-uid="Breeze.Persistence.PersistenceManager.Metadata">
+  Metadata()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get the JSON metadata for the entity model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Metadata()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_OpenDbConnection_" data-uid="Breeze.Persistence.PersistenceManager.OpenDbConnection*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_OpenDbConnection" data-uid="Breeze.Persistence.PersistenceManager.OpenDbConnection">
+  OpenDbConnection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Internal use only.  Should only be called by PersistenceManager during SaveChanges.
+Opens the DbConnection used by the PersistenceManager's implementation.
+Method must be idempotent; after it is called the first time, subsequent calls have no effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OpenDbConnection()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_OpenDbConnectionAsync_" data-uid="Breeze.Persistence.PersistenceManager.OpenDbConnectionAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_OpenDbConnectionAsync_System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.OpenDbConnectionAsync(System.Threading.CancellationToken)">
+  OpenDbConnectionAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Internal use only.  Should only be called by PersistenceManager during SaveChangesAsync.
+Opens the DbConnection used by the PersistenceManager's implementation.
+Method must be idempotent; after it is called the first time, subsequent calls have no effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task OpenDbConnectionAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveChanges_" data-uid="Breeze.Persistence.PersistenceManager.SaveChanges*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveChanges_Newtonsoft_Json_Linq_JObject_Breeze_Persistence_TransactionSettings_" data-uid="Breeze.Persistence.PersistenceManager.SaveChanges(Newtonsoft.Json.Linq.JObject,Breeze.Persistence.TransactionSettings)">
+  SaveChanges(JObject, TransactionSettings?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Extract the entities from the saveBundle, save them, and return the SaveResult</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SaveResult SaveChanges(JObject saveBundle, TransactionSettings? transactionSettings = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveBundle</code> <span class="xref">JObject</span></dt>
+    <dd></dd>
+    <dt><code>transactionSettings</code> <a class="xref" href="Breeze.Persistence.TransactionSettings.html">TransactionSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.SaveResult.html">SaveResult</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveChangesAsync_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveChangesAsync_Newtonsoft_Json_Linq_JObject_Breeze_Persistence_TransactionSettings_System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesAsync(Newtonsoft.Json.Linq.JObject,Breeze.Persistence.TransactionSettings,System.Threading.CancellationToken)">
+  SaveChangesAsync(JObject, TransactionSettings?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Extract the entities from the saveBundle, save them, and return the SaveResult</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;SaveResult&gt; SaveChangesAsync(JObject saveBundle, TransactionSettings? transactionSettings = null, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveBundle</code> <span class="xref">JObject</span></dt>
+    <dd></dd>
+    <dt><code>transactionSettings</code> <a class="xref" href="Breeze.Persistence.TransactionSettings.html">TransactionSettings</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Breeze.Persistence.SaveResult.html">SaveResult</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveChangesCore_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesCore*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveChangesCore_Breeze_Persistence_SaveWorkState_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesCore(Breeze.Persistence.SaveWorkState)">
+  SaveChangesCore(SaveWorkState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Save the changes to the database</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void SaveChangesCore(SaveWorkState saveWorkState)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveWorkState</code> <a class="xref" href="Breeze.Persistence.SaveWorkState.html">SaveWorkState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_SaveChangesCoreAsync_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesCoreAsync*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_SaveChangesCoreAsync_Breeze_Persistence_SaveWorkState_System_Threading_CancellationToken_" data-uid="Breeze.Persistence.PersistenceManager.SaveChangesCoreAsync(Breeze.Persistence.SaveWorkState,System.Threading.CancellationToken)">
+  SaveChangesCoreAsync(SaveWorkState, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Save the changes to the database</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task SaveChangesCoreAsync(SaveWorkState saveWorkState, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>saveWorkState</code> <a class="xref" href="Breeze.Persistence.SaveWorkState.html">SaveWorkState</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_PersistenceManager_XDocToJson_" data-uid="Breeze.Persistence.PersistenceManager.XDocToJson*"></a>
+
+  <h3 id="Breeze_Persistence_PersistenceManager_XDocToJson_System_Xml_Linq_XDocument_" data-uid="Breeze.Persistence.PersistenceManager.XDocToJson(System.Xml.Linq.XDocument)">
+  XDocToJson(XDocument)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/PersistenceManager.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts XML to JSON (for converting EF metadata documents)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string XDocToJson(XDocument xDoc)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>xDoc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.xml.linq.xdocument">XDocument</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

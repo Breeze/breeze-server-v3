@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class BreezeConfig | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class BreezeConfig | Breeze Server for .NET ">
+      
+      <meta name="description" content="Server-wide Breeze settings: JSON serialization, transactions, and enum handling.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Persistence_BreezeConfig.md&amp;value=---%0Auid%3A%20Breeze.Persistence.BreezeConfig%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Persistence.BreezeConfig">
+
+
+
+  <h1 id="Breeze_Persistence_BreezeConfig" data-uid="Breeze.Persistence.BreezeConfig" class="text-break">
+Class BreezeConfig  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Persistence.html">Persistence</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Persistence.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Server-wide Breeze settings: JSON serialization, transactions, and enum handling.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BreezeConfig</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">BreezeConfig</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Breeze_Persistence_BreezeConfig_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>To change any of it, derive from this class and override the member concerned - the
+subclass is found by scanning the loaded assemblies, so nothing needs to register it.
+Exactly one subclass may be present.</p>
+</div>
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Breeze_Persistence_BreezeConfig_FrameworkProductNames" data-uid="Breeze.Persistence.BreezeConfig.FrameworkProductNames">
+  FrameworkProductNames
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Assembly product names treated as framework code by <a class="xref" href="Breeze.Persistence.BreezeConfig.html#Breeze_Persistence_BreezeConfig_IsFrameworkAssembly_System_Reflection_Assembly_">IsFrameworkAssembly(Assembly)</a>.  Matched as prefixes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static readonly List&lt;string&gt; FrameworkProductNames</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Persistence_BreezeConfig_IncludeLegacyErrorMembers_" data-uid="Breeze.Persistence.BreezeConfig.IncludeLegacyErrorMembers*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_IncludeLegacyErrorMembers" data-uid="Breeze.Persistence.BreezeConfig.IncludeLegacyErrorMembers">
+  IncludeLegacyErrorMembers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether an error response also carries the pre-3.0 <code>Code</code>, <code>Message</code> and
+<code>EntityErrors</code> members alongside the RFC 9457 ones.<br>
+Default is <b>true</b>, and it costs only a little duplication. RFC 9457 section 3.2 permits
+extension members and requires consumers to ignore ones they do not recognize, so the
+response is conformant either way; leaving this on means a breeze-client 2.x or 3.0
+application reads errors exactly as it always has, with no coordinated upgrade.<br>
+Turn it off once every client is known to read the RFC 9457 members.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IncludeLegacyErrorMembers { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_IncludeStackTraceInErrors_" data-uid="Breeze.Persistence.BreezeConfig.IncludeStackTraceInErrors*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_IncludeStackTraceInErrors" data-uid="Breeze.Persistence.BreezeConfig.IncludeStackTraceInErrors">
+  IncludeStackTraceInErrors
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether an error response includes the exception's stack trace.<br>
+Default is <b>false</b>. A stack trace names source files, line numbers and the directory
+layout of the machine that built the assembly, so returning it to every caller is an
+information disclosure. Turn it on deliberately, for development only:</p>
+<pre><code class="lang-csharp">BreezeConfig.Instance.IncludeStackTraceInErrors = env.IsDevelopment();</code></pre>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IncludeStackTraceInErrors { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_Instance_" data-uid="Breeze.Persistence.BreezeConfig.Instance*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_Instance" data-uid="Breeze.Persistence.BreezeConfig.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The configuration in force: the one subclass of <a class="xref" href="Breeze.Persistence.BreezeConfig.html">BreezeConfig</a> found in the loaded assemblies, or a default instance if there is none.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BreezeConfig Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.BreezeConfig.html">BreezeConfig</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>More than one subclass was found; only one may be defined.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_ProbeAssemblies_" data-uid="Breeze.Persistence.BreezeConfig.ProbeAssemblies*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_ProbeAssemblies" data-uid="Breeze.Persistence.BreezeConfig.ProbeAssemblies">
+  ProbeAssemblies
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The loaded assemblies that Breeze searches for entity types, key generators and a <a class="xref" href="Breeze.Persistence.BreezeConfig.html">BreezeConfig</a> subclass.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ReadOnlyCollection&lt;Assembly&gt; ProbeAssemblies { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_BreezeConfig_ProbeAssemblies_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Framework assemblies are excluded, and the list is rebuilt when new assemblies load.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_QueryParamName_" data-uid="Breeze.Persistence.BreezeConfig.QueryParamName*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_QueryParamName" data-uid="Breeze.Persistence.BreezeConfig.QueryParamName">
+  QueryParamName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><pre><code>Name of query parameter for JSON query string.  Note that this must agree with what the client sends.&lt;br /&gt;
+Default is null, which means no parameter -- the JSON starts at the question mark: 
+</code></pre>
+<pre><code class="lang-csharp">?{"take":5}</code></pre><br>
+<pre><code>If non-null, then the JSON is the value of a named parameter.  E.g. if QueryParamName = &quot;bq&quot;, then 
+</code></pre>
+<pre><code class="lang-csharp">?bq={"take":5}</code></pre>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string? QueryParamName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_UseIntEnums_" data-uid="Breeze.Persistence.BreezeConfig.UseIntEnums*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_UseIntEnums" data-uid="Breeze.Persistence.BreezeConfig.UseIntEnums">
+  UseIntEnums
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether to serialize enum values as string (false) or int (true).
+Default is false for backward compatibility.  Switch to true for more C#-like behavior and
+see <a href="https://github.com/Breeze/breeze.server.net/issues/196">https://github.com/Breeze/breeze.server.net/issues/196</a> for guidance.
+Set this value early in startup, because it affects JSON serialization settings and metadata generation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool UseIntEnums { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Persistence_BreezeConfig_CreateJsonSerializerSettings_" data-uid="Breeze.Persistence.BreezeConfig.CreateJsonSerializerSettings*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_CreateJsonSerializerSettings" data-uid="Breeze.Persistence.BreezeConfig.CreateJsonSerializerSettings">
+  CreateJsonSerializerSettings()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override to use a specialized JsonSerializer implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual JsonSerializerSettings CreateJsonSerializerSettings()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JsonSerializerSettings</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_CreateJsonSerializerSettingsForSave_" data-uid="Breeze.Persistence.BreezeConfig.CreateJsonSerializerSettingsForSave*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_CreateJsonSerializerSettingsForSave" data-uid="Breeze.Persistence.BreezeConfig.CreateJsonSerializerSettingsForSave">
+  CreateJsonSerializerSettingsForSave()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Override to use a specialized JsonSerializer implementation for saving.
+Base implementation uses CreateJsonSerializerSettings() then sets TypeNameHandling to None</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual JsonSerializerSettings CreateJsonSerializerSettingsForSave()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JsonSerializerSettings</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_GetJsonSerializerSettings_" data-uid="Breeze.Persistence.BreezeConfig.GetJsonSerializerSettings*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_GetJsonSerializerSettings" data-uid="Breeze.Persistence.BreezeConfig.GetJsonSerializerSettings">
+  GetJsonSerializerSettings()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The serializer settings used for query results, created once and cached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public JsonSerializerSettings GetJsonSerializerSettings()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JsonSerializerSettings</span></dt>
+    <dd><p>The settings.  Override <code>CreateJsonSerializerSettings</code> to change them.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_GetJsonSerializerSettingsForSave_" data-uid="Breeze.Persistence.BreezeConfig.GetJsonSerializerSettingsForSave*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_GetJsonSerializerSettingsForSave" data-uid="Breeze.Persistence.BreezeConfig.GetJsonSerializerSettingsForSave">
+  GetJsonSerializerSettingsForSave()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The serializer settings used for reading a save bundle, created once and cached.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public JsonSerializerSettings GetJsonSerializerSettingsForSave()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JsonSerializerSettings</span></dt>
+    <dd><p>The settings.  Override <code>CreateJsonSerializerSettingsForSave</code> to change them.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_GetTransactionSettings_" data-uid="Breeze.Persistence.BreezeConfig.GetTransactionSettings*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_GetTransactionSettings" data-uid="Breeze.Persistence.BreezeConfig.GetTransactionSettings">
+  GetTransactionSettings()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns TransactionSettings.Default.  Override to return different settings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TransactionSettings GetTransactionSettings()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Breeze.Persistence.TransactionSettings.html">TransactionSettings</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_GetTypes_" data-uid="Breeze.Persistence.BreezeConfig.GetTypes*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_GetTypes_System_Reflection_Assembly_" data-uid="Breeze.Persistence.BreezeConfig.GetTypes(System.Reflection.Assembly)">
+  GetTypes(Assembly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The types in an assembly, or an empty array if they cannot all be loaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static IEnumerable&lt;Type&gt; GetTypes(Assembly assembly)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>assembly</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></dt>
+    <dd><p>The assembly to read.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</dt>
+    <dd><p>Its types, or an empty array.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Persistence_BreezeConfig_GetTypes_System_Reflection_Assembly__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>A failure is traced rather than thrown: one unloadable assembly should not stop the probe.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Persistence_BreezeConfig_IsFrameworkAssembly_" data-uid="Breeze.Persistence.BreezeConfig.IsFrameworkAssembly*"></a>
+
+  <h3 id="Breeze_Persistence_BreezeConfig_IsFrameworkAssembly_System_Reflection_Assembly_" data-uid="Breeze.Persistence.BreezeConfig.IsFrameworkAssembly(System.Reflection.Assembly)">
+  IsFrameworkAssembly(Assembly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Persistence/BreezeConfig.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether an assembly is a framework assembly, and so not worth searching for application types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsFrameworkAssembly(Assembly assembly)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>assembly</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></dt>
+    <dd><p>The assembly to test.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True for the Microsoft, Entity Framework and NHibernate assemblies, and for anything whose product name is in <a class="xref" href="Breeze.Persistence.BreezeConfig.html#Breeze_Persistence_BreezeConfig_FrameworkProductNames">FrameworkProductNames</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

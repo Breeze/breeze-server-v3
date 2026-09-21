@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Saving | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Saving | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/saving.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="saving">Saving</h1>
+
+<p>A Breeze client batches every pending change — added, modified and deleted entities, across as
+many types as you like — into one <strong>save bundle</strong> and posts it to a single endpoint. The server
+applies the lot in one unit and reports back.</p>
+<pre><code class="lang-csharp">[HttpPost]
+public Task&lt;SaveResult&gt; SaveChanges([FromBody] JObject saveBundle)
+  =&gt; _pm.SaveChangesAsync(saveBundle);
+</code></pre>
+<p>The bundle arrives as a <code>JObject</code> rather than a typed model because it holds entities of mixed
+types, each with its original values and its state. <a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html">PersistenceManager</a>
+turns it back into real entities attached in the right states, saves them, and returns a
+<a class="xref" href="../api/Breeze.Persistence.SaveResult.html">SaveResult</a>.</p>
+<h2 id="what-comes-back">What comes back</h2>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.SaveResult.html#Breeze_Persistence_SaveResult_Entities">Entities</a></td>
+<td>every entity that was saved, as the server now has it</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.SaveResult.html#Breeze_Persistence_SaveResult_KeyMappings">KeyMappings</a></td>
+<td>temporary client keys paired with the real ones</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.SaveResult.html#Breeze_Persistence_SaveResult_DeletedKeys">DeletedKeys</a></td>
+<td>entities the server deleted as part of the save</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.SaveResult.html#Breeze_Persistence_SaveResult_Errors">Errors</a></td>
+<td>why the save failed</td>
+</tr>
+</tbody>
+</table>
+<p>Either <code>Errors</code> is set, or the other three are. The client merges <code>Entities</code> back into its cache,
+so values the server changed — a computed column, an audit field, a database default — reach the
+client without a re-query.</p>
+<h2 id="key-mappings">Key mappings</h2>
+<p>A client that adds an entity invents a temporary key for it, because only the server knows the
+real one. After the save, <code>KeyMappings</code> pairs them up:</p>
+<pre><code class="lang-json">{ &quot;EntityTypeName&quot;: &quot;Order:#Northwind.Models&quot;, &quot;TempValue&quot;: -1, &quot;RealValue&quot;: 11078 }
+</code></pre>
+<p>The client swaps the temporary key for the real one everywhere it appears, including in the
+foreign keys of entities saved in the same batch. For an identity column this is automatic. For a
+key the database does not generate, set a <a class="xref" href="../api/Breeze.Persistence.IKeyGenerator.html">IKeyGenerator</a> — see
+<a href="persistence-manager.html#generated-keys">generated keys</a>.</p>
+<h2 id="intercepting-the-save">Intercepting the save</h2>
+<p>Four hooks, each a delegate property and a virtual method (see
+<a href="persistence-manager.html#two-ways-to-intercept-a-save">two ways to intercept</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Hook</th>
+<th>Runs</th>
+<th>Receives</th>
+<th>Use it to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_BeforeSaveEntityDelegate">BeforeSaveEntityDelegate</a></td>
+<td>once per entity</td>
+<td>an <a class="xref" href="../api/Breeze.Persistence.EntityInfo.html">EntityInfo</a></td>
+<td>validate or adjust one entity; return <code>false</code> to drop it from the save</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_BeforeSaveEntitiesDelegate">BeforeSaveEntitiesDelegate</a></td>
+<td>once for the batch</td>
+<td>the whole save map</td>
+<td>rules that span entities, or adding entities to the save</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_AfterSaveEntitiesDelegate">AfterSaveEntitiesDelegate</a></td>
+<td>once, after the save</td>
+<td>the save map and the key mappings</td>
+<td>anything that needs the real keys</td>
+</tr>
+</tbody>
+</table>
+<p>Each has an <code>...AsyncDelegate</code> counterpart for work that awaits.</p>
+<h3 id="per-entity">Per entity</h3>
+<p><code>EntityInfo</code> carries the entity, its <a class="xref" href="../api/Breeze.Persistence.EntityInfo.html#Breeze_Persistence_EntityInfo_EntityState">EntityState</a>, and its
+<code>OriginalValuesMap</code> — so a hook can see what actually changed, not just the new values:</p>
+<pre><code class="lang-csharp">private bool SetAuditFields(EntityInfo info) {
+  if (info.Entity is IAudited audited) {
+    if (info.EntityState == EntityState.Added) {
+      audited.CreatedBy = _user;
+      audited.CreatedAt = DateTime.UtcNow;
+    }
+    audited.ModifiedBy = _user;
+    audited.ModifiedAt = DateTime.UtcNow;
+  }
+  return true;   // false drops this entity from the save
+}
+</code></pre>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Returning <code>false</code> silently removes the entity from the save. The client is not told, and will
+still believe the change was applied. To <em>reject</em> a change, throw — see
+<a href="error-handling.html">Error handling</a>.</p>
+</div>
+<p>This hook is also where you enforce that a client may only change what it is allowed to change.
+The bundle is user input: it names the entity type, the state and the original values, so trusting
+it unchecked lets a client claim an entity it never fetched.</p>
+<h3 id="per-batch">Per batch</h3>
+<p><code>BeforeSaveEntities</code> receives <code>Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt;</code> — everything in the save, grouped
+by type. Rules that need more than one entity go here:</p>
+<pre><code class="lang-csharp">private Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; CheckOrders(
+    Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap) {
+
+  if (saveMap.TryGetValue(typeof(Order), out var orders)) {
+    foreach (var info in orders) {
+      var order = (Order)info.Entity;
+      if (order.Freight &gt; 1000) throw new InvalidOperationException(&quot;Freight too high&quot;);
+    }
+  }
+  return saveMap;
+}
+</code></pre>
+<p>You may add entries to the map to save entities the client never sent — an audit row, say. Return
+the map.</p>
+<h3 id="after-the-save">After the save</h3>
+<p><code>AfterSaveEntities</code> gets the key mappings, so it is the place for work that needs the real keys.
+It runs inside the transaction when there is one, so throwing here rolls the save back.</p>
+<h2 id="validation">Validation</h2>
+<p><a class="xref" href="../api/Breeze.Persistence.DataAnnotationsValidator.html">DataAnnotationsValidator</a> applies the <code>System.ComponentModel.DataAnnotations</code>
+attributes on your entities and collects the failures:</p>
+<pre><code class="lang-csharp">public class ValidatingPersistenceManager : Breeze.Persistence.EFCore.EFPersistenceManager&lt;NorthwindContext&gt; {
+  public ValidatingPersistenceManager(NorthwindContext context) : base(context) { }
+
+  protected override Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; BeforeSaveEntities(
+      Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap) {
+    var validator = new DataAnnotationsValidator(this);
+    validator.ValidateEntities(saveMap, throwIfInvalid: true);
+    return saveMap;
+  }
+}
+</code></pre>
+<p>With <code>throwIfInvalid: true</code> it throws an <a class="xref" href="../api/Breeze.Persistence.EntityErrorsException.html">EntityErrorsException</a>, which
+reaches the client as a per-property error list the client attaches to the right entity. Pass
+<code>false</code> to get the <code>List&lt;EntityError&gt;</code> back and decide yourself.</p>
+<p>Where the entity class is generated and cannot carry the attributes,
+<a class="xref" href="../api/Breeze.Persistence.DataAnnotationsValidator.html#Breeze_Persistence_DataAnnotationsValidator_AddDescriptor_">AddDescriptor</a> attaches a buddy class that does.
+Call it <strong>once</strong> — a static constructor is the usual place — not on every save.</p>
+<h2 id="transactions">Transactions</h2>
+<p>Pass <a class="xref" href="../api/Breeze.Persistence.TransactionSettings.html">TransactionSettings</a> to control how the save is wrapped:</p>
+<pre><code class="lang-csharp">[HttpPost]
+public Task&lt;SaveResult&gt; SaveInTransaction([FromBody] JObject saveBundle) {
+  var settings = new TransactionSettings { TransactionType = TransactionType.DbTransaction };
+  return _pm.SaveChangesAsync(saveBundle, settings);
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><code>TransactionType</code></th>
+<th>What is wrapped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code> (<strong>default</strong>)</td>
+<td>nothing extra</td>
+</tr>
+<tr>
+<td><code>DbTransaction</code></td>
+<td>the hooks and the save, on the one connection</td>
+</tr>
+<tr>
+<td><code>TransactionScope</code></td>
+<td>the same, in an ambient <code>TransactionScope</code> — needed for distributed transactions</td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The default of <code>None</code> does <strong>not</strong> mean the save is non-atomic. EF Core's own <code>SaveChanges</code> is
+already a transaction, so the database writes still succeed or fail together. What <code>None</code> leaves
+out is the <em>before</em> and <em>after</em> hooks: side effects in <code>BeforeSaveEntities</code> are not rolled back
+if the save then fails. Choose <code>DbTransaction</code> when your hooks write to the database.</p>
+</div>
+<p><code>IsolationLevel</code> defaults to <code>ReadCommitted</code> and <code>Timeout</code> to <code>TransactionManager.DefaultTimeout</code>.
+<a class="xref" href="../api/Breeze.Persistence.TransactionSettings.html#Breeze_Persistence_TransactionSettings_Default">Default</a> changes the settings for every save that does
+not pass its own.</p>
+<h2 id="saveoptions-and-the-clients-tag">SaveOptions and the client's tag</h2>
+<p>A client can attach an arbitrary value to a save, which arrives as
+<a class="xref" href="../api/Breeze.Persistence.SaveOptions.html#Breeze_Persistence_SaveOptions_Tag">Tag</a>:</p>
+<pre><code class="lang-csharp">var tag = _pm.SaveOptions?.Tag as string;
+if (tag == &quot;publish&quot;) { /* ... */ }
+</code></pre>
+<p>It is how one endpoint serves several save intents without a separate route for each.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="error-handling.html">Error handling</a> — what a failed save looks like to the client</li>
+<li><a href="persistence-manager.html">The PersistenceManager</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
