@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>.NET API reference | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=".NET API reference | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/api-landing/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="net-api-reference">.NET API reference</h1>
+
+<p>Every public type in the five Breeze server packages, generated from the XML doc comments in
+<code>src/</code>. Start at the namespace for the package you are using.</p>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Package</th>
+<th>Start at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="Breeze.AspNetCore.html">Breeze.AspNetCore</a></td>
+<td>Breeze.AspNetCore.NetCore</td>
+<td><a class="xref" href="Breeze.AspNetCore.BreezeQueryFilterAttribute.html">BreezeQueryFilterAttribute</a>, <a class="xref" href="Breeze.AspNetCore.GlobalExceptionFilter.html">GlobalExceptionFilter</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="Breeze.Persistence.EFCore.html">Breeze.Persistence.EFCore</a></td>
+<td>Breeze.Persistence.EFCore</td>
+<td><a class="xref" href="Breeze.Persistence.EFCore.EFPersistenceManager-1.html">EFPersistenceManager&lt;T&gt;</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="Breeze.Persistence.NH.html">Breeze.Persistence.NH</a></td>
+<td>Breeze.Persistence.NH</td>
+<td><a class="xref" href="Breeze.Persistence.NH.NHPersistenceManager.html">NHPersistenceManager</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="Breeze.Persistence.html">Breeze.Persistence</a></td>
+<td>Breeze.Persistence</td>
+<td><a class="xref" href="Breeze.Persistence.PersistenceManager.html">PersistenceManager</a>, <a class="xref" href="Breeze.Persistence.SaveResult.html">SaveResult</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="Breeze.Core.html">Breeze.Core</a></td>
+<td>Breeze.Core</td>
+<td><a class="xref" href="Breeze.Core.JsonSerializationFns.html">JsonSerializationFns</a>, <a class="xref" href="Breeze.Core.EntityQuery.html">EntityQuery</a></td>
+</tr>
+</tbody>
+</table>
+<p>A typical EF Core application installs the first two; the last two come with them.</p>
+<p>The reference is built from the <code>net10.0</code> target. The public API is the same on <code>net8.0</code> and
+<code>net9.0</code>, except that each references the matching major version of Entity Framework Core.</p>
+<p>New here? The <a href="../guide/getting-started.html">guide</a> is the place to start — it covers the same
+ground in the order you need it.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
