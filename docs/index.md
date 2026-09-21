@@ -2,12 +2,27 @@
 _layout: landing
 ---
 
-# Breeze Server for .NET - API reference
+# Breeze Server for .NET
 
 **Breeze** is a library from [IdeaBlade](https://www.ideablade.com/) that helps you manage data in rich client
-applications. This site is the API reference for the .NET server-side packages, version 8.0.0, which target
-.NET 8, 9 and 10 on ASP.NET Core. It is generated from the XML doc comments in
-[breeze-server-v3](https://github.com/Breeze/breeze-server-v3).
+applications. This site documents the .NET server-side packages, version 8.0.0, which target
+.NET 8, 9 and 10 on ASP.NET Core.
+
+It has two halves: a hand-written **[Guide](guide/getting-started.md)**, and an
+**[API reference](xref:Breeze.Persistence)** generated from the XML doc comments in
+[breeze-server-v3](https://github.com/Breeze/breeze-server-v3). The *API reference* tab above
+reaches the whole of it; the table below starts at each package.
+
+## Start here
+
+| | |
+|---|---|
+| [Getting started](guide/getting-started.md) | from an empty project to a working Breeze endpoint |
+| [The PersistenceManager](guide/persistence-manager.md) | the server side of Breeze, and its lifetime |
+| [Querying](guide/querying.md) | the query filter, and limiting what clients may ask for |
+| [Saving](guide/saving.md) | interceptors, transactions and key mappings |
+| [Metadata](guide/metadata.md) | what the client is told about your model |
+| [Error handling](guide/error-handling.md) | returning errors a client can act on |
 
 ## Packages
 

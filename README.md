@@ -24,10 +24,11 @@ A typical EF Core application installs the first two.
 
 | | |
 |---|---|
+| [docs/guide/](./docs/guide/) | **Using Breeze on the server** - getting started, querying, saving, metadata, errors |
 | [UPGRADE.md](./UPGRADE.md) | **Upgrading an app from 7.x** - every consumer-facing change |
 | [CHANGES-DEV.md](./CHANGES-DEV.md) | Structural changes, for people working on Breeze itself |
 | [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
-| [DOCS.md](./DOCS.md) | Building and viewing the .NET API reference (DocFX) |
+| [DOCS.md](./DOCS.md) | Building and viewing the docs - the guide and the .NET API reference (DocFX) |
 
 General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).
 

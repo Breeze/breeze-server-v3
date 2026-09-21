@@ -28,6 +28,7 @@ Run them from the repo root.
 | `dotnet docfx docs/docfx.json` | generates the API metadata, then builds the static site | `docs/api/`, `docs/_site/` |
 | `dotnet docfx docs/docfx.json --serve` | the same, then serves the site | http://localhost:8080/ |
 | `dotnet docfx metadata docs/docfx.json` | regenerates only the API metadata (YAML) | `docs/api/` |
+| `dotnet docfx build docs/docfx.json` | builds the site from the **existing** metadata, skipping Roslyn | `docs/_site/` |
 | `dotnet docfx serve docs/_site` | serves the last build, without rebuilding | http://localhost:8080/ |
 
 The API reference is under `/api/` - for example
@@ -37,6 +38,10 @@ To use another port, add `--port 8081`.
 
 There is no hot reload. Every run of `dotnet docfx docs/docfx.json` rebuilds from the source you have checked out, so
 after editing a doc comment in `src/` or a page in `docs/`, stop the server and run it again.
+
+**When you are editing prose, use `dotnet docfx build docs/docfx.json --serve` instead.** It reuses the API metadata
+already in `docs/api/` rather than reading the projects again, which is the bulk of the time: about 5 seconds against
+15 on this repo. Go back to the full command whenever you change a doc comment in `src/`, or the metadata is stale.
 
 DocFX reads the projects through Roslyn and MSBuild; it does not need a prior `dotnet build`, but it does run a
 NuGet restore of `src/` the first time.
@@ -52,13 +57,18 @@ Before you commit, run `dotnet docfx docs/docfx.json`: it is the check that the 
 docs/
   docfx.json                what DocFX documents, and how
   index.md                  home page
-  toc.yml                   top navigation: Home, API reference
+  toc.yml                   top navigation: Home, Guide, API reference
+  guide/                    hand-written pages
+    toc.yml                 their order in the Guide tab
   api/                      GENERATED metadata (YAML) - do not edit, not committed
   _site/                    GENERATED site - not committed
 ```
 
 - **The API reference** covers the five shipping packages: every `src/*/*.csproj`, so `tests/` and `tools/` are left
   out. The `metadata` section of `docfx.json` lists them; a new project under `src/` is picked up automatically.
+- **The guide** is plain markdown under `docs/guide`, ordered by `docs/guide/toc.yml`. `docfx.json` picks up
+  `**/*.{md,yml}`, so a new page needs no config change - only a line in that `toc.yml`. See
+  [Writing guide pages](#writing-guide-pages).
 - **One target framework.** The packages multi-target `net8.0;net9.0;net10.0`. DocFX documents one of them, set by
   `"properties": { "TargetFramework": "net10.0" }` in `docfx.json`. The public API is the same on every target;
   only the Entity Framework Core version behind `Breeze.Persistence.EFCore` differs. Change the property if that ever
@@ -116,15 +126,37 @@ Rules that have bitten before:
   warning. Use `<see href="http://...">text</see>`.
 - **`<param>` names must match the real parameter names.** A stale one is CS1572; a missing one is CS1573.
 
-Missing comments are not reported. CS1591 ("missing XML comment for publicly visible type or member") is suppressed
-in `src/Directory.Build.props`, because a few hundred are missing; filling them in is its own task. To see the list,
-build with the suppression lifted:
+**Missing comments are reported.** CS1591 ("missing XML comment for publicly visible type or member") is *not*
+suppressed: every public member of every shipping package is documented, and the warning is what keeps it that way.
+Add a public member and the build tells you to document it.
 
-```bash
-dotnet build src/Breeze.Persistence.NH/Breeze.Persistence.NH.csproj -f net10.0 -p:NoWarn=NU1900
-```
+---
 
-(Overriding `NoWarn` on the command line replaces the value from `Directory.Build.props`.)
+## Writing guide pages
+
+The guide is plain markdown under `docs/guide`. To add a page, create the file and add it to `docs/guide/toc.yml`;
+nothing else needs changing.
+
+DocFX Flavored Markdown is CommonMark plus a few things worth using:
+
+| syntax | what it does |
+|---|---|
+| `<xref:Breeze.Persistence.PersistenceManager>` | links to that type's API page, rendering its name |
+| `[text](xref:Breeze.Persistence.PersistenceManager)` | the same, with your own link text |
+| `` <xref:Breeze.Persistence.EFCore.EFPersistenceManager`1> `` | a generic type - backtick and arity, not `<T>` |
+| `<xref:Breeze.Persistence.PersistenceManager.SaveChangesAsync*>` | a method, `*` for "whichever overload" |
+| `> [!NOTE]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!WARNING]` | callout blocks |
+| `[!code-csharp[](../../tests/Foo.cs#Region)]` | pulls a snippet out of real compiling source, by `#region` |
+| `[!INCLUDE[](shared.md)]` | shares a fragment between pages |
+| `# [EF Core](#tab/efcore)` | tabbed sections, for the EF Core / NHibernate fork |
+
+Prefer an `xref` to a hand-written path: an `xref` that does not resolve is a build warning, while a wrong relative
+link is only caught if it points at a missing *file*.
+
+> [!WARNING]
+> Link checking here is weaker than on the client site. DocFX reports a broken file link or an unresolved `xref` as a
+> **warning**, not an error, and it does not check `#anchor` fragments at all. `dotnet docfx docs/docfx.json` exits 0
+> either way, so read the warning count - see [Checks](#checks).
 
 ---
 
@@ -132,16 +164,18 @@ dotnet build src/Breeze.Persistence.NH/Breeze.Persistence.NH.csproj -f net10.0 -
 
 `dotnet docfx docs/docfx.json` must end with `Build succeeded` and `0 error(s)`.
 
-Warnings it currently reports, all known:
+It currently reports **exactly two warnings**, both known:
 
 | warning | cause |
 |---|---|
-| `Found project reference without a matching metadata reference` (x2) | DocFX loads each project and its project references separately. Harmless: all five projects are documented and the links between them resolve. |
-| `CS8632` in `NoAnonSerializationBinder.cs` | a `string?` annotation while `<Nullable>` is disabled. Goes away as nullable reference types are enabled. |
-| `InvalidCref` in `NHibernateProxyJsonConverter` and `NHMetadataBuilder` | `<see cref="http://..."/>`; should be `href`. The URL still renders as a link. |
+| `Found project reference without a matching metadata reference` (x2, for `Breeze.Core` and `Breeze.Persistence`) | DocFX loads each project and its project references separately. Harmless: all five projects are documented and the links between them resolve. |
 
-Any other warning is new. The compiler's doc-comment warnings (CS1570, CS1572, CS1573, CS1584, CS1587) show up in
-`dotnet build` too.
+Both come from the `metadata` step, so `dotnet docfx build docs/docfx.json` - which skips it - should report **0
+warnings**. That makes the build-only command the sharper check while you are editing prose: any warning it prints is
+yours, and is usually a broken link or an `xref` that did not resolve.
+
+Any other warning is new. The compiler's doc-comment warnings (CS1570, CS1572, CS1573, CS1584, CS1587, CS1591) show
+up in `dotnet build` too.
 
 ---
 
@@ -167,7 +201,13 @@ Add `--port 8081` (or any free port).
 
 - **Publishing.** The site is not deployed anywhere. `dotnet docfx docs/docfx.json` produces a static site in
   `docs/_site/` that any static host (GitHub Pages, for example) can serve; deploying it is still to be done.
-- **Linking from the client docs.** The client site's *Server - .NET API reference* link still points at the 2.x
-  site; it should point here once this is published.
-- **Guide pages.** The site has only a home page and the API reference. Hand-written pages would go under `docs/`
-  and in `docs/toc.yml`.
+  Until then the client site cannot link to a page here, only to this repo - see below.
+- **Linking from the client docs.** The client site's *Server* menu points at
+  [/server/dotnet](https://github.com/Breeze/breeze-client-v3/blob/master/docs/server/dotnet.md), a page there that
+  says what this server gives a client and how to build this site locally. Point it straight at the published site
+  once there is one, and trim that page's *Reading the server docs* section to a link.
+- **More guide pages.** The guide covers getting started, the `PersistenceManager`, querying, saving, metadata and
+  error handling. Not yet written: NHibernate specifics beyond what *Getting started* mentions, inheritance
+  mapping, complex types, and a migration page for 7.x users (for now, `UPGRADE.md`).
+- **Compiled snippets.** The guide's C# is written inline, so nothing compiles it. DocFX can pull a snippet out of
+  real source with `[!code-csharp[](path#region)]`; `tests/Test.AspNetCore.EFCore` is the obvious place to point it.
