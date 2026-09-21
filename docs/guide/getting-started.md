@@ -23,16 +23,10 @@ all out of support — use 7.5.2 from the
 
 Breeze serializes with **Newtonsoft.Json**, not `System.Text.Json`, and it needs particular
 settings: reference handling for object graphs, type names so the client can tell what each JSON
-object is, and a specific date format. <xref:Breeze.Core.JsonSerializationFns.UpdateWithDefaults*>
-applies them.
+object is, and a specific date format.
+<xref:Breeze.Core.JsonSerializationFns.UpdateWithDefaults*>, in `Breeze.Core`, applies them.
 
-```csharp
-using Breeze.Core;
-
-builder.Services.AddControllers().AddNewtonsoftJson(opt => {
-  JsonSerializationFns.UpdateWithDefaults(opt.SerializerSettings);
-});
-```
+[!code-csharp[](../snippets/GettingStarted.cs#ConfigureJson)]
 
 > [!IMPORTANT]
 > This is not optional. Without it the client receives JSON it cannot turn into entities —
@@ -48,10 +42,7 @@ means the names are translated twice. See [Metadata](metadata.md#naming).
 
 An ordinary EF Core `DbContext` — Breeze adds nothing to it.
 
-```csharp
-builder.Services.AddDbContext<NorthwindContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
-```
+[!code-csharp[](../snippets/GettingStarted.cs#AddDbContext)]
 
 ## Write a PersistenceManager
 
@@ -59,47 +50,13 @@ builder.Services.AddDbContext<NorthwindContext>(options =>
 applies a save bundle. A subclass per `DbContext` is the usual arrangement, and it is where save
 interceptors live later.
 
-```csharp
-using Breeze.Persistence.EFCore;
-
-public class NorthwindPersistenceManager : EFPersistenceManager<NorthwindContext> {
-  public NorthwindPersistenceManager(NorthwindContext context) : base(context) { }
-}
-```
+[!code-csharp[](../snippets/PersistenceManagerSnippet.cs#PersistenceManager)]
 
 That is enough to query and save. See [The PersistenceManager](persistence-manager.md).
 
 ## Write a controller
 
-```csharp
-using Breeze.AspNetCore;
-using Breeze.Persistence;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-
-[Route("breeze/[controller]/[action]")]
-[BreezeQueryFilter]
-public class NorthwindController : Controller {
-  private readonly NorthwindPersistenceManager _pm;
-
-  public NorthwindController(NorthwindContext context) {
-    _pm = new NorthwindPersistenceManager(context);
-  }
-
-  [HttpGet]
-  public IActionResult Metadata() => Ok(_pm.Metadata());
-
-  [HttpPost]
-  public Task<SaveResult> SaveChanges([FromBody] JObject saveBundle)
-    => _pm.SaveChangesAsync(saveBundle);
-
-  [HttpGet]
-  public IQueryable<Customer> Customers() => _pm.Context.Customers;
-
-  [HttpGet]
-  public IQueryable<Order> Orders() => _pm.Context.Orders;
-}
-```
+[!code-csharp[](../snippets/ControllerSnippet.cs#Controller)]
 
 Three kinds of member, and that is the whole shape of a Breeze controller:
 

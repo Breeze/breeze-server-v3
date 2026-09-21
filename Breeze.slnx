@@ -18,6 +18,9 @@
   <Folder Name="/tests/Test.AspNetCore.EFCore/">
     <Project Path="tests/Test.AspNetCore.EFCore/Test.AspNetCore.NH.csproj" />
   </Folder>
+  <Folder Name="/docs/">
+    <Project Path="docs/snippets/Breeze.Docs.Snippets.csproj" />
+  </Folder>
   <Folder Name="/tools/">
     <Project Path="tools/DbScripter/DbScripter.csproj" />
   </Folder>

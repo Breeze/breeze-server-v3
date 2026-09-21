@@ -60,6 +60,7 @@ docs/
   toc.yml                   top navigation: Home, Guide, API reference
   guide/                    hand-written pages
     toc.yml                 their order in the Guide tab
+  snippets/                 the C# the guide shows - a real project, compiled
   api/                      GENERATED metadata (YAML) - do not edit, not committed
   _site/                    GENERATED site - not committed
 ```
@@ -69,6 +70,11 @@ docs/
 - **The guide** is plain markdown under `docs/guide`, ordered by `docs/guide/toc.yml`. `docfx.json` picks up
   `**/*.{md,yml}`, so a new page needs no config change - only a line in that `toc.yml`. See
   [Writing guide pages](#writing-guide-pages).
+- **The guide's C# is compiled.** It is not written in the markdown; it lives in
+  `docs/snippets/Breeze.Docs.Snippets.csproj`, which project-references `Breeze.AspNetCore.NetCore` and
+  `Breeze.Persistence.EFCore` and is in `Breeze.slnx`. The pages pull it in with
+  `[!code-csharp[](../snippets/File.cs#Region)]`. Rename a public member and `dotnet build Breeze.slnx` fails on the
+  documentation as well as on the tests, which is the point - see [Writing guide pages](#writing-guide-pages).
 - **One target framework.** The packages multi-target `net8.0;net9.0;net10.0`. DocFX documents one of them, set by
   `"properties": { "TargetFramework": "net10.0" }` in `docfx.json`. The public API is the same on every target;
   only the Entity Framework Core version behind `Breeze.Persistence.EFCore` differs. Change the property if that ever
@@ -153,6 +159,40 @@ DocFX Flavored Markdown is CommonMark plus a few things worth using:
 Prefer an `xref` to a hand-written path: an `xref` that does not resolve is a build warning, while a wrong relative
 link is only caught if it points at a missing *file*.
 
+### The C# in the guide
+
+**Do not write C# in a markdown fence.** It goes in `docs/snippets/`, inside a `#region`, and the page references
+that region:
+
+```markdown
+[!code-csharp[](../snippets/SavingSnippets.cs#BeforeSaveEntity)]
+```
+
+`docs/snippets/Breeze.Docs.Snippets.csproj` is an ordinary project in `Breeze.slnx` that references the Breeze
+projects in `src/`. Nothing runs it - it exists so the compiler checks the documentation. A renamed or removed public
+member breaks the build here exactly as it would in an application, which is what stops the guide drifting from the
+code it describes.
+
+To add a snippet:
+
+1. Put the code in the right file under `docs/snippets/`, wrapped in `#region Name` / `#endregion`.
+2. Reference it from the page.
+3. Run `dotnet build docs/snippets/Breeze.Docs.Snippets.csproj`.
+
+Two things to watch:
+
+- **Make each region a balanced unit** - a whole method, or a whole class including its closing brace. DocFX renders
+  exactly what is between the markers, so a region that opens a class and ends before the `}` renders code that does
+  not compile. Where the guide wants a whole controller, give the snippet file a small dedicated one rather than
+  slicing a bigger class.
+- **`using` directives are outside the regions**, at the top of the file, so they do not appear on the page. Where a
+  reader needs them - the first controller, say - put them *inside* the namespace and inside the region, which is
+  legal C# and renders as a reader expects. Otherwise name the namespace in the prose.
+
+A fenced block is still right for what cannot compile here: JSON and HTTP examples, shell commands, TypeScript on the
+client side, and C# for a dependency this project does not take - the PostgreSQL mapper in
+[error-handling.md](guide/error-handling.md) would need Npgsql, so it stays inline.
+
 > [!WARNING]
 > Link checking here is weaker than on the client site. DocFX reports a broken file link or an unresolved `xref` as a
 > **warning**, not an error, and it does not check `#anchor` fragments at all. `dotnet docfx docs/docfx.json` exits 0
@@ -209,5 +249,6 @@ Add `--port 8081` (or any free port).
 - **More guide pages.** The guide covers getting started, the `PersistenceManager`, querying, saving, metadata and
   error handling. Not yet written: NHibernate specifics beyond what *Getting started* mentions, inheritance
   mapping, complex types, and a migration page for 7.x users (for now, `UPGRADE.md`).
-- **Compiled snippets.** The guide's C# is written inline, so nothing compiles it. DocFX can pull a snippet out of
-  real source with `[!code-csharp[](path#region)]`; `tests/Test.AspNetCore.EFCore` is the obvious place to point it.
+- **NHibernate snippets.** `docs/snippets/` references `Breeze.Persistence.EFCore` only, so the guide's NHibernate
+  mentions are prose rather than compiled code. Adding a reference to `Breeze.Persistence.NH` would let an NH page
+  carry snippets on the same terms.

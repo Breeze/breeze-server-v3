@@ -9,11 +9,7 @@ detail.
 
 ## Install the filter
 
-```csharp
-builder.Services.AddControllers().AddMvcOptions(o => {
-  o.Filters.Add(new GlobalExceptionFilter());
-});
-```
+[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#AddFilter)]
 
 Without it, an <xref:Breeze.Persistence.EntityErrorsException> reaches the client as an
 unremarkable 500 and the per-entity detail is lost.
@@ -64,22 +60,7 @@ A client matches on `type`, not on message text, which is what makes the distinc
 
 Throw an `EntityErrorsException` with one `EntityError` per problem:
 
-```csharp
-private bool CheckFreight(EntityInfo info) {
-  if (info.Entity is Order order && order.Freight > 1000) {
-    throw new EntityErrorsException("Validation errors", new[] {
-      new EntityError {
-        ErrorName = "FreightTooHigh",
-        EntityTypeName = typeof(Order).FullName,
-        KeyValues = new object[] { order.OrderID },
-        PropertyName = "Freight",
-        ErrorMessage = "Freight may not exceed 1000",
-      }
-    });
-  }
-  return true;
-}
-```
+[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#ThrowEntityErrors)]
 
 It defaults to **403 Forbidden**; set `StatusCode` for something else. The
 [DataAnnotationsValidator](saving.md#validation) throws this for you from your model's annotations.
@@ -101,12 +82,7 @@ differs — re-read and merge for a conflict, change the data for a duplicate.
 It carries one error per conflicting row, so the client can mark exactly the records the user must
 look at:
 
-```csharp
-var errors = conflicts.Select(c =>
-  ConcurrencyErrorsException.CreateEntityError(c.TypeName, c.KeyValues));
-throw new ConcurrencyErrorsException(
-  ConcurrencyErrorsException.CreateMessage(conflicts.Count), errors);
-```
+[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#ThrowConcurrency)]
 
 ## Database errors
 
@@ -114,11 +90,7 @@ A duplicate key or a foreign-key violation should be **409 Conflict**, not 500 �
 data that is wrong, not the server. Recognizing one means reading a provider-specific error number,
 which the filter deliberately does not know how to do. Supply the mapping:
 
-```csharp
-o.Filters.Add(new GlobalExceptionFilter {
-  StatusCodeForException = DbExceptionMappers.SqlServer
-});
-```
+[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#DbExceptionMapper)]
 
 <xref:Breeze.AspNetCore.DbExceptionMappers.SqlServer*> recognizes SQL Server's 2627, 2601 and 547.
 For another database, write the equivalent — PostgreSQL uses SQLSTATE 23505 and 23503:
@@ -134,9 +106,7 @@ Return `null` to accept the default of 500.
 
 Off by default. Turn them on for development only:
 
-```csharp
-BreezeConfig.Instance.IncludeStackTraceInErrors = true;   // NOT in production
-```
+[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#StackTraces)]
 
 ## Older clients
 

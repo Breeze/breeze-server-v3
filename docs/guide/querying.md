@@ -11,15 +11,7 @@ to turn that into a `WHERE`, `ORDER BY`, `SKIP`/`TAKE`, `SELECT` and `INCLUDE` a
 Put it on the controller class. Every action that returns `IQueryable` or `IEnumerable` is then
 queryable:
 
-```csharp
-[Route("breeze/[controller]/[action]")]
-[BreezeQueryFilter]
-public class NorthwindController : Controller {
-
-  [HttpGet]
-  public IQueryable<Customer> Customers() => _pm.Context.Customers;
-}
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#FilteredController)]
 
 The action returns the *unfiltered* set. The filter runs after the action, reads the query off the
 request, applies it to what was returned, and executes it.
@@ -49,9 +41,7 @@ The async one frees the request thread while the database works, which matters u
 sync one exists because of [efcore#18221](https://github.com/dotnet/efcore/issues/18221); the
 attribute's own remarks say so.
 
-```csharp
-[BreezeAsyncQueryFilter(CatchCancellations = true)]
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#AsyncFilterAttribute)]
 
 With `CatchCancellations`, a client that gives up mid-query gets an empty result with status
 `499` rather than an exception — `CancellationStatusCode` changes the code.
@@ -62,9 +52,7 @@ A query arrives from a browser, so it is user input. Two properties bound it.
 
 ### MaxTake
 
-```csharp
-[BreezeQueryFilter(MaxTake = 1000)]
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#MaxTakeAttribute)]
 
 Adds `Take(1000)` when the client asked for more, or for nothing at all. Default `-1`, unlimited —
 which means a client that forgets `.take()` selects the whole table.
@@ -78,9 +66,7 @@ This is not the same as a `Take()` in the action: `MaxTake` is applied **after**
 
 ### MaxDepth
 
-```csharp
-[BreezeQueryFilter(MaxDepth = 2)]
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#MaxDepthAttribute)]
 
 Caps how far `select` and `expand` may reach, and returns **400 Bad Request** when a query goes
 deeper. Default `-1`, unlimited.
@@ -101,12 +87,7 @@ navigation properties.
 An action can take its own parameters and still be filtered — the client's query is applied to
 whatever the action returns:
 
-```csharp
-[HttpGet]
-public IQueryable<Customer> CustomersStartingWith(string companyName) {
-  return _pm.Context.Customers.Where(c => c.CompanyName.StartsWith(companyName));
-}
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#ParameterizedQuery)]
 
 The client supplies them with `withParameters`, and its own `where` narrows the result further.
 
@@ -115,9 +96,7 @@ The client supplies them with `withParameters`, and its own `where` narrows the 
 A complex query can outgrow the URL length a server or proxy will accept. `UsePost` reads it from
 the request body instead:
 
-```csharp
-[BreezeQueryFilter(UsePost = true)]
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#UsePostAttribute)]
 
 There is a cost — the body has to be read and buffered — so put it on endpoints that need it
 rather than on every controller. If model binding has already consumed the body, it must be
@@ -128,13 +107,7 @@ rewound before the filter can read it.
 <xref:Breeze.AspNetCore.QueryFns.SkipBreezeQueryFilter*> turns the filter off for the current
 request, for an action on a filtered controller that returns something the filter should not touch:
 
-```csharp
-[HttpGet]
-public IQueryable<Customer> UnfilteredCustomers() {
-  this.SkipBreezeQueryFilter();
-  return _pm.Context.Customers;
-}
-```
+[!code-csharp[](../snippets/QueryingSnippets.cs#SkipFilter)]
 
 To apply a query by hand instead — to inspect or post-process the result —
 <xref:Breeze.AspNetCore.QueryFns.ApplyBreezeQuery*> and

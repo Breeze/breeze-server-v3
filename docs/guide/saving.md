@@ -4,11 +4,7 @@ A Breeze client batches every pending change — added, modified and deleted ent
 many types as you like — into one **save bundle** and posts it to a single endpoint. The server
 applies the lot in one unit and reports back.
 
-```csharp
-[HttpPost]
-public Task<SaveResult> SaveChanges([FromBody] JObject saveBundle)
-  => _pm.SaveChangesAsync(saveBundle);
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#SaveChangesAction)]
 
 The bundle arrives as a `JObject` rather than a typed model because it holds entities of mixed
 types, each with its original values and its state. <xref:Breeze.Persistence.PersistenceManager>
@@ -60,19 +56,7 @@ Each has an `...AsyncDelegate` counterpart for work that awaits.
 `EntityInfo` carries the entity, its <xref:Breeze.Persistence.EntityInfo.EntityState>, and its
 `OriginalValuesMap` — so a hook can see what actually changed, not just the new values:
 
-```csharp
-private bool SetAuditFields(EntityInfo info) {
-  if (info.Entity is IAudited audited) {
-    if (info.EntityState == EntityState.Added) {
-      audited.CreatedBy = _user;
-      audited.CreatedAt = DateTime.UtcNow;
-    }
-    audited.ModifiedBy = _user;
-    audited.ModifiedAt = DateTime.UtcNow;
-  }
-  return true;   // false drops this entity from the save
-}
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#BeforeSaveEntity)]
 
 > [!IMPORTANT]
 > Returning `false` silently removes the entity from the save. The client is not told, and will
@@ -88,19 +72,7 @@ it unchecked lets a client claim an entity it never fetched.
 `BeforeSaveEntities` receives `Dictionary<Type, List<EntityInfo>>` — everything in the save, grouped
 by type. Rules that need more than one entity go here:
 
-```csharp
-private Dictionary<Type, List<EntityInfo>> CheckOrders(
-    Dictionary<Type, List<EntityInfo>> saveMap) {
-
-  if (saveMap.TryGetValue(typeof(Order), out var orders)) {
-    foreach (var info in orders) {
-      var order = (Order)info.Entity;
-      if (order.Freight > 1000) throw new InvalidOperationException("Freight too high");
-    }
-  }
-  return saveMap;
-}
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#BeforeSaveEntities)]
 
 You may add entries to the map to save entities the client never sent — an audit row, say. Return
 the map.
@@ -115,14 +87,7 @@ It runs inside the transaction when there is one, so throwing here rolls the sav
 <xref:Breeze.Persistence.DataAnnotationsValidator> applies the `System.ComponentModel.DataAnnotations`
 attributes on your entities and collects the failures:
 
-```csharp
-protected override Dictionary<Type, List<EntityInfo>> BeforeSaveEntities(
-    Dictionary<Type, List<EntityInfo>> saveMap) {
-  var validator = new DataAnnotationsValidator(this);
-  validator.ValidateEntities(saveMap, throwIfInvalid: true);
-  return saveMap;
-}
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#ValidateOnSave)]
 
 With `throwIfInvalid: true` it throws an <xref:Breeze.Persistence.EntityErrorsException>, which
 reaches the client as a per-property error list the client attaches to the right entity. Pass
@@ -136,13 +101,7 @@ Call it **once** — a static constructor is the usual place — not on every sa
 
 Pass <xref:Breeze.Persistence.TransactionSettings> to control how the save is wrapped:
 
-```csharp
-[HttpPost]
-public Task<SaveResult> SaveChanges([FromBody] JObject saveBundle) {
-  var settings = new TransactionSettings { TransactionType = TransactionType.DbTransaction };
-  return _pm.SaveChangesAsync(saveBundle, settings);
-}
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#TransactionSettings)]
 
 | `TransactionType` | What is wrapped |
 |---|---|
@@ -165,10 +124,7 @@ not pass its own.
 A client can attach an arbitrary value to a save, which arrives as
 <xref:Breeze.Persistence.SaveOptions.Tag>:
 
-```csharp
-var tag = _pm.SaveOptions?.Tag as string;
-if (tag == "publish") { /* ... */ }
-```
+[!code-csharp[](../snippets/SavingSnippets.cs#SaveOptionsTag)]
 
 It is how one endpoint serves several save intents without a separate route for each.
 

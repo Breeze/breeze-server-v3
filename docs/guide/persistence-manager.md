@@ -20,30 +20,19 @@ It is abstract. You use the subclass for your ORM.
 Write one per context. Even with no members it is worth having, because interceptors and metadata
 overrides go here rather than in the controller:
 
-```csharp
-public class NorthwindPersistenceManager : EFPersistenceManager<NorthwindContext> {
-  public NorthwindPersistenceManager(NorthwindContext context) : base(context) { }
-}
-```
+[!code-csharp[](../snippets/PersistenceManagerSnippet.cs#PersistenceManager)]
 
 <xref:Breeze.Persistence.EFCore.EFPersistenceManager`1.Context> gives the typed `DbContext` back,
 which is what query actions return sets from:
 
-```csharp
-[HttpGet]
-public IQueryable<Customer> Customers() => _pm.Context.Customers;
-```
+[!code-csharp[](../snippets/PersistenceManagerGuide.cs#ContextQuery)]
 
 ## Lifetime
 
 **Create one per request**, in the controller's constructor, from a `DbContext` that DI has already
 scoped to the request:
 
-```csharp
-public NorthwindController(NorthwindContext context) {
-  _pm = new NorthwindPersistenceManager(context);
-}
-```
+[!code-csharp[](../snippets/PersistenceManagerGuide.cs#ControllerConstructor)]
 
 It wraps a `DbContext`, so it inherits the `DbContext`'s rules: not thread-safe, and not meant to
 outlive the request. Registering one as a singleton shares one change-tracker between every
@@ -73,22 +62,11 @@ an `ISessionFactory` once as a singleton and opens a session per request from it
 Every hook exists both as a **delegate property**, set per request, and as a **virtual method**,
 overridden once in your subclass. They do the same work; pick by how widely the rule applies.
 
-```csharp
-// Per request - a rule for this endpoint only.
-[HttpPost]
-public Task<SaveResult> SaveWithAudit([FromBody] JObject saveBundle) {
-  _pm.BeforeSaveEntityDelegate = SetAuditFields;
-  return _pm.SaveChangesAsync(saveBundle);
-}
+[!code-csharp[](../snippets/PersistenceManagerGuide.cs#PerRequestInterceptor)]
 
-// Once - a rule for every save through this manager.
-public class NorthwindPersistenceManager : EFPersistenceManager<NorthwindContext> {
-  protected override bool BeforeSaveEntity(EntityInfo entityInfo) {
-    // return false to drop this entity from the save
-    return true;
-  }
-}
-```
+Once, in the subclass — a rule for every save through this manager:
+
+[!code-csharp[](../snippets/PersistenceManagerGuide.cs#SubclassInterceptor)]
 
 [Saving](saving.md) covers what each hook receives and when it runs.
 
@@ -102,9 +80,7 @@ For a key the database does *not* generate, set a
 <xref:Breeze.Persistence.IKeyGenerator>. <xref:Breeze.Persistence.NumericKeyGenerator> is the one
 that ships, which draws from a `NextId` table:
 
-```csharp
-_pm.KeyGenerator = new NumericKeyGenerator(_pm.GetDbConnection() as DbConnection);
-```
+[!code-csharp[](../snippets/PersistenceManagerGuide.cs#KeyGenerator)]
 
 ## Metadata from somewhere else
 
