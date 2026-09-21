@@ -4,6 +4,8 @@
 *.csproj    text eol=crlf
 *.cs        text eol=crlf
 *.sql       text eol=crlf
+# Shell scripts must keep LF: a CRLF shebang line fails with "bad interpreter".
+*.sh        text eol=lf
 *.snk       binary
 *.png       binary
 *.ico       binary
