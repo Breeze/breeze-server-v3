@@ -180,6 +180,147 @@ on the controller, if anonymous callers should not have it.
 
 ---
 
+## Hardening
+
+Everything above is a check you have to remember. That is the weakness: the breach is rarely a
+*wrong* check, it is a *missing* one, in an endpoint somebody added last Tuesday. So the
+measures worth doing first are the ones that change what happens when a check is forgotten.
+
+Two of them do most of the work, and both are configured once rather than per endpoint.
+
+### Put the read boundary in the ORM
+
+A named query secures the set the action returns. It does **not** secure what a client reaches
+*through* that set, because `expand` becomes Entity Framework's `Include`, and `Include` walks
+navigation properties without regard to the `Where` you put on the root.
+
+An EF Core **global query filter** does cover those, because EF applies it to every entity type
+in the query, including the ones pulled in by `Include`:
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantQueryFilters)]
+
+This is the highest-leverage single measure available, for two reasons: it is the only one that
+constrains graph traversal, and it applies to an action written next month whether or not its
+author thought about it.
+
+What it costs you: the filter needs request state — the current user or tenant — inside the
+`DbContext`, which couples your model to the request; `IgnoreQueryFilters` bypasses it, so
+administrative paths need deliberate handling; and a filter on a required navigation can make
+data look mysteriously absent. Worth it, in my view, but not free.
+
+> [!IMPORTANT]
+> **Query filters apply to reads, not to saves.** Breeze attaches the entity the client sent and
+> issues an `UPDATE ... WHERE key = @key`; no query runs, so no filter applies. The save side has
+> to restate the boundary itself — see [below](#writes-restate-the-boundary).
+
+### Make the query limits global, not per controller
+
+As written, forgetting `[BreezeQueryFilter(MaxTake = …)]` on a new controller means *unlimited*.
+Register the filter once instead and forgetting means *limited*:
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#GlobalQueryLimits)]
+
+This is safe to apply globally: an action that does not return a queryable falls out of the
+filter immediately. Controllers that genuinely need different limits still carry their own
+attribute.
+
+### Give saves one chokepoint
+
+Authorization that lives in eight controllers is authorization that holds in seven. Put the
+baseline in `BeforeSaveEntities` on a base `PersistenceManager` that all of yours derive from —
+which types may be saved, and who may touch a row — and keep per-controller
+`BeforeSaveEntityDelegate` for exceptions to it.
+
+---
+
+## Multi-tenancy
+
+One database holding several customers' data is the case where all of this stops being
+theoretical: the boundary is a column, every query crosses it, and a single missing filter
+exposes one customer's data to another.
+
+### The tenant id is an identity, not a parameter
+
+Take it from the signed-in principal's claims. A subdomain, a header, a route segment or a field
+in the payload can all be set by the caller, so none of them identifies anybody — at most they
+decide which login to demand.
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantContext)]
+
+Note that it fails closed. A principal with no tenant claim gets an exception, not an unfiltered
+view — the opposite of what `Guid.Empty` as a default would do.
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantRegistration)]
+
+### Reads: one filter per tenant-owned type
+
+The `BillingContext` above is the whole read-side guard. Two things about it matter:
+
+- **Compare against the field, not a literal.** `i.TenantId == _tenantId` closes over an instance
+  field, which EF parameterises, so one cached model serves every tenant. Baking a constant into
+  the filter would cache the first tenant's value and serve it to everyone.
+- **A type with no filter has no boundary.** The list in `OnModelCreating` is the security
+  control, so it is the thing to check whenever an entity is added to the model. A marker
+  interface like `ITenantOwned` lets you assert the list is complete rather than trusting it:
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantOwned)]
+
+Genuinely shared reference data — currencies, country codes — is the legitimate exception. It
+has no tenant column and needs no filter; just be sure that is a decision rather than an
+oversight.
+
+### Writes: restate the boundary
+
+Query filters do nothing here, so the save guard carries the tenant rules itself:
+
+[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantSaveGuard)]
+
+Four decisions in that, each worth its line:
+
+**Stamp, never read.** `TenantId` is assigned from the claim on insert *and* on update. Not
+because the client is expected to change it, but because an update rewrites every mapped column
+from what arrived, so leaving it alone means taking the client's value.
+
+**Verify against the stored row.** Keys are guessable — sequential integers especially — so a
+client can name another tenant's row in a save bundle without ever having read it. The check is
+what stops that, and it has to consult the database.
+
+**Query through the filtered `DbSet`.** Because the read side is already filtered,
+`Context.Invoices.Any(...)` cannot see another tenant's invoice. "Not found" and "not yours" are
+the same answer, with no comparison to get wrong.
+
+**Return the same error either way.** A client that can tell "does not exist" from "belongs to
+someone else" can enumerate which keys are real.
+
+> [!WARNING]
+> Verify with `Any()` or a projection — **not** with something that materialises the entity.
+> `BeforeSaveEntities` runs before Breeze attaches the client's instances, so a verification read
+> that tracks a row with the same key collides with the attach that follows, and the save fails
+> with a duplicate-tracking error. `Context.Invoices.Any(i => i.InvoiceID == id)` and
+> `.Select(i => i.TenantId).FirstOrDefault()` are both safe; `.FirstOrDefault(i => …)` is not.
+
+### If the data is worth more than the code
+
+Everything above is application code, and application code has bugs. Where a cross-tenant leak
+would be severe, put the boundary somewhere a bug cannot reach past:
+
+| | |
+|---|---|
+| **Row-level security** (SQL Server, PostgreSQL) | the predicate lives in the database and applies to every statement, including ones your app did not mean to issue |
+| **Schema or database per tenant** | no shared table to leak across; costs you migrations and connection management |
+
+Both are defence in depth, not replacements — you still want the query filters, because a
+failure there should be a missing row rather than a caught exception.
+
+### Test the boundary, do not inspect it
+
+The one test worth writing is the negative one: sign in as tenant A, ask for a row belonging to
+tenant B by key, and assert you get nothing — as a query, as an `expand` through a navigation,
+and as a save. That test fails loudly when someone adds an entity and forgets its filter, which
+is exactly the mistake that review misses.
+
+---
+
 ## The rest is ordinary ASP.NET Core
 
 - **`[Authorize]`** on the controller, with whatever policies you use elsewhere. Breeze actions
@@ -206,6 +347,10 @@ on the controller, if anonymous callers should not have it.
 | A save hook that checks ownership against stored values | [above](#beforesaveentity-is-the-authorization-point) |
 | Server-controlled properties reset on every save | [above](#every-mapped-property-is-written) |
 | Refusals throw rather than return `false` | [above](#reject-by-throwing-not-by-returning-false) |
+| Global query filters on every tenant- or owner-scoped type | [above](#put-the-read-boundary-in-the-orm) |
+| The query limits registered globally, not per controller | [above](#make-the-query-limits-global-not-per-controller) |
+| Tenant stamped from the claim on every save, and verified against the stored row | [above](#writes-restate-the-boundary) |
+| A test that asserts cross-tenant access fails | [above](#test-the-boundary-do-not-inspect-it) |
 | `IncludeStackTraceInErrors` off in production | [above](#the-rest-is-ordinary-aspnet-core) |
 | `[Authorize]` where it belongs, including on `Metadata` if needed | [above](#metadata) |
 
