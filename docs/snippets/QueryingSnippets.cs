@@ -6,6 +6,7 @@ using Breeze.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Breeze.Docs.Snippets {
@@ -38,6 +39,46 @@ namespace Breeze.Docs.Snippets {
     [HttpGet]
     public IQueryable<Customer> CustomersStartingWith(string companyName) {
       return _pm.Context.Customers.Where(c => c.CompanyName.StartsWith(companyName));
+    }
+    #endregion
+
+    #region NotComposable
+    // The same parameter, but the client's query can no longer reach the database:
+    // every matching customer is fetched first, and filtered in memory afterwards.
+    [HttpGet]
+    public List<Customer> CustomersStartingWithList(string companyName) {
+      return _pm.Context.Customers.Where(c => c.CompanyName.StartsWith(companyName)).ToList();
+    }
+    #endregion
+
+    #region ArrayParameter
+    [HttpGet]
+    public IQueryable<Customer> CustomersIn([FromQuery] string[] cities) {
+      var customers = _pm.Context.Customers.AsQueryable();
+      if (cities.Length > 0) {
+        customers = customers.Where(c => cities.Contains(c.City));
+      }
+      return customers;
+    }
+    #endregion
+
+    #region ObjectParameter
+    /// <summary> A query-by-example parameter. Its properties are bound from the query string. </summary>
+    public class CustomerQuery {
+      public string? CompanyName { get; set; }
+      public string? City { get; set; }
+    }
+
+    [HttpGet]
+    public IQueryable<Customer> SearchCustomers([FromQuery] CustomerQuery qbe) {
+      var customers = _pm.Context.Customers.AsQueryable();
+      if (!string.IsNullOrEmpty(qbe.CompanyName)) {
+        customers = customers.Where(c => c.CompanyName.StartsWith(qbe.CompanyName));
+      }
+      if (!string.IsNullOrEmpty(qbe.City)) {
+        customers = customers.Where(c => c.City == qbe.City);
+      }
+      return customers;
     }
     #endregion
 

@@ -82,14 +82,107 @@ On `IQueryable<Customer>`:
 Depth is what keeps one request from pulling a large part of the database through a chain of
 navigation properties.
 
-## Query actions that take parameters
+## Named queries with parameters
 
-An action can take its own parameters and still be filtered — the client's query is applied to
-whatever the action returns:
+Not every endpoint is a bare entity set. An action that takes its own parameters and decides for
+itself what to return is usually called a **named query**: the client asks for it by action name
+rather than by resource.
 
 [!code-csharp[](../snippets/QueryingSnippets.cs#ParameterizedQuery)]
 
-The client supplies them with `withParameters`, and its own `where` narrows the result further.
+The parameters are bound by ordinary ASP.NET Core model binding — there is nothing Breeze-specific
+about them. The client supplies them with `withParameters`:
+
+```ts
+EntityQuery.from('CustomersStartingWith').withParameters({ companyName: 'C' });
+```
+
+### It is still composable
+
+This is the part worth understanding, because it is what makes a named query the right default
+rather than a compromise.
+
+The action returned an `IQueryable`, which is an *unexecuted expression tree*. The filter appends
+the client's query to it, and only then does anything reach the database. So the client can go on
+building:
+
+```ts
+EntityQuery.from('CustomersStartingWith')
+  .withParameters({ companyName: 'C' })
+  .where('fax', '!=', null)
+  .orderBy('companyName')
+  .skip(20).take(10)
+  .inlineCount(true);
+```
+
+Your `StartsWith`, the client's `fax != null`, the ordering, the paging and the count all end up
+in **one SQL statement**. The parameter narrows first because it is already in the tree; everything
+the client sent is layered on top and can only narrow further.
+
+Return a `List<T>` instead and the parameter still works, but the composition does not:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#NotComposable)]
+
+| | `IQueryable<T>` | `List<T>` |
+|---|---|---|
+| where does the client's `where` run? | in the database | in memory, after the fetch |
+| rows fetched for `.take(10)` | 10 | every row matching the parameter |
+| `MaxTake` applies | yes | no — it only acts on EF queryables |
+| `inlineCount` | a `COUNT` in the database | a `.Count()` on the list |
+
+The difference is invisible until the table is large, and then it is the whole story.
+
+> [!TIP]
+> This is also why a named query is the primary security tool. The action fixes the most a client
+> can ever see, and composition means the client loses nothing by being confined to it — it can
+> still filter, sort and page exactly as it would against a bare entity set. See
+> [Security](security.md#the-iqueryable-you-return-is-the-boundary).
+
+### Parameter shapes
+
+Anything model binding understands from a query string:
+
+| Client | Server |
+|---|---|
+| `withParameters({ companyName: 'C' })` | `string companyName` |
+| `withParameters({ cities: ['London', 'Paris'] })` | `[FromQuery] string[] cities` |
+| `withParameters({ CompanyName: 'C', City: 'London' })` | `[FromQuery] CustomerQuery qbe` |
+
+An array arrives as `cities[0]=London&cities[1]=Paris`:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#ArrayParameter)]
+
+A query-by-example object binds from **flat, top-level** parameters named after its properties —
+`CompanyName=C&City=London`, not `qbe.CompanyName=C`. The parameter name on the server is not part
+of what the client sends:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#ObjectParameter)]
+
+> [!NOTE]
+> Zero, `null` and empty-string parameters are worth a test of your own. An absent parameter and
+> an empty one are not the same thing to model binding, and which one a client sends depends on
+> how it built the object.
+
+### Where the parameters sit in the URL
+
+The client puts the Breeze query first and appends the parameters after it:
+
+```
+GET /breeze/Northwind/CustomersStartingWith?{"where":{"fax":{"ne":null}}}&companyName=C
+```
+
+That order is not decorative. With the default configuration the server looks for the JSON
+**immediately after the `?`** and ignores it otherwise, so a URL built by hand — in a test, or with
+curl — must put the JSON first or the query is silently dropped while the parameters still bind.
+An `&` inside a quoted JSON string is handled and does not end the query.
+
+Setting <xref:Breeze.Persistence.BreezeConfig.QueryParamName> makes the JSON a named parameter
+instead, and ordering stops mattering. See
+[Where the query lives in the URL](#where-the-query-lives-in-the-url).
+
+> [!NOTE]
+> On the client, a named query often cannot be matched to an entity type by its resource name, and
+> `where` needs the type to validate property names against. `.toType('Customer')` supplies it.
 
 ## Long queries: UsePost
 
