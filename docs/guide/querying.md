@@ -82,6 +82,11 @@ On `IQueryable<Customer>`:
 Depth is what keeps one request from pulling a large part of the database through a chain of
 navigation properties.
 
+> [!NOTE]
+> `MaxDepth` bounds how far a query may walk, not which navigations it may walk. To say that
+> `Order.Employee` is off limits however shallow the request, see
+> [Declare which navigations may be expanded](security.md#declare-which-navigations-may-be-expanded).
+
 ## Named queries with parameters
 
 Not every endpoint is a bare entity set. An action that takes its own parameters and decides for

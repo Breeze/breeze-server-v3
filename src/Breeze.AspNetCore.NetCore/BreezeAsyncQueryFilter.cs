@@ -91,6 +91,12 @@ namespace Breeze.AspNetCore {
         return;
       }
 
+      msg = BreezeQueryFilterAttribute.CheckExpandPolicy(eq, eleType);
+      if (msg != null) {
+        executedContext.Result = new BadRequestObjectResult(msg);
+        return;
+      }
+
       var originalQueryable = queryable;
       queryable = eq.ApplyWhere(queryable, eleType);
 

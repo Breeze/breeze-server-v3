@@ -84,6 +84,12 @@ namespace Breeze.AspNetCore {
         return;
       }
 
+      msg = CheckExpandPolicy(eq, eleType);
+      if (msg != null) {
+        context.Result = new BadRequestObjectResult(msg);
+        return;
+      }
+
       var originalQueryable = queryable;
       queryable = eq.ApplyWhere(queryable, eleType);
 
@@ -126,6 +132,22 @@ namespace Breeze.AspNetCore {
     private ObjectResult GetEmptyResult() {
       var emptyResult = new QueryResult(Enumerable.Empty<dynamic>(), null);
       return new ObjectResult(emptyResult) { StatusCode = 499 };
+    }
+
+    /// <summary>
+    /// Check each expand path against <see cref="ExpandPolicy"/>, which is a no-op until the
+    /// application declares something. Covers expand only; select is MaxDepth's business.
+    /// </summary>
+    internal static string? CheckExpandPolicy(EntityQuery eq, System.Type eleType) {
+      if (eq.ExpandClause == null) { return null; }
+
+      foreach (var path in eq.ExpandClause.PropertyPaths) {
+        var forbidden = ExpandPolicy.FirstForbiddenHop(eleType, path);
+        if (forbidden != null) {
+          return $"Expand not allowed: {forbidden}";
+        }
+      }
+      return null;
     }
 
     /// <summary> Check select and expand to see if MaxDepth is exceeded </summary>

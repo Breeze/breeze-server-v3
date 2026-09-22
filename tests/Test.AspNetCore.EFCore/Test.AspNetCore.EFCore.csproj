@@ -13,6 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.*" />
+    <!-- Backs Controllers/ExpandPolicyController.cs, whose demo model needs a real EF provider
+         for Include but no tables in BreezeTestDb. Test host only. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

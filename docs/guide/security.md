@@ -224,6 +224,51 @@ This is safe to apply globally: an action that does not return a queryable falls
 filter immediately. Controllers that genuinely need different limits still carry their own
 attribute.
 
+### Declare which navigations may be expanded
+
+`MaxDepth` bounds how *far* a client may walk; it says nothing about *where*. `MaxDepth = 1` still
+permits `expand=employee` from an order, and with it the salary on that employee.
+
+<xref:Breeze.Core.AllowExpandAttribute> and <xref:Breeze.Core.DenyExpandAttribute> say which
+navigations are reachable from a type:
+
+[!code-csharp[](../snippets/ExpandPolicySnippets.cs#AttributeDeclaration)]
+
+Each type declares only its **own** outbound navigations, and a path is judged one hop at a time
+by the type each hop starts from. So `Orders.OrderDetails` needs `Orders` allowed on `Customer`
+and `OrderDetails` allowed on `Order` — nobody writes whole paths, and adding a navigation to
+`Order` does not mean revisiting `Customer`.
+
+A refused query gets **400 Bad Request**, naming the first forbidden hop and no more, so the
+message does not disclose what lies beyond it.
+
+For a model whose classes are generated — or to override what they declare, without editing
+them — <xref:Breeze.Core.ExpandPolicy> takes the same rules in code:
+
+[!code-csharp[](../snippets/ExpandPolicySnippets.cs#RegistrationApi)]
+
+Rules are resolved per navigation, highest first: a registered deny, then a registered allow-list,
+then `DenyExpand`, then `AllowExpand`, then the default. Registration beats the attributes, which
+is what lets a deployment tighten or relax what the model says.
+
+> [!IMPORTANT]
+> **An allow-list always means "these and no others"**, whichever source it came from. So
+> `ExpandPolicy.Allow<Order>(o => o.Employee)` does not merely lift a `DenyExpand` on `Employee` —
+> it makes `Employee` the only navigation expandable from `Order`. To relax one rule and leave
+> the rest, list everything you want.
+
+With nothing declared nothing is refused, so this changes no existing application until you use
+it. Once you have been through the model, invert the default:
+
+[!code-csharp[](../snippets/ExpandPolicySnippets.cs#DenyByDefault)]
+
+> [!WARNING]
+> This governs `expand` only. A client can still reach a related entity through `select` —
+> `?{"select":"orders"}` returns the orders whether or not `expand=orders` was refused. `MaxDepth`
+> does check select paths, so it remains the bound there; see
+> [Filtering sees what projection hides](#filtering-sees-what-projection-hides) for the same
+> shape of problem.
+
 ### Give saves one chokepoint
 
 Authorization that lives in eight controllers is authorization that holds in seven. Put the
@@ -348,6 +393,7 @@ is exactly the mistake that review misses.
 | Server-controlled properties reset on every save | [above](#every-mapped-property-is-written) |
 | Refusals throw rather than return `false` | [above](#reject-by-throwing-not-by-returning-false) |
 | Global query filters on every tenant- or owner-scoped type | [above](#put-the-read-boundary-in-the-orm) |
+| Sensitive navigations refused by `[DenyExpand]` or an allow-list | [above](#declare-which-navigations-may-be-expanded) |
 | The query limits registered globally, not per controller | [above](#make-the-query-limits-global-not-per-controller) |
 | Tenant stamped from the claim on every save, and verified against the stored row | [above](#writes-restate-the-boundary) |
 | A test that asserts cross-tenant access fails | [above](#test-the-boundary-do-not-inspect-it) |
