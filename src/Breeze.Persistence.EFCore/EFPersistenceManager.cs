@@ -306,8 +306,13 @@ namespace Breeze.Persistence.EFCore {
       // the problem type, just not a per-entity error.
       var entityErrors = e.Entries.Select(entry => {
         var key = entry.Metadata.FindPrimaryKey();
+        // CurrentValue is object? because PropertyEntry serves any property; a primary key
+        // value is not null - the row was read from the database, and a SQL key cannot be.
+        // Hence the !, which keeps KeyValues promising non-null elements to the client.
+        // Do not filter nulls out instead: KeyValues is positional, and dropping one element
+        // of a composite key misaligns the rest.
         var keyValues = key?.Properties
-          .Select(p => entry.Property(p.Name).CurrentValue)
+          .Select(p => entry.Property(p.Name).CurrentValue!)
           .ToArray();
         return ConcurrencyErrorsException.CreateEntityError(entry.Entity.GetType().FullName, keyValues);
       }).ToList();
