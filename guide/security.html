@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Security | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Security | Breeze Server for .NET ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/security.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="security">Security</h1>
+
+<p>Breeze moves two jobs to the client that a hand-written API keeps on the server: composing
+queries, and assembling a change-set. That is the point of it — but it means two things now
+arrive from a browser that otherwise would not, and <strong>both are untrusted input</strong>.</p>
+<p>This page is about what that costs you and what you write to pay it. None of it is exotic; it
+is the same discipline as any API. What is different is <em>where</em> the checks go, because the
+usual place — the shape of the endpoint — no longer constrains much.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Breeze does nothing about authentication or authorization. <code>[Authorize]</code>, policies, claims
+and roles work exactly as they do in any ASP.NET Core application. What this page covers is
+the part that is specific to Breeze: a query and a change-set that the client composed.</p>
+</div>
+<hr>
+<h2 id="queries">Queries</h2>
+<h3 id="the-iqueryable-you-return-is-the-boundary">The <code>IQueryable</code> you return is the boundary</h3>
+<p>This is the single most important thing on the page. The client's query is applied <strong>on top of</strong>
+whatever your action returned, so it can only ever narrow the result. Whatever you hand back is
+the most any client can see.</p>
+<p>So this exposes every order in the database to anyone who can reach the endpoint:</p>
+<pre><code class="lang-csharp">// Every order in the database, to anyone who can reach the endpoint.
+[HttpGet]
+public IQueryable&lt;Order&gt; Orders() {
+  return _pm.Context.Orders;
+}
+</code></pre>
+<p>and this cannot, no matter what query arrives:</p>
+<pre><code class="lang-csharp">// The most this endpoint can return is one customer's orders. Whatever the client
+// asks for is applied on top of that, so it can only narrow the set further.
+[HttpGet]
+public IQueryable&lt;Order&gt; MyOrders() {
+  return _pm.Context.Orders.Where(o =&gt; o.CustomerID == CurrentCustomerId);
+}
+</code></pre>
+<p>An action that filters by something the <em>server</em> knows — the signed-in user, their tenant, their
+role — is often called a <strong>named query</strong>. It is the primary tool here, and it is worth preferring
+even where a bare set looks harmless today, because the set that is harmless now is the one
+someone adds a sensitive column to later.</p>
+<p>Note where <code>CurrentCustomerId</code> comes from: the user's claims. Not a route parameter, not a
+header, not a property of the entity. A value the client supplies is a value the client chooses.</p>
+<h3 id="bound-what-a-query-may-cost">Bound what a query may cost</h3>
+<p>Two properties on the filter attribute, both unlimited by default:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>What it does</th>
+<th>Without it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MaxTake</code></td>
+<td>caps rows, applied after the client's <code>where</code> and <code>orderBy</code></td>
+<td>a client that omits <code>take</code> selects the whole table</td>
+</tr>
+<tr>
+<td><code>MaxDepth</code></td>
+<td>caps <code>expand</code> and <code>select</code> depth; returns 400 beyond it</td>
+<td><code>expand=orders.orderDetails.product</code> walks the graph in one request</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-csharp">[Route(&quot;breeze/[controller]/[action]&quot;)]
+[Authorize]
+[BreezeQueryFilter(MaxTake = 1000, MaxDepth = 2)]
+</code></pre>
+<p>These are availability controls, not access controls — they bound the damage a careless or
+hostile query can do to your database, but they do not decide who may see what. That is the
+previous section's job.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p><code>MaxTake</code> applies only to Entity Framework queryables, and not inside <code>expand</code> subqueries. An
+action that returns an array or a <code>List&lt;T&gt;</code> is outside the cap entirely, and so is the
+collection on the far end of an expand. See <a href="querying.html#maxtake">Querying</a>.</p>
+</div>
+<h3 id="filtering-sees-what-projection-hides">Filtering sees what projection hides</h3>
+<p>A subtle one. Leaving a column out of <code>select</code> does not stop a client <em>filtering</em> on it:</p>
+<pre><code>?{&quot;where&quot;:{&quot;salary&quot;:{&quot;gt&quot;:100000}},&quot;select&quot;:&quot;lastName&quot;}
+</code></pre>
+<p>No salary is returned, but the set that comes back is exactly the employees earning over
+100,000 — and by moving the threshold a client reads the column a binary digit at a time.</p>
+<p>So &quot;the client cannot see it because it is not in the projection&quot; is not true. If a property
+must not be readable, keep it out of the <code>IQueryable</code> — project to a type that does not have it,
+or do not expose that set — rather than relying on what the client asked for.</p>
+<h3 id="turning-the-filter-off">Turning the filter off</h3>
+<p>Not every endpoint should be client-composable. An action that returns a computed report, or one
+whose parameters fully determine the result, is better off not accepting a query at all: leave
+<code>[BreezeQueryFilter]</code> off the controller, or call
+<a class="xref" href="../api/Breeze.AspNetCore.QueryFns.html#Breeze_AspNetCore_QueryFns_SkipBreezeQueryFilter_">SkipBreezeQueryFilter</a> and return a materialized <code>List&lt;T&gt;</code>.</p>
+<hr>
+<h2 id="saves">Saves</h2>
+<h3 id="a-save-bundle-is-a-claim-not-a-fact">A save bundle is a claim, not a fact</h3>
+<p>The bundle a client posts to <code>SaveChanges</code> names, for every entity in it:</p>
+<ul>
+<li>the <strong>entity type</strong>, as <code>Name:#Namespace</code>,</li>
+<li>the <strong>state</strong> — added, modified or deleted,</li>
+<li>the <strong>key</strong>,</li>
+<li>the <strong>original values</strong>,</li>
+<li>and <strong>every mapped property</strong>.</li>
+</ul>
+<p>All of it comes from the browser. <code>PersistenceManager.SaveChangesAsync(saveBundle)</code> with no hooks
+attached believes all of it.</p>
+<p>That is not a flaw to be worked around — it is what lets one request carry a whole screen's worth
+of edits across several types. But it does mean the hooks are not a convenience. They are where
+authorization lives.</p>
+<h3 id="beforesaveentity-is-the-authorization-point"><code>BeforeSaveEntity</code> is the authorization point</h3>
+<pre><code class="lang-csharp">[HttpPost]
+public Task&lt;SaveResult&gt; SaveChanges([FromBody] JObject saveBundle) {
+  _pm.BeforeSaveEntityDelegate = AuthorizeEntity;
+  return _pm.SaveChangesAsync(saveBundle);
+}
+
+private bool AuthorizeEntity(EntityInfo info) {
+  // The bundle names its own types, and the lookup reaches every entity type your
+  // application has loaded - not just the ones this controller is about. So decide
+  // what is saveable here rather than assuming.
+  if (!(info.Entity is Order order)) {
+    throw Forbid(info, &quot;This endpoint saves orders only.&quot;);
+  }
+
+  // For an update, the client sent CustomerID like every other property, so testing
+  // what arrived only proves the client claims to own the row. Read the stored value.
+  if (info.EntityState == EntityState.Modified || info.EntityState == EntityState.Deleted) {
+    var ownerOnRecord = _pm.Context.Orders
+      .Where(o =&gt; o.OrderID == order.OrderID)
+      .Select(o =&gt; o.CustomerID)
+      .FirstOrDefault();
+    if (ownerOnRecord != CurrentCustomerId) {
+      throw Forbid(info, &quot;That order belongs to someone else.&quot;);
+    }
+  }
+
+  // For an insert, the client does not get to choose whose it is.
+  order.CustomerID = CurrentCustomerId;
+  return true;
+}
+</code></pre>
+<p>Three things in there are worth pulling out.</p>
+<p><strong>Check the stored value, not the sent one.</strong> For a modified entity the client supplied
+<code>CustomerID</code> along with everything else, so testing what arrived only confirms that the client
+<em>claims</em> to own the row. The check has to read what is in the database.</p>
+<p><strong>Set it, do not trust it, on insert.</strong> For a new order the client does not get to choose whose
+it is; the server assigns it from the claim.</p>
+<p><strong>Decide what is saveable.</strong> Which brings us to:</p>
+<h3 id="the-type-name-is-the-clients-too">The type name is the client's too</h3>
+<p><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html">PersistenceManager</a> resolves the type named in the bundle by reflection,
+against every loaded assembly that is not a framework assembly. The reachable set is therefore
+<em>your application's entity types</em> — not &quot;the types this controller is about&quot;.</p>
+<p>A controller that only ever intends to save orders will still accept a bundle naming any other
+persistable type, and save it, unless something says otherwise. For a single type an <code>is</code> check
+in <code>BeforeSaveEntity</code> covers it; for a batch, check the map:</p>
+<pre><code class="lang-csharp">// The same decision for a whole batch, when several types are legitimately saveable.
+public static class SaveGuard {
+  private static readonly HashSet&lt;Type&gt; Saveable = new HashSet&lt;Type&gt; {
+    typeof(Order), typeof(Customer),
+  };
+
+  public static Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; RejectOtherTypes(
+      Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap) {
+    var unexpected = saveMap.Keys.Where(t =&gt; !Saveable.Contains(t)).ToList();
+    if (unexpected.Any()) {
+      throw new EntityErrorsException(
+        &quot;These types cannot be saved here: &quot; + string.Join(&quot;, &quot;, unexpected.Select(t =&gt; t.Name)),
+        new List&lt;EntityError&gt;());
+    }
+    return saveMap;
+  }
+}
+</code></pre><h3 id="every-mapped-property-is-written">Every mapped property is written</h3>
+<p>On a modified entity, Breeze attaches the entity and marks the entry <code>Modified</code>, so the row is
+written from the JSON that arrived. A property the user must not change is therefore not
+protected by being absent from your UI, or read-only in it, or omitted from a form.</p>
+<p>Put server-controlled values back, in a hook, every time:</p>
+<pre><code class="lang-csharp">// A modified entity is written from the JSON the client sent, so a property the user
+// may not set has to be put back rather than merely left out of the UI.
+private bool ResetServerControlledFields(EntityInfo info) {
+  if (info.Entity is Order order &amp;&amp; info.EntityState == EntityState.Added) {
+    order.OrderDate = DateTime.UtcNow;
+    order.Freight = CalculateFreight(order);
+  }
+  return true;
+}
+</code></pre>
+<p>Prices, discounts, status flags, role and permission columns, audit fields, and any foreign key
+that decides ownership all belong in that category.</p>
+<h3 id="original-values-are-the-clients-word-so-concurrency-is-not-a-control">Original values are the client's word, so concurrency is not a control</h3>
+<p><code>entityAspect.originalValuesMap</code> arrives from the client and becomes EF Core's <code>OriginalValue</code>
+for those properties — which is what EF puts in the <code>WHERE</code> clause of the <code>UPDATE</code> for a
+concurrency token.</p>
+<p>A cooperating client sends the values it actually read, and optimistic concurrency does its job:
+two users editing the same row do not silently clobber each other. A hostile client sends
+whatever makes the update match.</p>
+<p>So treat <a href="error-handling.html#concurrency-conflicts">concurrency conflicts</a> as protection against
+<em>accidents</em>, which is what they are for. If a row must not be changed by the wrong person, that
+is an authorization check in a hook, not a concurrency token.</p>
+<h3 id="reject-by-throwing-not-by-returning-false">Reject by throwing, not by returning <code>false</code></h3>
+<p>Returning <code>false</code> from <code>BeforeSaveEntity</code> drops the entity from the save <strong>silently</strong>. The client
+receives a successful save result and goes on believing the change was applied.</p>
+<p>That is the right behaviour for &quot;this entity does not need saving&quot;. It is the wrong behaviour for
+&quot;you may not do that&quot;, where the client needs to know. Throw an
+<a class="xref" href="../api/Breeze.Persistence.EntityErrorsException.html">EntityErrorsException</a> instead — see
+<a href="error-handling.html#reporting-validation-errors">Error handling</a>.</p>
+<hr>
+<h2 id="metadata">Metadata</h2>
+<p><code>GET /breeze/Northwind/Metadata</code> describes your whole model: entity types, property names, data
+types, keys, relationships, maximum lengths and which column is the concurrency token.</p>
+<p>That is a design disclosure rather than a data one, and for most applications it is fine — it
+describes the same schema the client needs in order to work at all. But it is worth knowing that
+the endpoint is a map of your database, and it is an ordinary action: put <code>[Authorize]</code> on it, or
+on the controller, if anonymous callers should not have it.</p>
+<hr>
+<h2 id="the-rest-is-ordinary-aspnet-core">The rest is ordinary ASP.NET Core</h2>
+<ul>
+<li><strong><code>[Authorize]</code></strong> on the controller, with whatever policies you use elsewhere. Breeze actions
+are ordinary actions.</li>
+<li><strong>CORS.</strong> Configure it as narrowly as your clients allow. The policy in this repository's test
+server reflects any origin and allows credentials, which is why it carries a comment saying not
+to copy it into a real application.</li>
+<li><strong>Stack traces.</strong> <a class="xref" href="../api/Breeze.Persistence.BreezeConfig.html#Breeze_Persistence_BreezeConfig_IncludeStackTraceInErrors">IncludeStackTraceInErrors</a> is <code>false</code> by
+default. Keep it that way outside development; it is how internals reach a client.</li>
+<li><strong>The usual database hygiene.</strong> Breeze composes LINQ, so the provider parameterises the values —
+a <code>where</code> clause from a client is not a SQL injection vector. That says nothing about raw SQL
+you write yourself elsewhere.</li>
+</ul>
+<hr>
+<h2 id="checklist">Checklist</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Every query action returns a set the current user may see, filtered server-side</td>
+<td><a href="#the-iqueryable-you-return-is-the-boundary">above</a></td>
+</tr>
+<tr>
+<td><code>MaxTake</code> and <code>MaxDepth</code> set on every <code>[BreezeQueryFilter]</code></td>
+<td><a href="#bound-what-a-query-may-cost">above</a></td>
+</tr>
+<tr>
+<td>Nothing sensitive reachable by a <code>where</code>, even if never selected</td>
+<td><a href="#filtering-sees-what-projection-hides">above</a></td>
+</tr>
+<tr>
+<td>A save hook that decides which types may be saved</td>
+<td><a href="#the-type-name-is-the-clients-too">above</a></td>
+</tr>
+<tr>
+<td>A save hook that checks ownership against stored values</td>
+<td><a href="#beforesaveentity-is-the-authorization-point">above</a></td>
+</tr>
+<tr>
+<td>Server-controlled properties reset on every save</td>
+<td><a href="#every-mapped-property-is-written">above</a></td>
+</tr>
+<tr>
+<td>Refusals throw rather than return <code>false</code></td>
+<td><a href="#reject-by-throwing-not-by-returning-false">above</a></td>
+</tr>
+<tr>
+<td><code>IncludeStackTraceInErrors</code> off in production</td>
+<td><a href="#the-rest-is-ordinary-aspnet-core">above</a></td>
+</tr>
+<tr>
+<td><code>[Authorize]</code> where it belongs, including on <code>Metadata</code> if needed</td>
+<td><a href="#metadata">above</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="querying.html">Querying</a> — the filter, and what its limits do</li>
+<li><a href="saving.html">Saving</a> — the hooks, in full</li>
+<li><a href="error-handling.html">Error handling</a> — telling a client what it may not do</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

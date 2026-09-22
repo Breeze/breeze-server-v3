@@ -1508,6 +1508,16 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "guide/security.md",
+      "output": {
+        ".html": {
+          "relative_path": "guide/security.html"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "guide/toc.yml",
       "output": {

@@ -236,11 +236,19 @@ configuration to talk to this server. The <code>Metadata</code>/<code>SaveChange
 curl 'http://localhost:5000/breeze/Northwind/Customers?$top=1'
 </code></pre>
 <p>The first returns a JSON metadata document; the second, one customer.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>The controller above is the smallest thing that works, not something to deploy. It returns
+every customer and every order to anyone who can reach it, with no limit on how many rows or
+how deep a query may go, and it saves whatever it is sent. <a href="security.html">Security</a> covers what
+to add and why.</p>
+</div>
 <h2 id="where-to-go-next">Where to go next</h2>
 <ul>
 <li><a href="persistence-manager.html">The PersistenceManager</a> — what it does, and its lifetime</li>
 <li><a href="querying.html">Querying</a> — the query filter, and limiting what clients may ask for</li>
 <li><a href="saving.html">Saving</a> — interceptors, transactions and key mappings</li>
+<li><a href="security.html">Security</a> — the query and the change-set both arrive from a browser</li>
 <li><a href="metadata.html">Metadata</a> — what is in the document and how to change it</li>
 <li><a href="error-handling.html">Error handling</a> — returning validation and concurrency errors a client understands</li>
 </ul>
