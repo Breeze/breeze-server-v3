@@ -76,7 +76,75 @@
 <p><strong>Breeze</strong> is a library from <a href="https://www.ideablade.com/">IdeaBlade</a> that helps you manage data in rich client
 applications. This site documents the .NET server-side packages, version 8.0.0, which target
 .NET 8, 9 and 10 on ASP.NET Core.</p>
-<p>It has two halves: a hand-written <strong><a href="guide/getting-started.html">Guide</a></strong>, and an
+<h2 id="what-the-breeze-server-does">What the Breeze server does</h2>
+<p>A Breeze client holds a cache of entities. It composes queries against them, tracks what the user changes, and
+saves everything in one go. None of that works against an ordinary REST API, because an ordinary REST API
+answers only the questions its author thought of in advance, and accepts only the shapes its author declared.</p>
+<p>The server packages close that gap. They add three things to an ASP.NET Core application:</p>
+<h3 id="1-they-describe-your-model-to-the-client">1. They describe your model to the client</h3>
+<p><code>PersistenceManager.Metadata()</code> reads your Entity Framework Core or NHibernate mapping and returns it as JSON:
+entity types, their properties and data types, keys, relationships, which properties are required, how long a
+string may be, and which column is the concurrency token.</p>
+<p>The client builds its own model from that document. It is what lets the client create a valid entity, follow
+<code>customer.orders[0].orderDetails</code>, know that a change is a change, and reject a too-long <code>CompanyName</code> before
+a request is ever sent. You write no schema twice: the mapping you already have is the description.</p>
+<h3 id="2-they-run-queries-the-client-composed">2. They run queries the client composed</h3>
+<p>The client builds a query — filter, sort, page, project, include related types — and sends it as JSON in the URL.
+<code>[BreezeQueryFilter]</code> applies it to the <code>IQueryable</code> your action returned, before it is serialized. So it reaches
+the database as SQL, with the filter in the <code>WHERE</code> clause rather than in memory afterwards.</p>
+<p>The practical effect is on how many endpoints you write:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>without Breeze</th>
+<th>with Breeze</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>query endpoints</td>
+<td>one per question - <code>GetCustomers</code>, <code>GetCustomersByCity</code>, <code>GetCustomersByCityPaged</code> …</td>
+<td>one per entity set, returning <code>IQueryable&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>a new filter the UI needs</td>
+<td>a new endpoint, deployed</td>
+<td>nothing; the client already can</td>
+</tr>
+</tbody>
+</table>
+<p>That is also why <a href="guide/querying.html">Querying</a> spends most of its length on <code>MaxDepth</code> and <code>MaxTake</code>. A query
+that arrives from a browser is user input, and the point of the feature is that you did not enumerate what it
+may ask for.</p>
+<h3 id="3-they-apply-a-whole-change-set-at-once">3. They apply a whole change-set at once</h3>
+<p><code>SaveChanges</code> receives one document containing every pending change — added, modified and deleted entities, of
+as many types as the user touched, each carrying its state and its original values. The <code>PersistenceManager</code>
+turns that back into real entities attached in the right states, saves them in one transaction, and reports
+back the keys the database generated in place of the temporary ones the client invented.</p>
+<p>So a screen that adds an order, edits two of its lines and deletes a third is one request that succeeds or
+fails as a unit — not four, in an order you had to choose, with partial failure to unpick.</p>
+<h3 id="and-they-translate-errors">And they translate errors</h3>
+<p>A failed save comes back as an <a href="https://www.rfc-editor.org/rfc/rfc9457">RFC 9457</a> problem details document
+carrying <em>which entity</em> failed and <em>why</em>, so the client can attach the message to the offending record rather
+than showing one dialog for the batch. Optimistic concurrency conflicts arrive with a stable problem type,
+identical whether Entity Framework Core or NHibernate raised them. See
+<a href="guide/error-handling.html">Error handling</a>.</p>
+<h3 id="what-it-does-not-do">What it does not do</h3>
+<p>It is a library, not a framework, and it is deliberately small:</p>
+<ul>
+<li><strong>It does not replace your <code>DbContext</code> or your mappings.</strong> It reads them. Your entities, configuration and
+migrations are unchanged.</li>
+<li><strong>Your controllers are ordinary controllers.</strong> Nothing is scaffolded or generated; see
+<a href="guide/getting-started.html">Getting started</a> for the whole of one.</li>
+<li><strong>It does nothing about authentication or authorization.</strong> That is ASP.NET Core's job as usual. What is
+yours to write is <em>what a given user may query and change</em> - the save hooks in
+<a href="guide/saving.html">Saving</a> are where that belongs, because a save bundle names its own entity types and
+original values and is therefore untrusted input.</li>
+<li><strong>It is not OData.</strong> The query format is Breeze's own, and the client speaks it out of the box.</li>
+</ul>
+<hr>
+<p>This site has two halves: a hand-written <strong><a href="guide/getting-started.html">Guide</a></strong>, and an
 <strong><a class="xref" href="api/Breeze.Persistence.html">API reference</a></strong> generated from the XML doc comments in
 <a href="https://github.com/Breeze/breeze-server-v3">breeze-server-v3</a>. The <em>API reference</em> tab above
 reaches the whole of it; the table below starts at each package.</p>
