@@ -356,6 +356,65 @@ Register the filter once instead and forgetting means <em>limited</em>:</p>
 <p>This is safe to apply globally: an action that does not return a queryable falls out of the
 filter immediately. Controllers that genuinely need different limits still carry their own
 attribute.</p>
+<h3 id="declare-which-navigations-may-be-expanded">Declare which navigations may be expanded</h3>
+<p><code>MaxDepth</code> bounds how <em>far</em> a client may walk; it says nothing about <em>where</em>. <code>MaxDepth = 1</code> still
+permits <code>expand=employee</code> from an order, and with it the salary on that employee.</p>
+<p><a class="xref" href="../api/Breeze.Core.AllowExpandAttribute.html">AllowExpandAttribute</a> and <a class="xref" href="../api/Breeze.Core.DenyExpandAttribute.html">DenyExpandAttribute</a> say which
+navigations are reachable from a type:</p>
+<pre><code class="lang-csharp">[AllowExpand(nameof(Orders))]
+public class Customer {
+  public Guid CustomerID { get; set; }
+  public ICollection&lt;Order&gt; Orders { get; set; } = new List&lt;Order&gt;();
+  public ICollection&lt;InternalNote&gt; Notes { get; set; } = new List&lt;InternalNote&gt;();
+}
+
+// Everything except Employee, which carries a salary a customer must not reach.
+[DenyExpand(nameof(Employee))]
+public class Order {
+  public int OrderID { get; set; }
+  public Employee? Employee { get; set; }
+  public ICollection&lt;OrderDetail&gt; OrderDetails { get; set; } = new List&lt;OrderDetail&gt;();
+}
+</code></pre>
+<p>Each type declares only its <strong>own</strong> outbound navigations, and a path is judged one hop at a time
+by the type each hop starts from. So <code>Orders.OrderDetails</code> needs <code>Orders</code> allowed on <code>Customer</code>
+and <code>OrderDetails</code> allowed on <code>Order</code> — nobody writes whole paths, and adding a navigation to
+<code>Order</code> does not mean revisiting <code>Customer</code>.</p>
+<p>A refused query gets <strong>400 Bad Request</strong>, naming the first forbidden hop and no more, so the
+message does not disclose what lies beyond it.</p>
+<p>For a model whose classes are generated — or to override what they declare, without editing
+them — <a class="xref" href="../api/Breeze.Core.ExpandPolicy.html">ExpandPolicy</a> takes the same rules in code:</p>
+<pre><code class="lang-csharp">// The same rules for a model whose classes are generated, or to override what they say.
+ExpandPolicy.Allow&lt;Customer&gt;(c =&gt; c.Orders);
+ExpandPolicy.Deny&lt;Order&gt;(o =&gt; o.Employee!);
+
+// Resolve now, so a contradiction is reported at startup rather than on the request
+// that happens to touch it.
+ExpandPolicy.Validate(typeof(Customer), typeof(Order));
+</code></pre>
+<p>Rules are resolved per navigation, highest first: a registered deny, then a registered allow-list,
+then <code>DenyExpand</code>, then <code>AllowExpand</code>, then the default. Registration beats the attributes, which
+is what lets a deployment tighten or relax what the model says.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p><strong>An allow-list always means &quot;these and no others&quot;</strong>, whichever source it came from. So
+<code>ExpandPolicy.Allow&lt;Order&gt;(o =&gt; o.Employee)</code> does not merely lift a <code>DenyExpand</code> on <code>Employee</code> —
+it makes <code>Employee</code> the only navigation expandable from <code>Order</code>. To relax one rule and leave
+the rest, list everything you want.</p>
+</div>
+<p>With nothing declared nothing is refused, so this changes no existing application until you use
+it. Once you have been through the model, invert the default:</p>
+<pre><code class="lang-csharp">// Nothing is expandable unless something says so. Review the whole model first.
+ExpandPolicy.DenyByDefault = true;
+</code></pre>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>This governs <code>expand</code> only. A client can still reach a related entity through <code>select</code> —
+<code>?{&quot;select&quot;:&quot;orders&quot;}</code> returns the orders whether or not <code>expand=orders</code> was refused. <code>MaxDepth</code>
+does check select paths, so it remains the bound there; see
+<a href="#filtering-sees-what-projection-hides">Filtering sees what projection hides</a> for the same
+shape of problem.</p>
+</div>
 <h3 id="give-saves-one-chokepoint">Give saves one chokepoint</h3>
 <p>Authorization that lives in eight controllers is authorization that holds in seven. Put the
 baseline in <code>BeforeSaveEntities</code> on a base <code>PersistenceManager</code> that all of yours derive from —
@@ -581,6 +640,10 @@ you write yourself elsewhere.</li>
 <tr>
 <td>Global query filters on every tenant- or owner-scoped type</td>
 <td><a href="#put-the-read-boundary-in-the-orm">above</a></td>
+</tr>
+<tr>
+<td>Sensitive navigations refused by <code>[DenyExpand]</code> or an allow-list</td>
+<td><a href="#declare-which-navigations-may-be-expanded">above</a></td>
 </tr>
 <tr>
 <td>The query limits registered globally, not per controller</td>

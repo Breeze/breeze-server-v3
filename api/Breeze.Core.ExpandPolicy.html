@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ExpandPolicy | Breeze Server for .NET </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ExpandPolicy | Breeze Server for .NET ">
+      
+      <meta name="description" content="Which navigation properties a client may expand from each entity type.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/new/master/apiSpec/new?filename=Breeze_Core_ExpandPolicy.md&amp;value=---%0Auid%3A%20Breeze.Core.ExpandPolicy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
+            Breeze Server for .NET
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Breeze.Core.ExpandPolicy">
+
+
+
+  <h1 id="Breeze_Core_ExpandPolicy" data-uid="Breeze.Core.ExpandPolicy" class="text-break">
+Class ExpandPolicy  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Breeze.html">Breeze</a>.<a class="xref" href="Breeze.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Breeze.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Which navigation properties a client may expand from each entity type.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class ExpandPolicy</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ExpandPolicy</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Breeze_Core_ExpandPolicy_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+Rules come from two places: <a class="xref" href="Breeze.Core.AllowExpandAttribute.html">AllowExpandAttribute</a> and
+<a class="xref" href="Breeze.Core.DenyExpandAttribute.html">DenyExpandAttribute</a> on the entity type, and the <a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Allow__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____">Allow&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])</a> and
+<a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Deny__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____">Deny&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])</a> methods here. The methods exist because a generated or scaffolded model
+cannot carry attributes - and because a registration overrides the attributes, so a
+deployment can tighten or relax what the model declares without editing it.
+</p>
+<p>Each navigation is judged by this ladder, highest first:</p>
+<ol><li>a registered <a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Deny__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____">Deny&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])</a> refuses it;</li><li>a registered <a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Allow__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____">Allow&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])</a> list permits exactly its members and
+refuses everything else, shadowing the type's attributes entirely;</li><li>a <a class="xref" href="Breeze.Core.DenyExpandAttribute.html">DenyExpandAttribute</a> refuses it;</li><li>an <a class="xref" href="Breeze.Core.AllowExpandAttribute.html">AllowExpandAttribute</a> list permits exactly its
+members;</li><li>otherwise <a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_DenyByDefault">DenyByDefault</a> decides.</li></ol>
+<p>
+An allow-list always means "these and no others", whichever source it came from. So
+<code>Allow&lt;Order&gt;(o =&gt; o.Employee)</code> does not merely lift a <code>DenyExpand</code> on
+<code>Employee</code> - it makes <code>Employee</code> the only navigation expandable from <code>Order</code>.
+</p>
+<p>
+With no rules at all nothing is refused, so adding this to an existing application changes
+nothing until you declare something or set <a class="xref" href="Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_DenyByDefault">DenyByDefault</a>.
+</p>
+<p>
+This governs <code>expand</code> only. A client can still reach a related entity through
+<code>select</code>, which is checked by <code>MaxDepth</code> but not by this policy.
+</p>
+</div>
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Breeze_Core_ExpandPolicy_DenyByDefault_" data-uid="Breeze.Core.ExpandPolicy.DenyByDefault*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_DenyByDefault" data-uid="Breeze.Core.ExpandPolicy.DenyByDefault">
+  DenyByDefault
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether a navigation with no rule about it is refused. False by default, so an existing
+application is unaffected until it opts in.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DenyByDefault { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Breeze_Core_ExpandPolicy_DenyByDefault_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Setting this true makes every expandable navigation something you declared on purpose,
+which is the safer arrangement but needs the whole model reviewed first.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Breeze_Core_ExpandPolicy_Allow_" data-uid="Breeze.Core.ExpandPolicy.Allow*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_Allow__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____" data-uid="Breeze.Core.ExpandPolicy.Allow``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+  Allow&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Permit exactly these navigations on <code class="typeparamref">T</code>, refusing every other one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Allow&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[] navigations)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>navigations</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</dt>
+    <dd><p>Property expressions, as in <code>c =&gt; c.Orders</code>.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The entity type the navigations are declared on.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>An expression is not a property access.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Breeze_Core_ExpandPolicy_Deny_" data-uid="Breeze.Core.ExpandPolicy.Deny*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_Deny__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____" data-uid="Breeze.Core.ExpandPolicy.Deny``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+  Deny&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Refuse these navigations on <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Deny&lt;T&gt;(params Expression&lt;Func&lt;T, object?&gt;&gt;[] navigations)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>navigations</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</dt>
+    <dd><p>Property expressions, as in <code>o =&gt; o.Employee</code>.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The entity type the navigations are declared on.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>An expression is not a property access.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Breeze_Core_ExpandPolicy_FirstForbiddenHop_" data-uid="Breeze.Core.ExpandPolicy.FirstForbiddenHop*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_FirstForbiddenHop_System_Type_System_String_" data-uid="Breeze.Core.ExpandPolicy.FirstForbiddenHop(System.Type,System.String)">
+  FirstForbiddenHop(Type, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The leading part of <code class="paramref">path</code> that policy refuses, or null if the whole path
+is permitted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string? FirstForbiddenHop(Type rootType, string path)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rootType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The entity type the path starts from.</p>
+</dd>
+    <dt><code>path</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A navigation path, dot- or slash-separated.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The refused leading path, or null.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Breeze_Core_ExpandPolicy_FirstForbiddenHop_System_Type_System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The return value names the hop that was refused rather than the path that was asked for,
+so a refusal at the first hop does not disclose whether the rest of the path exists.
+A path that does not resolve against the model returns null: that is
+<a class="xref" href="Breeze.Core.EntityQuery.html#Breeze_Core_EntityQuery_Validate_System_Type_">Validate(Type)</a>'s to report, not this.</p>
+</div>
+
+
+
+
+  <a id="Breeze_Core_ExpandPolicy_Reset_" data-uid="Breeze.Core.ExpandPolicy.Reset*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_Reset" data-uid="Breeze.Core.ExpandPolicy.Reset">
+  Reset()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Forget every registration, and the resolved rules. Intended for tests.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Reset()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Breeze_Core_ExpandPolicy_Validate_" data-uid="Breeze.Core.ExpandPolicy.Validate*"></a>
+
+  <h3 id="Breeze_Core_ExpandPolicy_Validate_System_Type___" data-uid="Breeze.Core.ExpandPolicy.Validate(System.Type[])">
+  Validate(params Type[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.Core/ExpandPolicy.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resolve these types' rules now, so a contradiction is reported at startup rather than on
+whichever request first touches it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Validate(params Type[] entityTypes)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entityTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</dt>
+    <dd><p>The entity types to resolve.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>A type names the same navigation in both an
+allow and a deny from the same source.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

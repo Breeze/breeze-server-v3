@@ -553,6 +553,44 @@ references:
   commentId: N:Breeze.Core
   fullName: Breeze.Core
   nameWithType: Breeze.Core
+- uid: Breeze.Core.AllowExpandAttribute
+  name: AllowExpandAttribute
+  href: api/Breeze.Core.AllowExpandAttribute.html
+  commentId: T:Breeze.Core.AllowExpandAttribute
+  fullName: Breeze.Core.AllowExpandAttribute
+  nameWithType: AllowExpandAttribute
+- uid: Breeze.Core.AllowExpandAttribute.#ctor(System.String[])
+  name: AllowExpandAttribute(params string[])
+  href: api/Breeze.Core.AllowExpandAttribute.html#Breeze_Core_AllowExpandAttribute__ctor_System_String___
+  commentId: M:Breeze.Core.AllowExpandAttribute.#ctor(System.String[])
+  name.vb: New(ParamArray String())
+  fullName: Breeze.Core.AllowExpandAttribute.AllowExpandAttribute(params string[])
+  fullName.vb: Breeze.Core.AllowExpandAttribute.New(ParamArray String())
+  nameWithType: AllowExpandAttribute.AllowExpandAttribute(params string[])
+  nameWithType.vb: AllowExpandAttribute.New(ParamArray String())
+- uid: Breeze.Core.AllowExpandAttribute.#ctor*
+  name: AllowExpandAttribute
+  href: api/Breeze.Core.AllowExpandAttribute.html#Breeze_Core_AllowExpandAttribute__ctor_
+  commentId: Overload:Breeze.Core.AllowExpandAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Breeze.Core.AllowExpandAttribute.AllowExpandAttribute
+  fullName.vb: Breeze.Core.AllowExpandAttribute.New
+  nameWithType: AllowExpandAttribute.AllowExpandAttribute
+  nameWithType.vb: AllowExpandAttribute.New
+- uid: Breeze.Core.AllowExpandAttribute.Navigations
+  name: Navigations
+  href: api/Breeze.Core.AllowExpandAttribute.html#Breeze_Core_AllowExpandAttribute_Navigations
+  commentId: P:Breeze.Core.AllowExpandAttribute.Navigations
+  fullName: Breeze.Core.AllowExpandAttribute.Navigations
+  nameWithType: AllowExpandAttribute.Navigations
+- uid: Breeze.Core.AllowExpandAttribute.Navigations*
+  name: Navigations
+  href: api/Breeze.Core.AllowExpandAttribute.html#Breeze_Core_AllowExpandAttribute_Navigations_
+  commentId: Overload:Breeze.Core.AllowExpandAttribute.Navigations
+  isSpec: "True"
+  fullName: Breeze.Core.AllowExpandAttribute.Navigations
+  nameWithType: AllowExpandAttribute.Navigations
 - uid: Breeze.Core.AndOrPredicate
   name: AndOrPredicate
   href: api/Breeze.Core.AndOrPredicate.html
@@ -1288,6 +1326,44 @@ references:
   commentId: F:Breeze.Core.DataType.TimeOnly
   fullName: Breeze.Core.DataType.TimeOnly
   nameWithType: DataType.TimeOnly
+- uid: Breeze.Core.DenyExpandAttribute
+  name: DenyExpandAttribute
+  href: api/Breeze.Core.DenyExpandAttribute.html
+  commentId: T:Breeze.Core.DenyExpandAttribute
+  fullName: Breeze.Core.DenyExpandAttribute
+  nameWithType: DenyExpandAttribute
+- uid: Breeze.Core.DenyExpandAttribute.#ctor(System.String[])
+  name: DenyExpandAttribute(params string[])
+  href: api/Breeze.Core.DenyExpandAttribute.html#Breeze_Core_DenyExpandAttribute__ctor_System_String___
+  commentId: M:Breeze.Core.DenyExpandAttribute.#ctor(System.String[])
+  name.vb: New(ParamArray String())
+  fullName: Breeze.Core.DenyExpandAttribute.DenyExpandAttribute(params string[])
+  fullName.vb: Breeze.Core.DenyExpandAttribute.New(ParamArray String())
+  nameWithType: DenyExpandAttribute.DenyExpandAttribute(params string[])
+  nameWithType.vb: DenyExpandAttribute.New(ParamArray String())
+- uid: Breeze.Core.DenyExpandAttribute.#ctor*
+  name: DenyExpandAttribute
+  href: api/Breeze.Core.DenyExpandAttribute.html#Breeze_Core_DenyExpandAttribute__ctor_
+  commentId: Overload:Breeze.Core.DenyExpandAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Breeze.Core.DenyExpandAttribute.DenyExpandAttribute
+  fullName.vb: Breeze.Core.DenyExpandAttribute.New
+  nameWithType: DenyExpandAttribute.DenyExpandAttribute
+  nameWithType.vb: DenyExpandAttribute.New
+- uid: Breeze.Core.DenyExpandAttribute.Navigations
+  name: Navigations
+  href: api/Breeze.Core.DenyExpandAttribute.html#Breeze_Core_DenyExpandAttribute_Navigations
+  commentId: P:Breeze.Core.DenyExpandAttribute.Navigations
+  fullName: Breeze.Core.DenyExpandAttribute.Navigations
+  nameWithType: DenyExpandAttribute.Navigations
+- uid: Breeze.Core.DenyExpandAttribute.Navigations*
+  name: Navigations
+  href: api/Breeze.Core.DenyExpandAttribute.html#Breeze_Core_DenyExpandAttribute_Navigations_
+  commentId: Overload:Breeze.Core.DenyExpandAttribute.Navigations
+  isSpec: "True"
+  fullName: Breeze.Core.DenyExpandAttribute.Navigations
+  nameWithType: DenyExpandAttribute.Navigations
 - uid: Breeze.Core.DynamicTypeBase
   name: DynamicTypeBase
   href: api/Breeze.Core.DynamicTypeBase.html
@@ -2166,6 +2242,102 @@ references:
   isSpec: "True"
   fullName: Breeze.Core.ExpandClause.PropertyPaths
   nameWithType: ExpandClause.PropertyPaths
+- uid: Breeze.Core.ExpandPolicy
+  name: ExpandPolicy
+  href: api/Breeze.Core.ExpandPolicy.html
+  commentId: T:Breeze.Core.ExpandPolicy
+  fullName: Breeze.Core.ExpandPolicy
+  nameWithType: ExpandPolicy
+- uid: Breeze.Core.ExpandPolicy.Allow*
+  name: Allow
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Allow_
+  commentId: Overload:Breeze.Core.ExpandPolicy.Allow
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.Allow
+  nameWithType: ExpandPolicy.Allow
+- uid: Breeze.Core.ExpandPolicy.Allow``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])
+  name: Allow<T>(params Expression<Func<T, object?>>[])
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Allow__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____
+  commentId: M:Breeze.Core.ExpandPolicy.Allow``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])
+  name.vb: Allow(Of T)(ParamArray Expression(Of Func(Of T, Object))())
+  fullName: Breeze.Core.ExpandPolicy.Allow<T>(params System.Linq.Expressions.Expression<System.Func<T, object?>>[])
+  fullName.vb: Breeze.Core.ExpandPolicy.Allow(Of T)(ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  nameWithType: ExpandPolicy.Allow<T>(params Expression<Func<T, object?>>[])
+  nameWithType.vb: ExpandPolicy.Allow(Of T)(ParamArray Expression(Of Func(Of T, Object))())
+- uid: Breeze.Core.ExpandPolicy.Deny*
+  name: Deny
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Deny_
+  commentId: Overload:Breeze.Core.ExpandPolicy.Deny
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.Deny
+  nameWithType: ExpandPolicy.Deny
+- uid: Breeze.Core.ExpandPolicy.DenyByDefault
+  name: DenyByDefault
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_DenyByDefault
+  commentId: P:Breeze.Core.ExpandPolicy.DenyByDefault
+  fullName: Breeze.Core.ExpandPolicy.DenyByDefault
+  nameWithType: ExpandPolicy.DenyByDefault
+- uid: Breeze.Core.ExpandPolicy.DenyByDefault*
+  name: DenyByDefault
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_DenyByDefault_
+  commentId: Overload:Breeze.Core.ExpandPolicy.DenyByDefault
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.DenyByDefault
+  nameWithType: ExpandPolicy.DenyByDefault
+- uid: Breeze.Core.ExpandPolicy.Deny``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])
+  name: Deny<T>(params Expression<Func<T, object?>>[])
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Deny__1_System_Linq_Expressions_Expression_System_Func___0_System_Object_____
+  commentId: M:Breeze.Core.ExpandPolicy.Deny``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])
+  name.vb: Deny(Of T)(ParamArray Expression(Of Func(Of T, Object))())
+  fullName: Breeze.Core.ExpandPolicy.Deny<T>(params System.Linq.Expressions.Expression<System.Func<T, object?>>[])
+  fullName.vb: Breeze.Core.ExpandPolicy.Deny(Of T)(ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  nameWithType: ExpandPolicy.Deny<T>(params Expression<Func<T, object?>>[])
+  nameWithType.vb: ExpandPolicy.Deny(Of T)(ParamArray Expression(Of Func(Of T, Object))())
+- uid: Breeze.Core.ExpandPolicy.FirstForbiddenHop(System.Type,System.String)
+  name: FirstForbiddenHop(Type, string)
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_FirstForbiddenHop_System_Type_System_String_
+  commentId: M:Breeze.Core.ExpandPolicy.FirstForbiddenHop(System.Type,System.String)
+  name.vb: FirstForbiddenHop(Type, String)
+  fullName: Breeze.Core.ExpandPolicy.FirstForbiddenHop(System.Type, string)
+  fullName.vb: Breeze.Core.ExpandPolicy.FirstForbiddenHop(System.Type, String)
+  nameWithType: ExpandPolicy.FirstForbiddenHop(Type, string)
+  nameWithType.vb: ExpandPolicy.FirstForbiddenHop(Type, String)
+- uid: Breeze.Core.ExpandPolicy.FirstForbiddenHop*
+  name: FirstForbiddenHop
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_FirstForbiddenHop_
+  commentId: Overload:Breeze.Core.ExpandPolicy.FirstForbiddenHop
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.FirstForbiddenHop
+  nameWithType: ExpandPolicy.FirstForbiddenHop
+- uid: Breeze.Core.ExpandPolicy.Reset
+  name: Reset()
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Reset
+  commentId: M:Breeze.Core.ExpandPolicy.Reset
+  fullName: Breeze.Core.ExpandPolicy.Reset()
+  nameWithType: ExpandPolicy.Reset()
+- uid: Breeze.Core.ExpandPolicy.Reset*
+  name: Reset
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Reset_
+  commentId: Overload:Breeze.Core.ExpandPolicy.Reset
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.Reset
+  nameWithType: ExpandPolicy.Reset
+- uid: Breeze.Core.ExpandPolicy.Validate(System.Type[])
+  name: Validate(params Type[])
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Validate_System_Type___
+  commentId: M:Breeze.Core.ExpandPolicy.Validate(System.Type[])
+  name.vb: Validate(ParamArray Type())
+  fullName: Breeze.Core.ExpandPolicy.Validate(params System.Type[])
+  fullName.vb: Breeze.Core.ExpandPolicy.Validate(ParamArray System.Type())
+  nameWithType: ExpandPolicy.Validate(params Type[])
+  nameWithType.vb: ExpandPolicy.Validate(ParamArray Type())
+- uid: Breeze.Core.ExpandPolicy.Validate*
+  name: Validate
+  href: api/Breeze.Core.ExpandPolicy.html#Breeze_Core_ExpandPolicy_Validate_
+  commentId: Overload:Breeze.Core.ExpandPolicy.Validate
+  isSpec: "True"
+  fullName: Breeze.Core.ExpandPolicy.Validate
+  nameWithType: ExpandPolicy.Validate
 - uid: Breeze.Core.FnBlock
   name: FnBlock
   href: api/Breeze.Core.FnBlock.html

@@ -120,6 +120,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.AllowExpandAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.AllowExpandAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.AllowExpandAttribute",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.AllowExpandAttribute.yml\" sourcestartlinenumber=\"1\">Names the navigation properties a client may expand from this entity type. Anything not\nnamed is refused.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Breeze.Core.AndOrPredicate.yml",
       "output": {
         ".html": {
@@ -232,6 +246,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.DenyExpandAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.DenyExpandAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.DenyExpandAttribute",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.DenyExpandAttribute.yml\" sourcestartlinenumber=\"1\">Names navigation properties a client may not expand from this entity type. Everything else\nis still permitted.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Breeze.Core.DynamicTypeBase.yml",
       "output": {
         ".html": {
@@ -313,6 +341,20 @@
       "IsMRef": true,
       "Title": "Breeze.Core.ExpandClause",
       "Summary": "<p sourcefile=\"api/Breeze.Core.ExpandClause.yml\" sourcestartlinenumber=\"1\">The expand clause of an <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref> - the related entities the client asked\nto have loaded along with the results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.ExpandPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.ExpandPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.ExpandPolicy",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.ExpandPolicy.yml\" sourcestartlinenumber=\"1\">Which navigation properties a client may expand from each entity type.</p>\n"
     },
     {
       "type": "ManagedReference",

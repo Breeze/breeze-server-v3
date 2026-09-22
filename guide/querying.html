@@ -201,6 +201,12 @@ deeper. Default <code>-1</code>, unlimited.</p>
 </table>
 <p>Depth is what keeps one request from pulling a large part of the database through a chain of
 navigation properties.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p><code>MaxDepth</code> bounds how far a query may walk, not which navigations it may walk. To say that
+<code>Order.Employee</code> is off limits however shallow the request, see
+<a href="security.html#declare-which-navigations-may-be-expanded">Declare which navigations may be expanded</a>.</p>
+</div>
 <h2 id="named-queries-with-parameters">Named queries with parameters</h2>
 <p>Not every endpoint is a bare entity set. An action that takes its own parameters and decides for
 itself what to return is usually called a <strong>named query</strong>: the client asks for it by action name
