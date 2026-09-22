@@ -230,6 +230,89 @@ public IQueryable&lt;Customer&gt; UnfilteredCustomers() {
 <p>To apply a query by hand instead — to inspect or post-process the result —
 <a class="xref" href="../api/Breeze.AspNetCore.QueryFns.html#Breeze_AspNetCore_QueryFns_ApplyBreezeQuery_">ApplyBreezeQuery</a> and
 <a class="xref" href="../api/Breeze.AspNetCore.QueryFns.html#Breeze_AspNetCore_QueryFns_ApplyBreezeWhere_">ApplyBreezeWhere</a> are extension methods on <code>ControllerBase</code>.</p>
+<h2 id="loading-several-lookup-tables-in-one-request">Loading several lookup tables in one request</h2>
+<p>Most applications open onto a screen that needs a dozen small reference lists — regions,
+categories, statuses, roles, currencies — before it can render a single dropdown. Fetching them
+one resource at a time costs a round trip each, and on a slow connection that is the whole of
+the startup delay.</p>
+<p>One action can return them all. Return an object whose properties are the sets:</p>
+<pre><code class="lang-csharp">// One request, three lists. The return type is object, not IQueryable, so the query
+// filter finds nothing to act on and passes the bag through untouched.
+[HttpGet]
+public object Lookups() {
+  var regions = _pm.Context.Regions;
+  var territories = _pm.Context.Territories;
+  var categories = _pm.Context.Categories;
+
+  return new { regions, territories, categories };
+}
+</code></pre>
+<p>The client asks for it like any other resource, and every entity in the bag lands in its cache:</p>
+<pre><code class="lang-ts">await EntityQuery.from('Lookups').using(em).execute();
+// Region, Territory and Category entities are all cached now
+</code></pre>
+<p>Breeze does not treat the wrapper as an entity. Each nested object carries its <code>$type</code>, which is
+how the client recognises the entities inside and merges them. The client side of this is in
+<a href="https://breeze.github.io/breeze-client-v3/query/examples#a-bag-of-lookups">A bag of lookups</a>.</p>
+<h3 id="the-return-type-decides-whether-the-filter-applies">The return type decides whether the filter applies</h3>
+<p><code>object</code> is the right return type, and deliberately so. The filter looks for an <code>IQueryable</code> or an
+<code>IEnumerable</code> in the result; an anonymous object is neither, so the bag passes through untouched.</p>
+<p>Return <code>IEnumerable&lt;object&gt;</code> — a list holding one bag — and the filter <em>does</em> engage, applying the
+client's query to the outer one-element list rather than to anything inside it. It works, but the
+query does nothing useful. Prefer <code>object</code>.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Because the filter does not engage, <strong><code>MaxTake</code> and <code>MaxDepth</code> do not apply here</strong>. This
+endpoint returns each set in full, however large it has become. That is exactly what you want
+for a handful of small static tables and exactly what you do not want when somebody adds
+<code>Orders</code> to the bag a year from now. See <a href="security.html#bound-what-a-query-may-cost">Security</a>.</p>
+</div>
+<h3 id="run-the-queries-before-serialising">Run the queries before serialising</h3>
+<p>In the version above the properties are still <code>IQueryable</code>, so nothing touches the database until
+the serializer enumerates them — one query per set, part-way through writing the response. If one
+fails there, the response has already begun and the client gets a truncated body rather than an
+error. The filter takes the same precaution for <code>select</code> and <code>expand</code>, for the same reason.</p>
+<p>Materialise them yourself and that problem goes away, along with any doubt about when the work
+happens:</p>
+<pre><code class="lang-csharp">[HttpGet]
+public object LookupsEagerly() {
+  // ToList() runs each query here rather than inside the serializer, so a failure
+  // becomes an error response instead of a truncated one - and the sizes are yours
+  // to check before they go on the wire.
+  return new {
+    regions = _pm.Context.Regions.ToList(),
+    territories = _pm.Context.Territories.ToList(),
+    categories = _pm.Context.Categories.ToList(),
+  };
+}
+</code></pre>
+<p>It also gives you somewhere to assert that these tables really are small.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>&quot;One pass&quot; means one round trip from the browser, which is the expensive part. It is still one
+SQL query per set, run sequentially on the one connection — Breeze does not combine them.</p>
+</div>
+<h3 id="trim-the-anonymous-type-out-of-the-payload">Trim the anonymous type out of the payload</h3>
+<p><code>UpdateWithDefaults</code> sets <code>TypeNameHandling.Objects</code>, so Newtonsoft writes a <code>$type</code> for the
+anonymous wrapper as well as for the entities — an assembly-qualified name the client has no use
+for. <a class="xref" href="../api/Breeze.Core.NoAnonSerializationBinder.html">NoAnonSerializationBinder</a> drops it:</p>
+<pre><code class="lang-csharp">builder.Services.AddControllers().AddNewtonsoftJson(opt =&gt; {
+  var settings = JsonSerializationFns.UpdateWithDefaults(opt.SerializerSettings);
+  // Keeps the anonymous wrapper's assembly-qualified name out of the payload.
+  settings.SerializationBinder = new NoAnonSerializationBinder();
+});
+</code></pre>
+<p>Optional — the bag works either way — but it shortens every projection response, and it keeps your
+assembly name out of them.</p>
+<h3 id="cache-them">Cache them</h3>
+<p>Lookup data is the same for every request and changes rarely, which makes it the easiest caching
+win available: <code>[ResponseCache]</code>, an <code>IMemoryCache</code> around the materialised lists, or an ETag.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Cache per tenant, or not at all, if the lists differ by tenant or by user. With a
+<a href="security.html#put-the-read-boundary-in-the-orm">global query filter</a> the sets are already scoped
+to the caller, so a cache that ignores that will serve one tenant's data to another.</p>
+</div>
 <h2 id="inline-count">Inline count</h2>
 <p>When the client asks for a total alongside a page, the response becomes a
 <a class="xref" href="../api/Breeze.Core.QueryResult.html">QueryResult</a> — <code>{ &quot;Results&quot;: [...], &quot;InlineCount&quot;: 235 }</code> — instead of a bare
