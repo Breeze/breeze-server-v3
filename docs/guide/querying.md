@@ -113,6 +113,82 @@ To apply a query by hand instead — to inspect or post-process the result —
 <xref:Breeze.AspNetCore.QueryFns.ApplyBreezeQuery*> and
 <xref:Breeze.AspNetCore.QueryFns.ApplyBreezeWhere*> are extension methods on `ControllerBase`.
 
+## Loading several lookup tables in one request
+
+Most applications open onto a screen that needs a dozen small reference lists — regions,
+categories, statuses, roles, currencies — before it can render a single dropdown. Fetching them
+one resource at a time costs a round trip each, and on a slow connection that is the whole of
+the startup delay.
+
+One action can return them all. Return an object whose properties are the sets:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#Lookups)]
+
+The client asks for it like any other resource, and every entity in the bag lands in its cache:
+
+```ts
+await EntityQuery.from('Lookups').using(em).execute();
+// Region, Territory and Category entities are all cached now
+```
+
+Breeze does not treat the wrapper as an entity. Each nested object carries its `$type`, which is
+how the client recognises the entities inside and merges them. The client side of this is in
+[A bag of lookups](https://breeze.github.io/breeze-client-v3/query/examples#a-bag-of-lookups).
+
+### The return type decides whether the filter applies
+
+`object` is the right return type, and deliberately so. The filter looks for an `IQueryable` or an
+`IEnumerable` in the result; an anonymous object is neither, so the bag passes through untouched.
+
+Return `IEnumerable<object>` — a list holding one bag — and the filter *does* engage, applying the
+client's query to the outer one-element list rather than to anything inside it. It works, but the
+query does nothing useful. Prefer `object`.
+
+> [!WARNING]
+> Because the filter does not engage, **`MaxTake` and `MaxDepth` do not apply here**. This
+> endpoint returns each set in full, however large it has become. That is exactly what you want
+> for a handful of small static tables and exactly what you do not want when somebody adds
+> `Orders` to the bag a year from now. See [Security](security.md#bound-what-a-query-may-cost).
+
+### Run the queries before serialising
+
+In the version above the properties are still `IQueryable`, so nothing touches the database until
+the serializer enumerates them — one query per set, part-way through writing the response. If one
+fails there, the response has already begun and the client gets a truncated body rather than an
+error. The filter takes the same precaution for `select` and `expand`, for the same reason.
+
+Materialise them yourself and that problem goes away, along with any doubt about when the work
+happens:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#LookupsMaterialized)]
+
+It also gives you somewhere to assert that these tables really are small.
+
+> [!NOTE]
+> "One pass" means one round trip from the browser, which is the expensive part. It is still one
+> SQL query per set, run sequentially on the one connection — Breeze does not combine them.
+
+### Trim the anonymous type out of the payload
+
+`UpdateWithDefaults` sets `TypeNameHandling.Objects`, so Newtonsoft writes a `$type` for the
+anonymous wrapper as well as for the entities — an assembly-qualified name the client has no use
+for. <xref:Breeze.Core.NoAnonSerializationBinder> drops it:
+
+[!code-csharp[](../snippets/QueryingSnippets.cs#AnonBinder)]
+
+Optional — the bag works either way — but it shortens every projection response, and it keeps your
+assembly name out of them.
+
+### Cache them
+
+Lookup data is the same for every request and changes rarely, which makes it the easiest caching
+win available: `[ResponseCache]`, an `IMemoryCache` around the materialised lists, or an ETag.
+
+> [!WARNING]
+> Cache per tenant, or not at all, if the lists differ by tenant or by user. With a
+> [global query filter](security.md#put-the-read-boundary-in-the-orm) the sets are already scoped
+> to the caller, so a cache that ignores that will serve one tenant's data to another.
+
 ## Inline count
 
 When the client asks for a total alongside a page, the response becomes a

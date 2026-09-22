@@ -24,10 +24,31 @@ namespace Breeze.Docs.Snippets {
     public DateTime? OrderDate { get; set; }
   }
 
+  // Small, static reference tables, for the lookups example in querying.md.
+
+  public class Region {
+    public int RegionID { get; set; }
+    public string RegionDescription { get; set; } = null!;
+  }
+
+  public class Territory {
+    public int TerritoryID { get; set; }
+    public string TerritoryDescription { get; set; } = null!;
+    public int RegionID { get; set; }
+  }
+
+  public class Category {
+    public int CategoryID { get; set; }
+    public string CategoryName { get; set; } = null!;
+  }
+
   public class NorthwindContext : DbContext {
     public NorthwindContext(DbContextOptions<NorthwindContext> options) : base(options) { }
     public DbSet<Customer> Customers { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<Region> Regions { get; set; } = null!;
+    public DbSet<Territory> Territories { get; set; } = null!;
+    public DbSet<Category> Categories { get; set; } = null!;
   }
 
   /// <summary> Implemented by the entities that SetAuditFields stamps. </summary>
