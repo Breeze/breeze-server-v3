@@ -107,10 +107,17 @@ curl 'http://localhost:5000/breeze/Northwind/Customers?$top=1'
 
 The first returns a JSON metadata document; the second, one customer.
 
+> [!WARNING]
+> The controller above is the smallest thing that works, not something to deploy. It returns
+> every customer and every order to anyone who can reach it, with no limit on how many rows or
+> how deep a query may go, and it saves whatever it is sent. [Security](security.md) covers what
+> to add and why.
+
 ## Where to go next
 
 - [The PersistenceManager](persistence-manager.md) — what it does, and its lifetime
 - [Querying](querying.md) — the query filter, and limiting what clients may ask for
 - [Saving](saving.md) — interceptors, transactions and key mappings
+- [Security](security.md) — the query and the change-set both arrive from a browser
 - [Metadata](metadata.md) — what is in the document and how to change it
 - [Error handling](error-handling.md) — returning validation and concurrency errors a client understands

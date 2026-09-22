@@ -6,6 +6,8 @@
   href: querying.md
 - name: Saving
   href: saving.md
+- name: Security
+  href: security.md
 - name: Metadata
   href: metadata.md
 - name: Error handling

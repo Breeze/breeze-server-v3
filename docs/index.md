@@ -96,6 +96,7 @@ reaches the whole of it; the table below starts at each package.
 | [The PersistenceManager](guide/persistence-manager.md) | the server side of Breeze, and its lifetime |
 | [Querying](guide/querying.md) | the query filter, and limiting what clients may ask for |
 | [Saving](guide/saving.md) | interceptors, transactions and key mappings |
+| [Security](guide/security.md) | the query and the change-set both come from the browser |
 | [Metadata](guide/metadata.md) | what the client is told about your model |
 | [Error handling](guide/error-handling.md) | returning errors a client can act on |
 
