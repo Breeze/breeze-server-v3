@@ -8,6 +8,12 @@ _layout: landing
 applications. This site documents the .NET server-side packages, version 8.0.0, which target
 .NET 8, 9 and 10 on ASP.NET Core.
 
+> [!TIP]
+> **Looking for the client?** The Breeze client documentation - guides and the TypeScript API reference - is at
+> **[breeze.github.io/breeze-client-v3](https://breeze.github.io/breeze-client-v3/)**. Start with
+> [Using a Breeze .NET server](https://breeze.github.io/breeze-client-v3/server/dotnet) for how a client talks
+> to the server documented here.
+
 ## What the Breeze server does
 
 A Breeze client holds a cache of entities. It composes queries against them, tracks what the user changes, and
@@ -110,8 +116,9 @@ that each target references the matching major version of Entity Framework Core.
 
 ## More documentation
 
-- **Breeze client documentation** - guides and the TypeScript API reference - lives in
-  [breeze-client-v3](https://github.com/Breeze/breeze-client-v3) (see its `DOCS.md` to build it).
+- **Breeze client documentation** - guides and the TypeScript API reference - is at
+  [breeze.github.io/breeze-client-v3](https://breeze.github.io/breeze-client-v3/), built from
+  [breeze-client-v3](https://github.com/Breeze/breeze-client-v3).
 - **Upgrading from 7.x** - [UPGRADE.md](https://github.com/Breeze/breeze-server-v3/blob/master/UPGRADE.md) in
   breeze-server-v3.
 - General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).

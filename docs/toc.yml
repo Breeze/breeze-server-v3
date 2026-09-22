@@ -4,3 +4,7 @@
   href: guide/
 - name: API reference
   href: api/
+# The client documentation is a separate VitePress site in breeze-client-v3. Its own nav has the
+# mirror of this entry. Nothing checks an external href at either end - see DOCS.md.
+- name: Client docs
+  href: https://breeze.github.io/breeze-client-v3/
