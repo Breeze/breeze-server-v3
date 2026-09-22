@@ -298,6 +298,235 @@ describes the same schema the client needs in order to work at all. But it is wo
 the endpoint is a map of your database, and it is an ordinary action: put <code>[Authorize]</code> on it, or
 on the controller, if anonymous callers should not have it.</p>
 <hr>
+<h2 id="hardening">Hardening</h2>
+<p>Everything above is a check you have to remember. That is the weakness: the breach is rarely a
+<em>wrong</em> check, it is a <em>missing</em> one, in an endpoint somebody added last Tuesday. So the
+measures worth doing first are the ones that change what happens when a check is forgotten.</p>
+<p>Two of them do most of the work, and both are configured once rather than per endpoint.</p>
+<h3 id="put-the-read-boundary-in-the-orm">Put the read boundary in the ORM</h3>
+<p>A named query secures the set the action returns. It does <strong>not</strong> secure what a client reaches
+<em>through</em> that set, because <code>expand</code> becomes Entity Framework's <code>Include</code>, and <code>Include</code> walks
+navigation properties without regard to the <code>Where</code> you put on the root.</p>
+<p>An EF Core <strong>global query filter</strong> does cover those, because EF applies it to every entity type
+in the query, including the ones pulled in by <code>Include</code>:</p>
+<pre><code class="lang-csharp">public class BillingContext : DbContext {
+  private readonly Guid _tenantId;
+
+  // AddDbContext resolves the extra parameter from DI, so every context is built for
+  // the tenant of the request it belongs to.
+  public BillingContext(DbContextOptions&lt;BillingContext&gt; options, ITenantContext tenant)
+      : base(options) {
+    _tenantId = tenant.TenantId;
+  }
+
+  public DbSet&lt;Invoice&gt; Invoices { get; set; } = null!;
+  public DbSet&lt;InvoiceLine&gt; InvoiceLines { get; set; } = null!;
+
+  protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    // One filter per tenant-owned type. A type left out has no boundary at all, so this
+    // list is the thing to check when a new entity is added to the model.
+    // Comparing against the field, not a literal, is what makes EF parameterise it.
+    modelBuilder.Entity&lt;Invoice&gt;().HasQueryFilter(i =&gt; i.TenantId == _tenantId);
+    modelBuilder.Entity&lt;InvoiceLine&gt;().HasQueryFilter(l =&gt; l.TenantId == _tenantId);
+  }
+}
+</code></pre>
+<p>This is the highest-leverage single measure available, for two reasons: it is the only one that
+constrains graph traversal, and it applies to an action written next month whether or not its
+author thought about it.</p>
+<p>What it costs you: the filter needs request state — the current user or tenant — inside the
+<code>DbContext</code>, which couples your model to the request; <code>IgnoreQueryFilters</code> bypasses it, so
+administrative paths need deliberate handling; and a filter on a required navigation can make
+data look mysteriously absent. Worth it, in my view, but not free.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p><strong>Query filters apply to reads, not to saves.</strong> Breeze attaches the entity the client sent and
+issues an <code>UPDATE ... WHERE key = @key</code>; no query runs, so no filter applies. The save side has
+to restate the boundary itself — see <a href="#writes-restate-the-boundary">below</a>.</p>
+</div>
+<h3 id="make-the-query-limits-global-not-per-controller">Make the query limits global, not per controller</h3>
+<p>As written, forgetting <code>[BreezeQueryFilter(MaxTake = …)]</code> on a new controller means <em>unlimited</em>.
+Register the filter once instead and forgetting means <em>limited</em>:</p>
+<pre><code class="lang-csharp">builder.Services.AddControllers(o =&gt; {
+  // Registered once, so a controller added later is bounded whether or not its author
+  // thought about it. Actions that do not return a queryable are unaffected.
+  o.Filters.Add(new BreezeQueryFilterAttribute { MaxTake = 1000, MaxDepth = 2 });
+});
+</code></pre>
+<p>This is safe to apply globally: an action that does not return a queryable falls out of the
+filter immediately. Controllers that genuinely need different limits still carry their own
+attribute.</p>
+<h3 id="give-saves-one-chokepoint">Give saves one chokepoint</h3>
+<p>Authorization that lives in eight controllers is authorization that holds in seven. Put the
+baseline in <code>BeforeSaveEntities</code> on a base <code>PersistenceManager</code> that all of yours derive from —
+which types may be saved, and who may touch a row — and keep per-controller
+<code>BeforeSaveEntityDelegate</code> for exceptions to it.</p>
+<hr>
+<h2 id="multi-tenancy">Multi-tenancy</h2>
+<p>One database holding several customers' data is the case where all of this stops being
+theoretical: the boundary is a column, every query crosses it, and a single missing filter
+exposes one customer's data to another.</p>
+<h3 id="the-tenant-id-is-an-identity-not-a-parameter">The tenant id is an identity, not a parameter</h3>
+<p>Take it from the signed-in principal's claims. A subdomain, a header, a route segment or a field
+in the payload can all be set by the caller, so none of them identifies anybody — at most they
+decide which login to demand.</p>
+<pre><code class="lang-csharp">/// &lt;summary&gt; The tenant this request belongs to. &lt;/summary&gt;
+public interface ITenantContext {
+  Guid TenantId { get; }
+}
+
+/// &lt;summary&gt;
+/// The tenant comes from the signed-in principal's claims, which the client cannot choose.
+/// A subdomain, header or route value can all be set by the caller, so none of them is an
+/// identity - at most they select which login to demand.
+/// &lt;/summary&gt;
+public class ClaimsTenantContext : ITenantContext {
+  private readonly IHttpContextAccessor _http;
+
+  public ClaimsTenantContext(IHttpContextAccessor http) {
+    _http = http;
+  }
+
+  public Guid TenantId {
+    get {
+      var claim = _http.HttpContext?.User?.FindFirst(&quot;tenantId&quot;);
+      // Fail closed. No tenant means no rows and no saves, not &quot;all rows&quot;.
+      if (claim == null) { throw new UnauthorizedAccessException(&quot;No tenant on this principal.&quot;); }
+      return Guid.Parse(claim.Value);
+    }
+  }
+}
+</code></pre>
+<p>Note that it fails closed. A principal with no tenant claim gets an exception, not an unfiltered
+view — the opposite of what <code>Guid.Empty</code> as a default would do.</p>
+<pre><code class="lang-csharp">builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped&lt;ITenantContext, ClaimsTenantContext&gt;();
+
+// Scoped, so the context and its query filters belong to one request's tenant.
+builder.Services.AddDbContext&lt;BillingContext&gt;(options =&gt;
+  options.UseSqlServer(builder.Configuration.GetConnectionString(&quot;Billing&quot;)));
+</code></pre><h3 id="reads-one-filter-per-tenant-owned-type">Reads: one filter per tenant-owned type</h3>
+<p>The <code>BillingContext</code> above is the whole read-side guard. Two things about it matter:</p>
+<ul>
+<li><strong>Compare against the field, not a literal.</strong> <code>i.TenantId == _tenantId</code> closes over an instance
+field, which EF parameterises, so one cached model serves every tenant. Baking a constant into
+the filter would cache the first tenant's value and serve it to everyone.</li>
+<li><strong>A type with no filter has no boundary.</strong> The list in <code>OnModelCreating</code> is the security
+control, so it is the thing to check whenever an entity is added to the model. A marker
+interface like <code>ITenantOwned</code> lets you assert the list is complete rather than trusting it:</li>
+</ul>
+<pre><code class="lang-csharp">/// &lt;summary&gt; Implemented by every entity that belongs to one tenant. &lt;/summary&gt;
+public interface ITenantOwned {
+  Guid TenantId { get; set; }
+}
+</code></pre>
+<p>Genuinely shared reference data — currencies, country codes — is the legitimate exception. It
+has no tenant column and needs no filter; just be sure that is a decision rather than an
+oversight.</p>
+<h3 id="writes-restate-the-boundary">Writes: restate the boundary</h3>
+<p>Query filters do nothing here, so the save guard carries the tenant rules itself:</p>
+<pre><code class="lang-csharp">public class BillingPersistenceManager : EFPersistenceManager&lt;BillingContext&gt; {
+  private readonly ITenantContext _tenant;
+
+  public BillingPersistenceManager(BillingContext context, ITenantContext tenant) : base(context) {
+    _tenant = tenant;
+  }
+
+  // Query filters do not apply to saves, so the tenant boundary has to be re-stated here.
+  protected override Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; BeforeSaveEntities(
+      Dictionary&lt;Type, List&lt;EntityInfo&gt;&gt; saveMap) {
+
+    foreach (var info in saveMap.SelectMany(kvp =&gt; kvp.Value)) {
+      if (!(info.Entity is ITenantOwned owned)) {
+        throw Reject($&quot;{info.Entity.GetType().Name} has no tenant and cannot be saved here.&quot;);
+      }
+
+      if (info.EntityState != EntityState.Added &amp;&amp; !BelongsToThisTenant(info)) {
+        // Same answer whether the row is another tenant's or does not exist, so a client
+        // cannot use the error to discover which keys are real.
+        throw Reject(&quot;No such record.&quot;);
+      }
+
+      // Stamped, never taken from the payload - on insert and on update alike, because an
+      // update rewrites every mapped column from what the client sent.
+      owned.TenantId = _tenant.TenantId;
+    }
+
+    return saveMap;
+  }
+
+  /// &lt;summary&gt;
+  /// Whether the stored row is this tenant's. The query runs through the filtered DbSet, so
+  /// another tenant's row is simply not there and no comparison is needed.
+  /// &lt;/summary&gt;
+  private bool BelongsToThisTenant(EntityInfo info) {
+    // Any() rather than a lookup that materialises the entity: this runs before Breeze
+    // attaches the client's instance, and a tracked row with the same key would collide
+    // with it. See the warning in security.md.
+    switch (info.Entity) {
+      case Invoice invoice:
+        return Context.Invoices.Any(i =&gt; i.InvoiceID == invoice.InvoiceID);
+      case InvoiceLine line:
+        return Context.InvoiceLines.Any(l =&gt; l.InvoiceLineID == line.InvoiceLineID);
+      default:
+        return false;
+    }
+  }
+
+  private static EntityErrorsException Reject(string message) {
+    return new EntityErrorsException(message, new List&lt;EntityError&gt;());
+  }
+}
+</code></pre>
+<p>Four decisions in that, each worth its line:</p>
+<p><strong>Stamp, never read.</strong> <code>TenantId</code> is assigned from the claim on insert <em>and</em> on update. Not
+because the client is expected to change it, but because an update rewrites every mapped column
+from what arrived, so leaving it alone means taking the client's value.</p>
+<p><strong>Verify against the stored row.</strong> Keys are guessable — sequential integers especially — so a
+client can name another tenant's row in a save bundle without ever having read it. The check is
+what stops that, and it has to consult the database.</p>
+<p><strong>Query through the filtered <code>DbSet</code>.</strong> Because the read side is already filtered,
+<code>Context.Invoices.Any(...)</code> cannot see another tenant's invoice. &quot;Not found&quot; and &quot;not yours&quot; are
+the same answer, with no comparison to get wrong.</p>
+<p><strong>Return the same error either way.</strong> A client that can tell &quot;does not exist&quot; from &quot;belongs to
+someone else&quot; can enumerate which keys are real.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Verify with <code>Any()</code> or a projection — <strong>not</strong> with something that materialises the entity.
+<code>BeforeSaveEntities</code> runs before Breeze attaches the client's instances, so a verification read
+that tracks a row with the same key collides with the attach that follows, and the save fails
+with a duplicate-tracking error. <code>Context.Invoices.Any(i =&gt; i.InvoiceID == id)</code> and
+<code>.Select(i =&gt; i.TenantId).FirstOrDefault()</code> are both safe; <code>.FirstOrDefault(i =&gt; …)</code> is not.</p>
+</div>
+<h3 id="if-the-data-is-worth-more-than-the-code">If the data is worth more than the code</h3>
+<p>Everything above is application code, and application code has bugs. Where a cross-tenant leak
+would be severe, put the boundary somewhere a bug cannot reach past:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Row-level security</strong> (SQL Server, PostgreSQL)</td>
+<td>the predicate lives in the database and applies to every statement, including ones your app did not mean to issue</td>
+</tr>
+<tr>
+<td><strong>Schema or database per tenant</strong></td>
+<td>no shared table to leak across; costs you migrations and connection management</td>
+</tr>
+</tbody>
+</table>
+<p>Both are defence in depth, not replacements — you still want the query filters, because a
+failure there should be a missing row rather than a caught exception.</p>
+<h3 id="test-the-boundary-do-not-inspect-it">Test the boundary, do not inspect it</h3>
+<p>The one test worth writing is the negative one: sign in as tenant A, ask for a row belonging to
+tenant B by key, and assert you get nothing — as a query, as an <code>expand</code> through a navigation,
+and as a save. That test fails loudly when someone adds an entity and forgets its filter, which
+is exactly the mistake that review misses.</p>
+<hr>
 <h2 id="the-rest-is-ordinary-aspnet-core">The rest is ordinary ASP.NET Core</h2>
 <ul>
 <li><strong><code>[Authorize]</code></strong> on the controller, with whatever policies you use elsewhere. Breeze actions
@@ -348,6 +577,22 @@ you write yourself elsewhere.</li>
 <tr>
 <td>Refusals throw rather than return <code>false</code></td>
 <td><a href="#reject-by-throwing-not-by-returning-false">above</a></td>
+</tr>
+<tr>
+<td>Global query filters on every tenant- or owner-scoped type</td>
+<td><a href="#put-the-read-boundary-in-the-orm">above</a></td>
+</tr>
+<tr>
+<td>The query limits registered globally, not per controller</td>
+<td><a href="#make-the-query-limits-global-not-per-controller">above</a></td>
+</tr>
+<tr>
+<td>Tenant stamped from the claim on every save, and verified against the stored row</td>
+<td><a href="#writes-restate-the-boundary">above</a></td>
+</tr>
+<tr>
+<td>A test that asserts cross-tenant access fails</td>
+<td><a href="#test-the-boundary-do-not-inspect-it">above</a></td>
 </tr>
 <tr>
 <td><code>IncludeStackTraceInErrors</code> off in production</td>
