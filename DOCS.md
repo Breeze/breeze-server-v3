@@ -12,28 +12,33 @@ see [Publishing](#publishing).
 
 ## TL;DR
 
-```bash
+```powershell
 dotnet tool restore                       # once - installs DocFX from .config/dotnet-tools.json
 dotnet docfx docs/docfx.json --serve      # then open http://localhost:8080/
-scripts/publish-docs.sh                   # build the site and push it to GitHub Pages
+.\scripts\publish-docs.ps1                # build the site and push it to GitHub Pages
 ```
 
-Stop the server with Ctrl+C.
+Stop the server with Ctrl+C. The `dotnet` commands are the same in any shell; the publish script
+is PowerShell - see [Publishing](#publishing).
 
 ---
 
 ## Publishing
 
-```bash
-scripts/publish-docs.sh                 # build, commit to the gh-pages branch, push
-scripts/publish-docs.sh --no-push       # build and commit; push later with: git push origin gh-pages
-scripts/publish-docs.sh --force         # publish again from a commit that is already published
+```powershell
+.\scripts\publish-docs.ps1            # build, commit to the gh-pages branch, push
+.\scripts\publish-docs.ps1 -NoPush    # build and commit; push later with: git push origin gh-pages
+.\scripts\publish-docs.ps1 -Force     # publish again from a commit that is already published
 ```
+
+It is a PowerShell script, and runs on Windows PowerShell 5.1 as well as PowerShell 7 - the same
+as `test-with-server.ps1` in breeze-client-v3. `Get-Help .\scripts\publish-docs.ps1 -Full` prints
+the usage.
 
 The site is whatever was last published, not what is on `master`: nothing publishes it
 automatically. So publish after pushing a change to the docs, or to the doc comments in `src/`.
 
-`scripts/publish-docs.sh`:
+`scripts\publish-docs.ps1`:
 
 1. **Refuses uncommitted changes**, so the published site always matches a commit. Commit or
    stash first.
@@ -45,10 +50,10 @@ automatically. So publish after pushing a change to the docs, or to the doc comm
 3. **Commits the built site to `gh-pages`**, in a temporary worktree, so the branch you are on
    and your working copy are never touched. `gh-pages` holds only the built site. Its commits
    are named after the source commit: `Publish docs from 0a837f5`.
-4. **Pushes `gh-pages`**, unless you passed `--no-push`. Pages updates a minute or two later.
+4. **Pushes `gh-pages`**, unless you passed `-NoPush`. Pages updates a minute or two later.
 
 If `gh-pages` was already published from the commit you are on, it does nothing, or only
-pushes a publish that `--no-push` left behind. It decides that by commit, not by comparing
+pushes a publish that `-NoPush` left behind. It decides that by commit, not by comparing
 files: DocFX writes its search index in the order pages finish rendering, so two builds of
 the same source are never byte-identical.
 
@@ -83,7 +88,7 @@ Run them from the repo root.
 | `dotnet docfx metadata docs/docfx.json` | regenerates only the API metadata (YAML) | `docs/api/` |
 | `dotnet docfx build docs/docfx.json` | builds the site from the **existing** metadata, skipping Roslyn | `docs/_site/` |
 | `dotnet docfx serve docs/_site` | serves the last build, without rebuilding | http://localhost:8080/ |
-| `scripts/publish-docs.sh` | builds the site for GitHub Pages and pushes it to `gh-pages` - see [Publishing](#publishing) | https://breeze.github.io/breeze-server-v3/ |
+| `scripts\publish-docs.ps1` | builds the site for GitHub Pages and pushes it to `gh-pages` - see [Publishing](#publishing) | https://breeze.github.io/breeze-server-v3/ |
 
 The API reference is under `/api/` - for example
 http://localhost:8080/api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html and
@@ -272,7 +277,7 @@ It currently reports **exactly two warnings**, both known:
 
 Both come from the `metadata` step, so `dotnet docfx build docs/docfx.json` - which skips it - should report **0
 warnings**. That makes the build-only command the sharper check while you are editing prose: any warning it prints is
-yours, and is usually a broken link or an `xref` that did not resolve. `scripts/publish-docs.sh` relies on exactly
+yours, and is usually a broken link or an `xref` that did not resolve. `scripts\publish-docs.ps1` relies on exactly
 that: it runs the two steps separately and refuses to publish if the build step warns at all.
 
 Any other warning is new. The compiler's doc-comment warnings (CS1570, CS1572, CS1573, CS1584, CS1587, CS1591) show
@@ -300,7 +305,7 @@ Add `--port 8081` (or any free port).
 
 ## Not set up yet
 
-- **Automatic publishing.** Publishing is by hand, with `scripts/publish-docs.sh`; see
+- **Automatic publishing.** Publishing is by hand, with `scripts\publish-docs.ps1`; see
   [Moving to GitHub Actions later](#moving-to-github-actions-later).
 - **Linking from the client docs.** The client site's *Server* menu points at
   [/server/dotnet](https://github.com/Breeze/breeze-client-v3/blob/master/docs/server/dotnet.md), a page there that
