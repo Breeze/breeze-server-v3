@@ -153,10 +153,14 @@ Write-Step "Building $short"
 # DOCS_BASE is read by docs/.vitepress/config.mts. The DocFX half needs none: its links are all
 # relative.
 $env:DOCS_BASE = $BasePath
+# VitePress reports progress on stderr. Under 'Stop', Windows PowerShell 5.1 turns those lines into
+# errors when output is redirected, so the build is judged by its exit code alone.
+$ErrorActionPreference = 'Continue'
 try {
   & npm run docs:build
   if ($LASTEXITCODE -ne 0) { throw "npm run docs:build failed (exit $LASTEXITCODE); the site is not published. See DOCS.md." }
 } finally {
+  $ErrorActionPreference = 'Stop'
   Remove-Item Env:DOCS_BASE -ErrorAction SilentlyContinue
 }
 
