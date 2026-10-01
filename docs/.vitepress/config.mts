@@ -57,6 +57,8 @@ export default defineConfig({
           text: 'Guide',
           items: [
             { text: 'Getting started', link: '/guide/getting-started' },
+            // The same table is on the client site, at /guide/versions there. Change both together.
+            { text: 'Versions', link: '/guide/versions' },
             { text: 'The PersistenceManager', link: '/guide/persistence-manager' },
             { text: 'Querying', link: '/guide/querying' },
             { text: 'Saving', link: '/guide/saving' },
