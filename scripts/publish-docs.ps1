@@ -6,11 +6,11 @@
 .DESCRIPTION
   1. Refuses a working copy with uncommitted changes, so the published site always matches
      a commit.
-  2. Builds, in two steps rather than as one `dotnet docfx docs/docfx.json`, so that warnings
-     can stop the publish. The metadata step's two known warnings are tolerated; the build
-     step must report none. A dead link, an unresolved xref or a missing code-snippet region
-     shows up there, and DocFX calls all three a warning rather than an error - so without
-     this check `docfx` exits 0 and a broken site goes live. See DOCS.md.
+  2. Builds with `npm run docs:build`, setting DOCS_BASE=/breeze-server-v3/, because Pages
+     serves this repo from that path rather than from /. That builds the API reference with
+     DocFX, failing on any warning it does not expect; builds the guide with VitePress,
+     failing on a dead link, an unresolved xref or a missing snippet region; merges the two;
+     and fails on a stale anchor. See DOCS.md.
   3. Commits the built site to gh-pages, in a temporary worktree, so the branch you are on
      and your working copy are never touched. gh-pages holds only the built site. Its commits
      are named after the source commit: "Publish docs from 8379d69".
@@ -18,11 +18,8 @@
 
   If gh-pages was already published from the commit you are on it does nothing, or only
   pushes a publish that -NoPush left behind. It decides that by commit, not by comparing
-  files: DocFX writes its search index in the order pages finish rendering, so two builds of
-  the same source are never byte-identical.
-
-  No base path is set, unlike the client's equivalent script. DocFX emits entirely relative
-  links, so the site serves correctly from /breeze-server-v3/ with no configuration.
+  files: VitePress and DocFX both write their search index in the order pages finish
+  rendering, so two builds of the same source are never byte-identical.
 
 .PARAMETER NoPush
   Build and commit to gh-pages, but leave the push to you.
@@ -52,8 +49,8 @@ $Branch = 'gh-pages'
 $RemoteBranch = "origin/$Branch"
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$siteDir = Join-Path $repoRoot 'docs\_site'
-$docfxJson = Join-Path $repoRoot 'docs\docfx.json'
+$siteDir = Join-Path $repoRoot 'docs\.vitepress\dist'
+$BasePath = '/breeze-server-v3/'
 
 function Write-Step([string] $message) {
   Write-Host ""
@@ -92,13 +89,9 @@ function Invoke-PagesGit {
   return $output
 }
 
-# DocFX colours its output, and the escape codes survive a pipe.
-function Remove-Ansi([string] $text) {
-  return ($text -replace '\x1b\[[0-9;]*m', '')
-}
-
 Assert-Command 'git' 'Install Git.'
 Assert-Command 'dotnet' 'Install the .NET 10 SDK.'
+Assert-Command 'npm' 'Install Node.js 22 or later, then run npm install.'
 
 if (Invoke-Git status --porcelain) {
   throw "The working copy has uncommitted changes. Commit or stash them, so the published site matches a commit."
@@ -157,20 +150,14 @@ if ($exists -and -not $Force) {
 
 Write-Step "Building $short"
 
-# The API metadata. Its two known warnings are tolerated; see DOCS.md.
-& dotnet docfx metadata $docfxJson
-if ($LASTEXITCODE -ne 0) { throw "docfx metadata failed (exit $LASTEXITCODE)." }
-
-# The site. Any warning here is a content problem, and stops the publish.
-& dotnet docfx build $docfxJson | Tee-Object -Variable buildOutput
-if ($LASTEXITCODE -ne 0) { throw "docfx build failed (exit $LASTEXITCODE)." }
-
-$warnings = 0
-foreach ($line in $buildOutput) {
-  if ((Remove-Ansi $line) -match '^\s*(\d+)\s+warning\(s\)\s*$') { $warnings = [int] $Matches[1] }
-}
-if ($warnings -ne 0) {
-  throw "docfx build reported $warnings warning(s); the site is not published. Fix them, or see DOCS.md."
+# DOCS_BASE is read by docs/.vitepress/config.mts. The DocFX half needs none: its links are all
+# relative.
+$env:DOCS_BASE = $BasePath
+try {
+  & npm run docs:build
+  if ($LASTEXITCODE -ne 0) { throw "npm run docs:build failed (exit $LASTEXITCODE); the site is not published. See DOCS.md." }
+} finally {
+  Remove-Item Env:DOCS_BASE -ErrorAction SilentlyContinue
 }
 
 if (-not (Test-Path $siteDir)) { throw "No site at $siteDir." }
@@ -198,7 +185,7 @@ try {
   Copy-Item -Path (Join-Path $siteDir '*') -Destination $worktree -Recurse -Force
 
   # Without this, Pages runs the site through Jekyll, which drops files whose names start
-  # with an underscore. Nothing DocFX emits does today; this keeps it that way if that changes.
+  # with an underscore. Nothing VitePress or DocFX emits does today; this keeps it that way if that changes.
   [IO.File]::WriteAllText((Join-Path $worktree '.nojekyll'), '')
 
   Invoke-PagesGit add --all | Out-Null

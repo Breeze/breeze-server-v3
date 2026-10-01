@@ -25,11 +25,11 @@ the most any client can see.
 
 So this exposes every order in the database to anyone who can reach the endpoint:
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#UnboundedQuery)]
+<<< @/snippets/SecuritySnippets.cs#UnboundedQuery
 
 and this cannot, no matter what query arrives:
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#NamedQuery)]
+<<< @/snippets/SecuritySnippets.cs#NamedQuery
 
 An action that filters by something the *server* knows — the signed-in user, their tenant, their
 role — is often called a **named query**. It is the primary tool here, and it is worth preferring
@@ -48,7 +48,7 @@ Two properties on the filter attribute, both unlimited by default:
 | `MaxTake` | caps rows, applied after the client's `where` and `orderBy` | a client that omits `take` selects the whole table |
 | `MaxDepth` | caps `expand` and `select` depth; returns 400 beyond it | `expand=orders.orderDetails.product` walks the graph in one request |
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#ControllerAttributes)]
+<<< @/snippets/SecuritySnippets.cs#ControllerAttributes
 
 These are availability controls, not access controls — they bound the damage a careless or
 hostile query can do to your database, but they do not decide who may see what. That is the
@@ -104,7 +104,7 @@ authorization lives.
 
 ### `BeforeSaveEntity` is the authorization point
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#AuthorizeSave)]
+<<< @/snippets/SecuritySnippets.cs#AuthorizeSave
 
 Three things in there are worth pulling out.
 
@@ -127,7 +127,7 @@ A controller that only ever intends to save orders will still accept a bundle na
 persistable type, and save it, unless something says otherwise. For a single type an `is` check
 in `BeforeSaveEntity` covers it; for a batch, check the map:
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#AllowedTypes)]
+<<< @/snippets/SecuritySnippets.cs#AllowedTypes
 
 ### Every mapped property is written
 
@@ -137,7 +137,7 @@ protected by being absent from your UI, or read-only in it, or omitted from a fo
 
 Put server-controlled values back, in a hook, every time:
 
-[!code-csharp[](../snippets/SecuritySnippets.cs#ServerControlledFields)]
+<<< @/snippets/SecuritySnippets.cs#ServerControlledFields
 
 Prices, discounts, status flags, role and permission columns, audit fields, and any foreign key
 that decides ownership all belong in that category.
@@ -197,7 +197,7 @@ navigation properties without regard to the `Where` you put on the root.
 An EF Core **global query filter** does cover those, because EF applies it to every entity type
 in the query, including the ones pulled in by `Include`:
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantQueryFilters)]
+<<< @/snippets/MultiTenancySnippets.cs#TenantQueryFilters
 
 This is the highest-leverage single measure available, for two reasons: it is the only one that
 constrains graph traversal, and it applies to an action written next month whether or not its
@@ -218,7 +218,7 @@ data look mysteriously absent. Worth it, in my view, but not free.
 As written, forgetting `[BreezeQueryFilter(MaxTake = …)]` on a new controller means *unlimited*.
 Register the filter once instead and forgetting means *limited*:
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#GlobalQueryLimits)]
+<<< @/snippets/MultiTenancySnippets.cs#GlobalQueryLimits
 
 This is safe to apply globally: an action that does not return a queryable falls out of the
 filter immediately. Controllers that genuinely need different limits still carry their own
@@ -232,7 +232,7 @@ permits `expand=employee` from an order, and with it the salary on that employee
 <xref:Breeze.Core.AllowExpandAttribute> and <xref:Breeze.Core.DenyExpandAttribute> say which
 navigations are reachable from a type:
 
-[!code-csharp[](../snippets/ExpandPolicySnippets.cs#AttributeDeclaration)]
+<<< @/snippets/ExpandPolicySnippets.cs#AttributeDeclaration
 
 Each type declares only its **own** outbound navigations, and a path is judged one hop at a time
 by the type each hop starts from. So `Orders.OrderDetails` needs `Orders` allowed on `Customer`
@@ -245,7 +245,7 @@ message does not disclose what lies beyond it.
 For a model whose classes are generated — or to override what they declare, without editing
 them — <xref:Breeze.Core.ExpandPolicy> takes the same rules in code:
 
-[!code-csharp[](../snippets/ExpandPolicySnippets.cs#RegistrationApi)]
+<<< @/snippets/ExpandPolicySnippets.cs#RegistrationApi
 
 Rules are resolved per navigation, highest first: a registered deny, then a registered allow-list,
 then `DenyExpand`, then `AllowExpand`, then the default. Registration beats the attributes, which
@@ -260,7 +260,7 @@ is what lets a deployment tighten or relax what the model says.
 With nothing declared nothing is refused, so this changes no existing application until you use
 it. Once you have been through the model, invert the default:
 
-[!code-csharp[](../snippets/ExpandPolicySnippets.cs#DenyByDefault)]
+<<< @/snippets/ExpandPolicySnippets.cs#DenyByDefault
 
 > [!WARNING]
 > This governs `expand` only. A client can still reach a related entity through `select` —
@@ -290,12 +290,12 @@ Take it from the signed-in principal's claims. A subdomain, a header, a route se
 in the payload can all be set by the caller, so none of them identifies anybody — at most they
 decide which login to demand.
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantContext)]
+<<< @/snippets/MultiTenancySnippets.cs#TenantContext
 
 Note that it fails closed. A principal with no tenant claim gets an exception, not an unfiltered
 view — the opposite of what `Guid.Empty` as a default would do.
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantRegistration)]
+<<< @/snippets/MultiTenancySnippets.cs#TenantRegistration
 
 ### Reads: one filter per tenant-owned type
 
@@ -308,7 +308,7 @@ The `BillingContext` above is the whole read-side guard. Two things about it mat
   control, so it is the thing to check whenever an entity is added to the model. A marker
   interface like `ITenantOwned` lets you assert the list is complete rather than trusting it:
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantOwned)]
+<<< @/snippets/MultiTenancySnippets.cs#TenantOwned
 
 Genuinely shared reference data — currencies, country codes — is the legitimate exception. It
 has no tenant column and needs no filter; just be sure that is a decision rather than an
@@ -318,7 +318,7 @@ oversight.
 
 Query filters do nothing here, so the save guard carries the tenant rules itself:
 
-[!code-csharp[](../snippets/MultiTenancySnippets.cs#TenantSaveGuard)]
+<<< @/snippets/MultiTenancySnippets.cs#TenantSaveGuard
 
 Four decisions in that, each worth its line:
 
@@ -388,7 +388,7 @@ is exactly the mistake that review misses.
 | Every query action returns a set the current user may see, filtered server-side | [above](#the-iqueryable-you-return-is-the-boundary) |
 | `MaxTake` and `MaxDepth` set on every `[BreezeQueryFilter]` | [above](#bound-what-a-query-may-cost) |
 | Nothing sensitive reachable by a `where`, even if never selected | [above](#filtering-sees-what-projection-hides) |
-| A save hook that decides which types may be saved | [above](#the-type-name-is-the-clients-too) |
+| A save hook that decides which types may be saved | [above](#the-type-name-is-the-client-s-too) |
 | A save hook that checks ownership against stored values | [above](#beforesaveentity-is-the-authorization-point) |
 | Server-controlled properties reset on every save | [above](#every-mapped-property-is-written) |
 | Refusals throw rather than return `false` | [above](#reject-by-throwing-not-by-returning-false) |
@@ -397,7 +397,7 @@ is exactly the mistake that review misses.
 | The query limits registered globally, not per controller | [above](#make-the-query-limits-global-not-per-controller) |
 | Tenant stamped from the claim on every save, and verified against the stored row | [above](#writes-restate-the-boundary) |
 | A test that asserts cross-tenant access fails | [above](#test-the-boundary-do-not-inspect-it) |
-| `IncludeStackTraceInErrors` off in production | [above](#the-rest-is-ordinary-aspnet-core) |
+| `IncludeStackTraceInErrors` off in production | [above](#the-rest-is-ordinary-asp-net-core) |
 | `[Authorize]` where it belongs, including on `Metadata` if needed | [above](#metadata) |
 
 ## See also

@@ -16,14 +16,14 @@ namespace Breeze.Docs.Snippets {
     #region MetadataAction
     [HttpGet]
     public IActionResult Metadata() => Ok(_pm.Metadata());
-    #endregion
+    #endregion MetadataAction
   }
 
   internal static class MetadataConfig {
     internal static void Enums() {
       #region UseIntEnums
       BreezeConfig.Instance.UseIntEnums = false;   // the default: strings
-      #endregion
+      #endregion UseIntEnums
     }
   }
 }

@@ -26,7 +26,7 @@ settings: reference handling for object graphs, type names so the client can tel
 object is, and a specific date format.
 <xref:Breeze.Core.JsonSerializationFns.UpdateWithDefaults*>, in `Breeze.Core`, applies them.
 
-[!code-csharp[](../snippets/GettingStarted.cs#ConfigureJson)]
+<<< @/snippets/GettingStarted.cs#ConfigureJson
 
 > [!IMPORTANT]
 > This is not optional. Without it the client receives JSON it cannot turn into entities —
@@ -42,7 +42,7 @@ means the names are translated twice. See [Metadata](metadata.md#naming).
 
 An ordinary EF Core `DbContext` — Breeze adds nothing to it.
 
-[!code-csharp[](../snippets/GettingStarted.cs#AddDbContext)]
+<<< @/snippets/GettingStarted.cs#AddDbContext
 
 ## Write a PersistenceManager
 
@@ -50,13 +50,13 @@ An ordinary EF Core `DbContext` — Breeze adds nothing to it.
 applies a save bundle. A subclass per `DbContext` is the usual arrangement, and it is where save
 interceptors live later.
 
-[!code-csharp[](../snippets/PersistenceManagerSnippet.cs#PersistenceManager)]
+<<< @/snippets/PersistenceManagerSnippet.cs#PersistenceManager
 
 That is enough to query and save. See [The PersistenceManager](persistence-manager.md).
 
 ## Write a controller
 
-[!code-csharp[](../snippets/ControllerSnippet.cs#Controller)]
+<<< @/snippets/ControllerSnippet.cs#Controller
 
 Three kinds of member, and that is the whole shape of a Breeze controller:
 

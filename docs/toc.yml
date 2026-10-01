@@ -1,7 +1,10 @@
+# The top bar of the DocFX API pages. Only the API reference is built by DocFX; the rest of the
+# site is VitePress (docs/.vitepress/config.mts), merged with it by scripts/merge-api-docs.mjs, so
+# Home and Guide are plain links to its pages rather than DocFX content.
 - name: Home
-  href: index.md
+  href: index.html
 - name: Guide
-  href: guide/
+  href: guide/getting-started.html
 - name: API reference
   href: api/
 # The client documentation is a separate VitePress site in breeze-client-v3. Its own nav has the

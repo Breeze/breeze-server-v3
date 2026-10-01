@@ -21,7 +21,7 @@ namespace Breeze.Docs.Snippets.Expand {
     public Employee? Employee { get; set; }
     public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
   }
-  #endregion
+  #endregion AttributeDeclaration
 
   public class Employee { public decimal Salary { get; set; } }
   public class OrderDetail { public int Id { get; set; } }
@@ -38,14 +38,14 @@ namespace Breeze.Docs.Snippets.Expand {
       // Resolve now, so a contradiction is reported at startup rather than on the request
       // that happens to touch it.
       ExpandPolicy.Validate(typeof(Customer), typeof(Order));
-      #endregion
+      #endregion RegistrationApi
     }
 
     internal static void DenyByDefault() {
       #region DenyByDefault
       // Nothing is expandable unless something says so. Review the whole model first.
       ExpandPolicy.DenyByDefault = true;
-      #endregion
+      #endregion DenyByDefault
     }
   }
 }

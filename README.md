@@ -28,7 +28,7 @@ A typical EF Core application installs the first two.
 | [UPGRADE.md](./UPGRADE.md) | **Upgrading an app from 7.x** - every consumer-facing change |
 | [CHANGES-DEV.md](./CHANGES-DEV.md) | Structural changes, for people working on Breeze itself |
 | [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
-| [DOCS.md](./DOCS.md) | Building and viewing the docs - the guide and the .NET API reference (DocFX) |
+| [DOCS.md](./DOCS.md) | Building and viewing the docs - the guide (VitePress) and the .NET API reference (DocFX) |
 
 The user documentation is at [breeze.github.io/breeze-server-v3](https://breeze.github.io/breeze-server-v3/).
 The 7.x and ASP.NET 4.x documentation is still at [breeze.github.io/doc-net](https://breeze.github.io/doc-net/?v2).

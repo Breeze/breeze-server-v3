@@ -16,7 +16,7 @@ namespace Breeze.Docs.Snippets {
   [Route("breeze/[controller]/[action]")]
   [Authorize]
   [BreezeQueryFilter(MaxTake = 1000, MaxDepth = 2)]
-  #endregion
+  #endregion ControllerAttributes
   public class SecureOrdersController : Controller {
     private readonly NorthwindPersistenceManager _pm;
 
@@ -41,7 +41,7 @@ namespace Breeze.Docs.Snippets {
     public IQueryable<Order> Orders() {
       return _pm.Context.Orders;
     }
-    #endregion
+    #endregion UnboundedQuery
 
     #region NamedQuery
     // The most this endpoint can return is one customer's orders. Whatever the client
@@ -50,7 +50,7 @@ namespace Breeze.Docs.Snippets {
     public IQueryable<Order> MyOrders() {
       return _pm.Context.Orders.Where(o => o.CustomerID == CurrentCustomerId);
     }
-    #endregion
+    #endregion NamedQuery
 
     #region AuthorizeSave
     [HttpPost]
@@ -83,7 +83,7 @@ namespace Breeze.Docs.Snippets {
       order.CustomerID = CurrentCustomerId;
       return true;
     }
-    #endregion
+    #endregion AuthorizeSave
 
     #region ServerControlledFields
     // A modified entity is written from the JSON the client sent, so a property the user
@@ -95,7 +95,7 @@ namespace Breeze.Docs.Snippets {
       }
       return true;
     }
-    #endregion
+    #endregion ServerControlledFields
 
     private static decimal CalculateFreight(Order order) {
       return 0m;
@@ -134,5 +134,5 @@ namespace Breeze.Docs.Snippets {
       return saveMap;
     }
   }
-  #endregion
+  #endregion AllowedTypes
 }

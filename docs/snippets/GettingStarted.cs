@@ -15,14 +15,14 @@ namespace Breeze.Docs.Snippets {
       builder.Services.AddControllers().AddNewtonsoftJson(opt => {
         JsonSerializationFns.UpdateWithDefaults(opt.SerializerSettings);
       });
-      #endregion
+      #endregion ConfigureJson
     }
 
     internal static void AddDbContext(WebApplicationBuilder builder) {
       #region AddDbContext
       builder.Services.AddDbContext<NorthwindContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
-      #endregion
+      #endregion AddDbContext
     }
   }
 }

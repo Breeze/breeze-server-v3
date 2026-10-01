@@ -1,12 +1,37 @@
 ---
-_layout: landing
+layout: home
+
+hero:
+  name: Breeze Server
+  text: Breeze for ASP.NET Core
+  tagline: Describe your model to the client, run the queries it composes, and save its whole change-set in one transaction - on .NET 8, 9 and 10, with Entity Framework Core or NHibernate.
+  actions:
+    - theme: brand
+      text: Get started
+      link: /guide/getting-started
+    - theme: alt
+      text: Upgrading from 7.x
+      link: https://github.com/Breeze/breeze-server-v3/blob/master/UPGRADE.md
+    - theme: alt
+      text: API reference
+      link: /api/
+      target: _self
+
+features:
+  - title: Your model, described once
+    details: The client learns entity types, keys, relationships and validation from the Entity Framework Core or NHibernate mapping you already have.
+    link: /guide/metadata
+  - title: Queries the client composed
+    details: One endpoint per entity set. Filter, sort, page and expand reach the database as SQL - within the limits you set.
+    link: /guide/querying
+  - title: Whole change-sets, one transaction
+    details: Added, modified and deleted entities of every type are saved together, with interceptors for the rules that are yours.
+    link: /guide/saving
 ---
 
-# Breeze Server for .NET
-
-**Breeze** is a library from [IdeaBlade](https://www.ideablade.com/) that helps you manage data in rich client
-applications. This site documents the .NET server-side packages, version 8.0.0, which target
-.NET 8, 9 and 10 on ASP.NET Core.
+This site documents the .NET server-side packages of **Breeze**, a library from
+[IdeaBlade](https://www.ideablade.com/) that helps you manage data in rich client applications.
+It covers version 8.0.0, which targets .NET 8, 9 and 10 on ASP.NET Core.
 
 > [!TIP]
 > **Looking for the client?** The Breeze client documentation - guides and the TypeScript API reference - is at
@@ -85,7 +110,7 @@ It is a library, not a framework, and it is deliberately small:
 
 This site has two halves: a hand-written **[Guide](guide/getting-started.md)**, and an
 **[API reference](xref:Breeze.Persistence)** generated from the XML doc comments in
-[breeze-server-v3](https://github.com/Breeze/breeze-server-v3). The *API reference* tab above
+[breeze-server-v3](https://github.com/Breeze/breeze-server-v3). The *API* link above
 reaches the whole of it; the table below starts at each package.
 
 ## Start here

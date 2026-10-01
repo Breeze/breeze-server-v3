@@ -19,12 +19,12 @@ namespace Breeze.Docs.Snippets {
     public PersistenceManagerGuideController(NorthwindContext context) {
       _pm = new NorthwindPersistenceManager(context);
     }
-    #endregion
+    #endregion ControllerConstructor
 
     #region ContextQuery
     [HttpGet]
     public IQueryable<Customer> Customers() => _pm.Context.Customers;
-    #endregion
+    #endregion ContextQuery
 
     #region PerRequestInterceptor
     [HttpPost]
@@ -32,14 +32,14 @@ namespace Breeze.Docs.Snippets {
       _pm.BeforeSaveEntityDelegate = SetAuditFields;
       return _pm.SaveChangesAsync(saveBundle);
     }
-    #endregion
+    #endregion PerRequestInterceptor
 
     private bool SetAuditFields(EntityInfo info) => true;
 
     internal void SetKeyGenerator() {
       #region KeyGenerator
       _pm.KeyGenerator = new NumericKeyGenerator((DbConnection)_pm.GetDbConnection());
-      #endregion
+      #endregion KeyGenerator
     }
   }
 
@@ -52,7 +52,7 @@ namespace Breeze.Docs.Snippets {
       return true;
     }
   }
-  #endregion
+  #endregion SubclassInterceptor
 
   #region AltMetadata
   public class AltMetadataPersistenceManager : EFPersistenceManager<NorthwindContext> {
@@ -62,5 +62,5 @@ namespace Breeze.Docs.Snippets {
       return "{ \"uiHints\": { \"Customer\": { \"icon\": \"person\" } } }";
     }
   }
-  #endregion
+  #endregion AltMetadata
 }

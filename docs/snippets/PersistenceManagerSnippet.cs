@@ -7,5 +7,5 @@ namespace Breeze.Docs.Snippets {
   public class NorthwindPersistenceManager : EFPersistenceManager<NorthwindContext> {
     public NorthwindPersistenceManager(NorthwindContext context) : base(context) { }
   }
-  #endregion
+  #endregion PersistenceManager
 }

@@ -4,7 +4,7 @@ A Breeze client batches every pending change — added, modified and deleted ent
 many types as you like — into one **save bundle** and posts it to a single endpoint. The server
 applies the lot in one unit and reports back.
 
-[!code-csharp[](../snippets/SavingSnippets.cs#SaveChangesAction)]
+<<< @/snippets/SavingSnippets.cs#SaveChangesAction
 
 The bundle arrives as a `JObject` rather than a typed model because it holds entities of mixed
 types, each with its original values and its state. <xref:Breeze.Persistence.PersistenceManager>
@@ -56,7 +56,7 @@ Each has an `...AsyncDelegate` counterpart for work that awaits.
 `EntityInfo` carries the entity, its <xref:Breeze.Persistence.EntityInfo.EntityState>, and its
 `OriginalValuesMap` — so a hook can see what actually changed, not just the new values:
 
-[!code-csharp[](../snippets/SavingSnippets.cs#BeforeSaveEntity)]
+<<< @/snippets/SavingSnippets.cs#BeforeSaveEntity
 
 > [!IMPORTANT]
 > Returning `false` silently removes the entity from the save. The client is not told, and will
@@ -72,7 +72,7 @@ it unchecked lets a client claim an entity it never fetched.
 `BeforeSaveEntities` receives `Dictionary<Type, List<EntityInfo>>` — everything in the save, grouped
 by type. Rules that need more than one entity go here:
 
-[!code-csharp[](../snippets/SavingSnippets.cs#BeforeSaveEntities)]
+<<< @/snippets/SavingSnippets.cs#BeforeSaveEntities
 
 You may add entries to the map to save entities the client never sent — an audit row, say. Return
 the map.
@@ -87,7 +87,7 @@ It runs inside the transaction when there is one, so throwing here rolls the sav
 <xref:Breeze.Persistence.DataAnnotationsValidator> applies the `System.ComponentModel.DataAnnotations`
 attributes on your entities and collects the failures:
 
-[!code-csharp[](../snippets/SavingSnippets.cs#ValidateOnSave)]
+<<< @/snippets/SavingSnippets.cs#ValidateOnSave
 
 With `throwIfInvalid: true` it throws an <xref:Breeze.Persistence.EntityErrorsException>, which
 reaches the client as a per-property error list the client attaches to the right entity. Pass
@@ -101,7 +101,7 @@ Call it **once** — a static constructor is the usual place — not on every sa
 
 Pass <xref:Breeze.Persistence.TransactionSettings> to control how the save is wrapped:
 
-[!code-csharp[](../snippets/SavingSnippets.cs#TransactionSettings)]
+<<< @/snippets/SavingSnippets.cs#TransactionSettings
 
 | `TransactionType` | What is wrapped |
 |---|---|
@@ -124,7 +124,7 @@ not pass its own.
 A client can attach an arbitrary value to a save, which arrives as
 <xref:Breeze.Persistence.SaveOptions.Tag>:
 
-[!code-csharp[](../snippets/SavingSnippets.cs#SaveOptionsTag)]
+<<< @/snippets/SavingSnippets.cs#SaveOptionsTag
 
 It is how one endpoint serves several save intents without a separate route for each.
 

@@ -146,12 +146,13 @@ To regenerate the database script from a live database:
 dotnet run --project tools/DbScripter -- tests/Databases/BreezeTestDb.sql
 ```
 
-## API reference site (done)
+## Docs site (done)
 
-A DocFX site documents the five packages in `src/` (net10.0 metadata). `dotnet tool
-restore`, then `dotnet docfx docs/docfx.json --serve` and open http://localhost:8080/. See
-DOCS.md. Published at https://breeze.github.io/breeze-server-v3/. Every public type and member carries an XML doc comment, so
-the site has no blank entries.
+Published at https://breeze.github.io/breeze-server-v3/. The guide and home page are VitePress,
+like the client docs, so the two sites look alike; the API reference for the five packages in
+`src/` (net10.0 metadata) is DocFX, merged in at `/api/`. `npm install`, `dotnet tool restore`,
+then `npm run docs:build` and `npm run docs:preview`. See DOCS.md. Every public type and member
+carries an XML doc comment, so the reference has no blank entries.
 
 ## Error responses are RFC 9457 problem details (done)
 

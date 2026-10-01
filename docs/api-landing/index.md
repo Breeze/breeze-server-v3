@@ -16,5 +16,5 @@ A typical EF Core application installs the first two; the last two come with the
 The reference is built from the `net10.0` target. The public API is the same on `net8.0` and
 `net9.0`, except that each references the matching major version of Entity Framework Core.
 
-New here? The [guide](../guide/getting-started.md) is the place to start — it covers the same
+New here? The [guide](../guide/getting-started.html) is the place to start — it covers the same
 ground in the order you need it.

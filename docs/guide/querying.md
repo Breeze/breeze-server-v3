@@ -11,7 +11,7 @@ to turn that into a `WHERE`, `ORDER BY`, `SKIP`/`TAKE`, `SELECT` and `INCLUDE` a
 Put it on the controller class. Every action that returns `IQueryable` or `IEnumerable` is then
 queryable:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#FilteredController)]
+<<< @/snippets/QueryingSnippets.cs#FilteredController
 
 The action returns the *unfiltered* set. The filter runs after the action, reads the query off the
 request, applies it to what was returned, and executes it.
@@ -41,7 +41,7 @@ The async one frees the request thread while the database works, which matters u
 sync one exists because of [efcore#18221](https://github.com/dotnet/efcore/issues/18221); the
 attribute's own remarks say so.
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#AsyncFilterAttribute)]
+<<< @/snippets/QueryingSnippets.cs#AsyncFilterAttribute
 
 With `CatchCancellations`, a client that gives up mid-query gets an empty result with status
 `499` rather than an exception — `CancellationStatusCode` changes the code.
@@ -52,7 +52,7 @@ A query arrives from a browser, so it is user input. Two properties bound it.
 
 ### MaxTake
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#MaxTakeAttribute)]
+<<< @/snippets/QueryingSnippets.cs#MaxTakeAttribute
 
 Adds `Take(1000)` when the client asked for more, or for nothing at all. Default `-1`, unlimited —
 which means a client that forgets `.take()` selects the whole table.
@@ -66,7 +66,7 @@ This is not the same as a `Take()` in the action: `MaxTake` is applied **after**
 
 ### MaxDepth
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#MaxDepthAttribute)]
+<<< @/snippets/QueryingSnippets.cs#MaxDepthAttribute
 
 Caps how far `select` and `expand` may reach, and returns **400 Bad Request** when a query goes
 deeper. Default `-1`, unlimited.
@@ -93,7 +93,7 @@ Not every endpoint is a bare entity set. An action that takes its own parameters
 itself what to return is usually called a **named query**: the client asks for it by action name
 rather than by resource.
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#ParameterizedQuery)]
+<<< @/snippets/QueryingSnippets.cs#ParameterizedQuery
 
 The parameters are bound by ordinary ASP.NET Core model binding — there is nothing Breeze-specific
 about them. The client supplies them with `withParameters`:
@@ -126,7 +126,7 @@ the client sent is layered on top and can only narrow further.
 
 Return a `List<T>` instead and the parameter still works, but the composition does not:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#NotComposable)]
+<<< @/snippets/QueryingSnippets.cs#NotComposable
 
 | | `IQueryable<T>` | `List<T>` |
 |---|---|---|
@@ -155,13 +155,13 @@ Anything model binding understands from a query string:
 
 An array arrives as `cities[0]=London&cities[1]=Paris`:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#ArrayParameter)]
+<<< @/snippets/QueryingSnippets.cs#ArrayParameter
 
 A query-by-example object binds from **flat, top-level** parameters named after its properties —
 `CompanyName=C&City=London`, not `qbe.CompanyName=C`. The parameter name on the server is not part
 of what the client sends:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#ObjectParameter)]
+<<< @/snippets/QueryingSnippets.cs#ObjectParameter
 
 > [!NOTE]
 > Zero, `null` and empty-string parameters are worth a test of your own. An absent parameter and
@@ -194,7 +194,7 @@ instead, and ordering stops mattering. See
 A complex query can outgrow the URL length a server or proxy will accept. `UsePost` reads it from
 the request body instead:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#UsePostAttribute)]
+<<< @/snippets/QueryingSnippets.cs#UsePostAttribute
 
 There is a cost — the body has to be read and buffered — so put it on endpoints that need it
 rather than on every controller. If model binding has already consumed the body, it must be
@@ -205,7 +205,7 @@ rewound before the filter can read it.
 <xref:Breeze.AspNetCore.QueryFns.SkipBreezeQueryFilter*> turns the filter off for the current
 request, for an action on a filtered controller that returns something the filter should not touch:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#SkipFilter)]
+<<< @/snippets/QueryingSnippets.cs#SkipFilter
 
 To apply a query by hand instead — to inspect or post-process the result —
 <xref:Breeze.AspNetCore.QueryFns.ApplyBreezeQuery*> and
@@ -220,7 +220,7 @@ the startup delay.
 
 One action can return them all. Return an object whose properties are the sets:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#Lookups)]
+<<< @/snippets/QueryingSnippets.cs#Lookups
 
 The client asks for it like any other resource, and every entity in the bag lands in its cache:
 
@@ -258,7 +258,7 @@ error. The filter takes the same precaution for `select` and `expand`, for the s
 Materialise them yourself and that problem goes away, along with any doubt about when the work
 happens:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#LookupsMaterialized)]
+<<< @/snippets/QueryingSnippets.cs#LookupsMaterialized
 
 It also gives you somewhere to assert that these tables really are small.
 
@@ -272,7 +272,7 @@ It also gives you somewhere to assert that these tables really are small.
 anonymous wrapper as well as for the entities — an assembly-qualified name the client has no use
 for. <xref:Breeze.Core.NoAnonSerializationBinder> drops it:
 
-[!code-csharp[](../snippets/QueryingSnippets.cs#AnonBinder)]
+<<< @/snippets/QueryingSnippets.cs#AnonBinder
 
 Optional — the bag works either way — but it shortens every projection response, and it keeps your
 assembly name out of them.

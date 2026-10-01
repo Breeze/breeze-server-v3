@@ -24,7 +24,7 @@ namespace Breeze.Docs.Snippets {
     [HttpGet]
     public IQueryable<Customer> Customers() => _pm.Context.Customers;
   }
-  #endregion
+  #endregion FilteredController
 
   [Route("breeze/[controller]/[action]")]
   [BreezeQueryFilter]
@@ -40,7 +40,7 @@ namespace Breeze.Docs.Snippets {
     public IQueryable<Customer> CustomersStartingWith(string companyName) {
       return _pm.Context.Customers.Where(c => c.CompanyName.StartsWith(companyName));
     }
-    #endregion
+    #endregion ParameterizedQuery
 
     #region NotComposable
     // The same parameter, but the client's query can no longer reach the database:
@@ -49,7 +49,7 @@ namespace Breeze.Docs.Snippets {
     public List<Customer> CustomersStartingWithList(string companyName) {
       return _pm.Context.Customers.Where(c => c.CompanyName.StartsWith(companyName)).ToList();
     }
-    #endregion
+    #endregion NotComposable
 
     #region ArrayParameter
     [HttpGet]
@@ -60,7 +60,7 @@ namespace Breeze.Docs.Snippets {
       }
       return customers;
     }
-    #endregion
+    #endregion ArrayParameter
 
     #region ObjectParameter
     /// <summary> A query-by-example parameter. Its properties are bound from the query string. </summary>
@@ -80,7 +80,7 @@ namespace Breeze.Docs.Snippets {
       }
       return customers;
     }
-    #endregion
+    #endregion ObjectParameter
 
     #region SkipFilter
     [HttpGet]
@@ -88,7 +88,7 @@ namespace Breeze.Docs.Snippets {
       this.SkipBreezeQueryFilter();
       return _pm.Context.Customers;
     }
-    #endregion
+    #endregion SkipFilter
 
     #region Lookups
     // One request, three lists. The return type is object, not IQueryable, so the query
@@ -101,7 +101,7 @@ namespace Breeze.Docs.Snippets {
 
       return new { regions, territories, categories };
     }
-    #endregion
+    #endregion Lookups
 
     #region LookupsMaterialized
     [HttpGet]
@@ -115,7 +115,7 @@ namespace Breeze.Docs.Snippets {
         categories = _pm.Context.Categories.ToList(),
       };
     }
-    #endregion
+    #endregion LookupsMaterialized
   }
 
   internal static class AnonymousTypeJson {
@@ -126,27 +126,27 @@ namespace Breeze.Docs.Snippets {
         // Keeps the anonymous wrapper's assembly-qualified name out of the payload.
         settings.SerializationBinder = new NoAnonSerializationBinder();
       });
-      #endregion
+      #endregion AnonBinder
     }
   }
 
   #region AsyncFilterAttribute
   [BreezeAsyncQueryFilter(CatchCancellations = true)]
-  #endregion
+  #endregion AsyncFilterAttribute
   public class AsyncQueryingController : Controller { }
 
   #region MaxTakeAttribute
   [BreezeQueryFilter(MaxTake = 1000)]
-  #endregion
+  #endregion MaxTakeAttribute
   public class MaxTakeController : Controller { }
 
   #region MaxDepthAttribute
   [BreezeQueryFilter(MaxDepth = 2)]
-  #endregion
+  #endregion MaxDepthAttribute
   public class MaxDepthController : Controller { }
 
   #region UsePostAttribute
   [BreezeQueryFilter(UsePost = true)]
-  #endregion
+  #endregion UsePostAttribute
   public class UsePostController : Controller { }
 }

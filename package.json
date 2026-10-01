@@ -1,0 +1,17 @@
+{
+  "name": "breeze-server-v3-docs",
+  "private": true,
+  "description": "Builds the Breeze .NET server docs: the guide with VitePress, as the client docs are built, and the .NET API reference with DocFX. See DOCS.md.",
+  "type": "module",
+  "scripts": {
+    "docs:api": "node scripts/build-api-docs.mjs",
+    "docs:dev": "npm run docs:api && vitepress dev docs",
+    "docs:build": "npm run docs:api && vitepress build docs && node scripts/merge-api-docs.mjs && node scripts/check-doc-anchors.mjs",
+    "docs:check-anchors": "node scripts/check-doc-anchors.mjs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0",
+    "vitepress": "1.6.4"
+  }
+}

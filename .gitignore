@@ -22,3 +22,8 @@ artifacts:
 docs/api/
 docs/_site/
 docs/obj/
+
+# VitePress (the guide) - see DOCS.md
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/

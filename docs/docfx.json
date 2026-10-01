@@ -22,14 +22,10 @@
   "build": {
     "content": [
       {
+        "_comment": "DocFX builds only the API reference, plus toc.yml for the top bar of the API pages. The guide and the home page are built by VitePress, which merges this output in at api/ - see DOCS.md.",
         "files": [
-          "**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**",
-          "obj/**",
-          "api-landing/**",
-          "snippets/**"
+          "api/**.yml",
+          "toc.yml"
         ]
       },
       {

@@ -9,7 +9,7 @@ detail.
 
 ## Install the filter
 
-[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#AddFilter)]
+<<< @/snippets/ErrorHandlingSnippets.cs#AddFilter
 
 Without it, an <xref:Breeze.Persistence.EntityErrorsException> reaches the client as an
 unremarkable 500 and the per-entity detail is lost.
@@ -60,7 +60,7 @@ A client matches on `type`, not on message text, which is what makes the distinc
 
 Throw an `EntityErrorsException` with one `EntityError` per problem:
 
-[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#ThrowEntityErrors)]
+<<< @/snippets/ErrorHandlingSnippets.cs#ThrowEntityErrors
 
 It defaults to **403 Forbidden**; set `StatusCode` for something else. The
 [DataAnnotationsValidator](saving.md#validation) throws this for you from your model's annotations.
@@ -82,7 +82,7 @@ differs — re-read and merge for a conflict, change the data for a duplicate.
 It carries one error per conflicting row, so the client can mark exactly the records the user must
 look at:
 
-[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#ThrowConcurrency)]
+<<< @/snippets/ErrorHandlingSnippets.cs#ThrowConcurrency
 
 ## Database errors
 
@@ -90,7 +90,7 @@ A duplicate key or a foreign-key violation should be **409 Conflict**, not 500 �
 data that is wrong, not the server. Recognizing one means reading a provider-specific error number,
 which the filter deliberately does not know how to do. Supply the mapping:
 
-[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#DbExceptionMapper)]
+<<< @/snippets/ErrorHandlingSnippets.cs#DbExceptionMapper
 
 <xref:Breeze.AspNetCore.DbExceptionMappers.SqlServer*> recognizes SQL Server's 2627, 2601 and 547.
 For another database, write the equivalent — PostgreSQL uses SQLSTATE 23505 and 23503:
@@ -106,7 +106,7 @@ Return `null` to accept the default of 500.
 
 Off by default. Turn them on for development only:
 
-[!code-csharp[](../snippets/ErrorHandlingSnippets.cs#StackTraces)]
+<<< @/snippets/ErrorHandlingSnippets.cs#StackTraces
 
 ## Older clients
 

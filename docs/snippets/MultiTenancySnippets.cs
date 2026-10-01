@@ -23,7 +23,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
   public interface ITenantOwned {
     Guid TenantId { get; set; }
   }
-  #endregion
+  #endregion TenantOwned
 
   public class Invoice : ITenantOwned {
     public int InvoiceID { get; set; }
@@ -66,7 +66,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
       }
     }
   }
-  #endregion
+  #endregion TenantContext
 
   #region TenantQueryFilters
   public class BillingContext : DbContext {
@@ -90,7 +90,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
       modelBuilder.Entity<InvoiceLine>().HasQueryFilter(l => l.TenantId == _tenantId);
     }
   }
-  #endregion
+  #endregion TenantQueryFilters
 
   #region TenantSaveGuard
   public class BillingPersistenceManager : EFPersistenceManager<BillingContext> {
@@ -145,7 +145,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
       return new EntityErrorsException(message, new List<EntityError>());
     }
   }
-  #endregion
+  #endregion TenantSaveGuard
 
   internal static class Registration {
 
@@ -157,7 +157,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
       // Scoped, so the context and its query filters belong to one request's tenant.
       builder.Services.AddDbContext<BillingContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("Billing")));
-      #endregion
+      #endregion TenantRegistration
     }
 
     internal static void AddGlobalQueryLimits(WebApplicationBuilder builder) {
@@ -167,7 +167,7 @@ namespace Breeze.Docs.Snippets.MultiTenant {
         // thought about it. Actions that do not return a queryable are unaffected.
         o.Filters.Add(new BreezeQueryFilterAttribute { MaxTake = 1000, MaxDepth = 2 });
       });
-      #endregion
+      #endregion GlobalQueryLimits
     }
   }
 }

@@ -27,7 +27,7 @@ namespace Breeze.Docs.Snippets {
     [HttpPost]
     public Task<SaveResult> SaveChanges([FromBody] JObject saveBundle)
       => _pm.SaveChangesAsync(saveBundle);
-    #endregion
+    #endregion SaveChangesAction
 
     #region TransactionSettings
     [HttpPost]
@@ -35,13 +35,13 @@ namespace Breeze.Docs.Snippets {
       var settings = new TransactionSettings { TransactionType = TransactionType.DbTransaction };
       return _pm.SaveChangesAsync(saveBundle, settings);
     }
-    #endregion
+    #endregion TransactionSettings
 
     internal void ReadTag() {
       #region SaveOptionsTag
       var tag = _pm.SaveOptions?.Tag as string;
       if (tag == "publish") { /* ... */ }
-      #endregion
+      #endregion SaveOptionsTag
     }
 
     #region BeforeSaveEntity
@@ -56,7 +56,7 @@ namespace Breeze.Docs.Snippets {
       }
       return true;   // false drops this entity from the save
     }
-    #endregion
+    #endregion BeforeSaveEntity
 
     #region BeforeSaveEntities
     private Dictionary<Type, List<EntityInfo>> CheckOrders(
@@ -70,7 +70,7 @@ namespace Breeze.Docs.Snippets {
       }
       return saveMap;
     }
-    #endregion
+    #endregion BeforeSaveEntities
 
     internal void Suppress() => SetAuditFields(null!);
   }
@@ -86,5 +86,5 @@ namespace Breeze.Docs.Snippets {
       return saveMap;
     }
   }
-  #endregion
+  #endregion ValidateOnSave
 }

@@ -32,5 +32,5 @@ namespace Breeze.Docs.Snippets {
     [HttpGet]
     public IQueryable<Order> Orders() => _pm.Context.Orders;
   }
-  #endregion
+  #endregion Controller
 }

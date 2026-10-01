@@ -5,7 +5,7 @@ A Breeze client does not know your model until the server describes it. That des
 properties that join them. The client builds its `MetadataStore` from it, and everything else —
 typed queries, change tracking, validation, relationship fixup — depends on it.
 
-[!code-csharp[](../snippets/MetadataSnippets.cs#MetadataAction)]
+<<< @/snippets/MetadataSnippets.cs#MetadataAction
 
 <xref:Breeze.Persistence.PersistenceManager.Metadata> returns it as a JSON string, generated from
 your ORM mapping. You do not write it by hand.
@@ -62,7 +62,7 @@ A property whose CLR type is an enum is described by name, and the enum itself a
 `enumTypes` with its values. Whether the *values* travel as strings or integers is a serializer
 setting:
 
-[!code-csharp[](../snippets/MetadataSnippets.cs#UseIntEnums)]
+<<< @/snippets/MetadataSnippets.cs#UseIntEnums
 
 It has to agree with what the client expects, so change it before anything serializes — at startup,
 alongside the rest of your JSON configuration.
@@ -76,7 +76,7 @@ you want to add information of your own for the client to read.
 JSON string and it is merged into the document under `altMetadata`, **alongside** the generated
 metadata rather than in place of it:
 
-[!code-csharp[](../snippets/PersistenceManagerGuide.cs#AltMetadata)]
+<<< @/snippets/PersistenceManagerGuide.cs#AltMetadata
 
 To replace the document outright, override `BuildJsonMetadata()` instead and return whatever you
 like — including a document read from a file, which is how a model with no ORM behind it is

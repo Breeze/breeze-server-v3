@@ -17,7 +17,7 @@ namespace Breeze.Docs.Snippets {
       builder.Services.AddControllers().AddMvcOptions(o => {
         o.Filters.Add(new GlobalExceptionFilter());
       });
-      #endregion
+      #endregion AddFilter
     }
 
     internal static void AddFilterWithDbMapper(WebApplicationBuilder builder) {
@@ -26,14 +26,14 @@ namespace Breeze.Docs.Snippets {
         o.Filters.Add(new GlobalExceptionFilter {
           StatusCodeForException = DbExceptionMappers.SqlServer
         });
-        #endregion
+        #endregion DbExceptionMapper
       });
     }
 
     internal static void StackTraces() {
       #region StackTraces
       BreezeConfig.Instance.IncludeStackTraceInErrors = true;   // NOT in production
-      #endregion
+      #endregion StackTraces
     }
 
     #region ThrowEntityErrors
@@ -51,7 +51,7 @@ namespace Breeze.Docs.Snippets {
       }
       return true;
     }
-    #endregion
+    #endregion ThrowEntityErrors
 
     internal static void ThrowConcurrency(IReadOnlyList<Conflict> conflicts) {
       #region ThrowConcurrency
@@ -59,7 +59,7 @@ namespace Breeze.Docs.Snippets {
         ConcurrencyErrorsException.CreateEntityError(c.TypeName, c.KeyValues));
       throw new ConcurrencyErrorsException(
         ConcurrencyErrorsException.CreateMessage(conflicts.Count), errors);
-      #endregion
+      #endregion ThrowConcurrency
     }
 
     internal static void Suppress() => CheckFreight(null!);
