@@ -1,239 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
-      <title>The PersistenceManager | Breeze Server for .NET </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="The PersistenceManager | Breeze Server for .NET ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Breeze/breeze-server-v3/blob/master/docs/guide/persistence-manager.md/#L1">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>The PersistenceManager | Breeze Server</title>
+    <meta name="description" content="Breeze server-side packages for .NET">
+    <meta name="generator" content="VitePress v1.6.4">
+    <link rel="preload stylesheet" href="/breeze-server-v3/assets/style.dwTFAQwy.css" as="style">
+    <link rel="preload stylesheet" href="/breeze-server-v3/vp-icons.css" as="style">
+    
+    <script type="module" src="/breeze-server-v3/assets/app.BAGq7QH1.js"></script>
+    <link rel="preload" href="/breeze-server-v3/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="modulepreload" href="/breeze-server-v3/assets/chunks/theme.W6uxriAQ.js">
+    <link rel="modulepreload" href="/breeze-server-v3/assets/chunks/framework.DJS_B2uc.js">
+    <link rel="modulepreload" href="/breeze-server-v3/assets/guide_persistence-manager.md.DKf03nom.lean.js">
+    <script id="check-dark-mode">(()=>{const e=localStorage.getItem("vitepress-theme-appearance")||"auto",a=window.matchMedia("(prefers-color-scheme: dark)").matches;(!e||e==="auto"?a:e==="dark")&&document.documentElement.classList.add("dark")})();</script>
+    <script id="check-mac-os">document.documentElement.classList.toggle("mac",/Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
   </head>
-
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="Breeze Server for .NET">
-            Breeze Server for .NET
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
-          </div>
-        </div>
-      </div>
-
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
-        </div>
-
-        <article data-uid="">
-<h1 id="the-persistencemanager">The PersistenceManager</h1>
-
-<p><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html">PersistenceManager</a> is the server side of Breeze. It does two things a
-plain <code>DbContext</code> or NHibernate <code>ISession</code> does not:</p>
-<ol>
-<li><strong>Describes the model</strong> — turns your mapping into the JSON metadata document the client builds
-its entity types from.</li>
-<li><strong>Applies a save bundle</strong> — takes the JSON a client sends, turns it back into entities in the
-right states, saves them in one transaction, and reports back the server-assigned keys.</li>
-</ol>
-<p>It is abstract. You use the subclass for your ORM.</p>
-<table>
-<thead>
-<tr>
-<th>ORM</th>
-<th>Class</th>
-<th>Constructed from</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Entity Framework Core</td>
-<td><a class="xref" href="../api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html">EFPersistenceManager&lt;T&gt;</a></td>
-<td>your <code>DbContext</code></td>
-</tr>
-<tr>
-<td>NHibernate</td>
-<td><a class="xref" href="../api/Breeze.Persistence.NH.NHPersistenceManager.html">NHPersistenceManager</a></td>
-<td>an <code>ISession</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="subclassing-it">Subclassing it</h2>
-<p>Write one per context. Even with no members it is worth having, because interceptors and metadata
-overrides go here rather than in the controller:</p>
-<pre><code class="lang-csharp">using Breeze.Persistence.EFCore;
-
-public class NorthwindPersistenceManager : EFPersistenceManager&lt;NorthwindContext&gt; {
-  public NorthwindPersistenceManager(NorthwindContext context) : base(context) { }
-}
-</code></pre>
-<p><a class="xref" href="../api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html#Breeze_Persistence_EFCore_EFPersistenceManager_1_Context">Context</a> gives the typed <code>DbContext</code> back,
-which is what query actions return sets from:</p>
-<pre><code class="lang-csharp">[HttpGet]
-public IQueryable&lt;Customer&gt; Customers() =&gt; _pm.Context.Customers;
-</code></pre><h2 id="lifetime">Lifetime</h2>
-<p><strong>Create one per request</strong>, in the controller's constructor, from a <code>DbContext</code> that DI has already
-scoped to the request:</p>
-<pre><code class="lang-csharp">public PersistenceManagerGuideController(NorthwindContext context) {
-  _pm = new NorthwindPersistenceManager(context);
-}
-</code></pre>
-<p>It wraps a <code>DbContext</code>, so it inherits the <code>DbContext</code>'s rules: not thread-safe, and not meant to
-outlive the request. Registering one as a singleton shares one change-tracker between every
-concurrent request.</p>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>A <code>PersistenceManager</code> is built for <strong>one save</strong>. It keeps the state of the save in progress, and
-a second <code>SaveChanges</code> on the same instance rebuilds that state rather than adding to it. This is
-the ordinary case — one instance, one request, one save — but it is worth knowing before you
-reach for a longer-lived one.</p>
-</div>
-<p>NHibernate is the same shape with an <code>ISession</code> in place of the <code>DbContext</code>; the test server builds
-an <code>ISessionFactory</code> once as a singleton and opens a session per request from it.</p>
-<h2 id="what-you-get-without-writing-anything">What you get without writing anything</h2>
-<table>
-<thead>
-<tr>
-<th>Member</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_Metadata">Metadata()</a></td>
-<td>the JSON metadata document, built from your mapping</td>
-</tr>
-<tr>
-<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChangesAsync_">SaveChangesAsync</a></td>
-<td>applies a save bundle in a transaction, returns a <a class="xref" href="../api/Breeze.Persistence.SaveResult.html">SaveResult</a></td>
-</tr>
-<tr>
-<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChanges_">SaveChanges</a></td>
-<td>the synchronous form</td>
-</tr>
-<tr>
-<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveOptions">SaveOptions</a></td>
-<td>what the client sent alongside the changes, including its <code>Tag</code></td>
-</tr>
-<tr>
-<td><a class="xref" href="../api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_KeyGenerator">KeyGenerator</a></td>
-<td>how temporary client keys become real ones</td>
-</tr>
-</tbody>
-</table>
-<h2 id="two-ways-to-intercept-a-save">Two ways to intercept a save</h2>
-<p>Every hook exists both as a <strong>delegate property</strong>, set per request, and as a <strong>virtual method</strong>,
-overridden once in your subclass. They do the same work; pick by how widely the rule applies.</p>
-<pre><code class="lang-csharp">[HttpPost]
-public Task&lt;SaveResult&gt; SaveWithAudit([FromBody] JObject saveBundle) {
-  _pm.BeforeSaveEntityDelegate = SetAuditFields;
-  return _pm.SaveChangesAsync(saveBundle);
-}
-</code></pre>
-<p>Once, in the subclass — a rule for every save through this manager:</p>
-<pre><code class="lang-csharp">public class AuditedPersistenceManager : EFPersistenceManager&lt;NorthwindContext&gt; {
-  public AuditedPersistenceManager(NorthwindContext context) : base(context) { }
-
-  protected override bool BeforeSaveEntity(EntityInfo entityInfo) {
-    // return false to drop this entity from the save
-    return true;
-  }
-}
-</code></pre>
-<p><a href="saving.html">Saving</a> covers what each hook receives and when it runs.</p>
-<h2 id="generated-keys">Generated keys</h2>
-<p>When a client adds an entity it invents a temporary key, and the server has to tell it what the
-real one turned out to be. For an identity column the ORM already knows, and Breeze reports the
-mapping back with no help from you — see <a href="saving.html#key-mappings">key mappings</a>.</p>
-<p>For a key the database does <em>not</em> generate, set a
-<a class="xref" href="../api/Breeze.Persistence.IKeyGenerator.html">IKeyGenerator</a>. <a class="xref" href="../api/Breeze.Persistence.NumericKeyGenerator.html">NumericKeyGenerator</a> is the one
-that ships, which draws from a <code>NextId</code> table:</p>
-<pre><code class="lang-csharp">_pm.KeyGenerator = new NumericKeyGenerator((DbConnection)_pm.GetDbConnection());
-</code></pre><h2 id="metadata-from-somewhere-else">Metadata from somewhere else</h2>
-<p><code>EFPersistenceManager&lt;T&gt;</code> builds metadata from the EF model. To supply your own instead — a
-hand-written document, or one for types EF does not map — override
-<code>BuildAltJsonMetadata()</code>; returning <code>null</code>, the default, keeps the generated document. See
-<a href="metadata.html#supplying-your-own">Metadata</a>.</p>
-
-</article>
-
-
-        <div class="next-article d-print-none border-top" id="nextArticle"></div>
-
-      </div>
-
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
-        </div>
-      </div>
-    </footer>
+  <body>
+    <div id="app"><div class="Layout" data-v-5d98c3a5><!--[--><!--]--><!--[--><span tabindex="-1" data-v-0b0ada53></span><a href="#VPContent" class="VPSkipLink visually-hidden" data-v-0b0ada53>Skip to content</a><!--]--><!----><header class="VPNav" data-v-5d98c3a5 data-v-ae24b3ad><div class="VPNavBar" data-v-ae24b3ad data-v-6aa21345><div class="wrapper" data-v-6aa21345><div class="container" data-v-6aa21345><div class="title" data-v-6aa21345><div class="VPNavBarTitle has-sidebar" data-v-6aa21345 data-v-1168a8e4><a class="title" href="/breeze-server-v3/" data-v-1168a8e4><!--[--><!--]--><!----><span data-v-1168a8e4>Breeze Server</span><!--[--><!--]--></a></div></div><div class="content" data-v-6aa21345><div class="content-body" data-v-6aa21345><!--[--><!--]--><div class="VPNavBarSearch search" data-v-6aa21345><!--[--><!----><div id="local-search"><button type="button" class="DocSearch DocSearch-Button" aria-label="Search"><span class="DocSearch-Button-Container"><span class="vp-icon DocSearch-Search-Icon"></span><span class="DocSearch-Button-Placeholder">Search</span></span><span class="DocSearch-Button-Keys"><kbd class="DocSearch-Button-Key"></kbd><kbd class="DocSearch-Button-Key">K</kbd></span></button></div><!--]--></div><nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-6aa21345 data-v-dc692963><span id="main-nav-aria-label" class="visually-hidden" data-v-dc692963> Main Navigation </span><!--[--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/breeze-server-v3/guide/getting-started" tabindex="0" data-v-dc692963 data-v-e56f3d57><!--[--><span data-v-e56f3d57>Guide</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/breeze-server-v3/api/" target="_self" tabindex="0" data-v-dc692963 data-v-e56f3d57><!--[--><span data-v-e56f3d57>API</span><!--]--></a><!--]--><!--[--><div class="VPFlyout VPNavBarMenuGroup" data-v-dc692963 data-v-cf11d7a2><button type="button" class="button" aria-haspopup="true" aria-expanded="false" data-v-cf11d7a2><span class="text" data-v-cf11d7a2><!----><span data-v-cf11d7a2>Upgrading from 7.x</span><span class="vpi-chevron-down text-icon" data-v-cf11d7a2></span></span></button><div class="menu" data-v-cf11d7a2><div class="VPMenu" data-v-cf11d7a2 data-v-b98bc113><div class="items" data-v-b98bc113><!--[--><!--[--><div class="VPMenuLink" data-v-b98bc113 data-v-35975db6><a class="VPLink link vp-external-link-icon" href="https://github.com/Breeze/breeze-server-v3/blob/master/UPGRADE.md" target="_blank" rel="noreferrer" data-v-35975db6><!--[--><span data-v-35975db6>Upgrading from 7.x</span><!--]--></a></div><!--]--><!--[--><div class="VPMenuLink" data-v-b98bc113 data-v-35975db6><a class="VPLink link vp-external-link-icon" href="https://breeze.github.io/doc-net/?v2" target="_blank" rel="noreferrer" data-v-35975db6><!--[--><span data-v-35975db6>7.x docs</span><!--]--></a></div><!--]--><!--]--></div><!--[--><!--]--></div></div></div><!--]--><!--[--><div class="VPFlyout VPNavBarMenuGroup" data-v-dc692963 data-v-cf11d7a2><button type="button" class="button" aria-haspopup="true" aria-expanded="false" data-v-cf11d7a2><span class="text" data-v-cf11d7a2><!----><span data-v-cf11d7a2>Client</span><span class="vpi-chevron-down text-icon" data-v-cf11d7a2></span></span></button><div class="menu" data-v-cf11d7a2><div class="VPMenu" data-v-cf11d7a2 data-v-b98bc113><div class="items" data-v-b98bc113><!--[--><!--[--><div class="VPMenuLink" data-v-b98bc113 data-v-35975db6><a class="VPLink link vp-external-link-icon" href="https://breeze.github.io/breeze-client-v3/" target="_blank" rel="noreferrer" data-v-35975db6><!--[--><span data-v-35975db6>Breeze client docs</span><!--]--></a></div><!--]--><!--[--><div class="VPMenuLink" data-v-b98bc113 data-v-35975db6><a class="VPLink link vp-external-link-icon" href="https://breeze.github.io/breeze-client-v3/server/dotnet" target="_blank" rel="noreferrer" data-v-35975db6><!--[--><span data-v-35975db6>Using a Breeze .NET server</span><!--]--></a></div><!--]--><!--]--></div><!--[--><!--]--></div></div></div><!--]--><!--]--></nav><!----><div class="VPNavBarAppearance appearance" data-v-6aa21345 data-v-6c893767><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-6c893767 data-v-5337faa4 data-v-1d5665e3><span class="check" data-v-1d5665e3><span class="icon" data-v-1d5665e3><!--[--><span class="vpi-sun sun" data-v-5337faa4></span><span class="vpi-moon moon" data-v-5337faa4></span><!--]--></span></span></button></div><div class="VPSocialLinks VPNavBarSocialLinks social-links" data-v-6aa21345 data-v-0394ad82 data-v-7bc22406><!--[--><a class="VPSocialLink no-icon" href="https://github.com/Breeze/breeze-server-v3" aria-label="github" target="_blank" rel="noopener" data-v-7bc22406 data-v-bd121fe5><span class="vpi-social-github"></span></a><!--]--></div><div class="VPFlyout VPNavBarExtra extra" data-v-6aa21345 data-v-bb2aa2f0 data-v-cf11d7a2><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation" data-v-cf11d7a2><span class="vpi-more-horizontal icon" data-v-cf11d7a2></span></button><div class="menu" data-v-cf11d7a2><div class="VPMenu" data-v-cf11d7a2 data-v-b98bc113><!----><!--[--><!--[--><!----><div class="group" data-v-bb2aa2f0><div class="item appearance" data-v-bb2aa2f0><p class="label" data-v-bb2aa2f0>Appearance</p><div class="appearance-action" data-v-bb2aa2f0><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-bb2aa2f0 data-v-5337faa4 data-v-1d5665e3><span class="check" data-v-1d5665e3><span class="icon" data-v-1d5665e3><!--[--><span class="vpi-sun sun" data-v-5337faa4></span><span class="vpi-moon moon" data-v-5337faa4></span><!--]--></span></span></button></div></div></div><div class="group" data-v-bb2aa2f0><div class="item social-links" data-v-bb2aa2f0><div class="VPSocialLinks social-links-list" data-v-bb2aa2f0 data-v-7bc22406><!--[--><a class="VPSocialLink no-icon" href="https://github.com/Breeze/breeze-server-v3" aria-label="github" target="_blank" rel="noopener" data-v-7bc22406 data-v-bd121fe5><span class="vpi-social-github"></span></a><!--]--></div></div></div><!--]--><!--]--></div></div></div><!--[--><!--]--><button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation" aria-expanded="false" aria-controls="VPNavScreen" data-v-6aa21345 data-v-e5dd9c1c><span class="container" data-v-e5dd9c1c><span class="top" data-v-e5dd9c1c></span><span class="middle" data-v-e5dd9c1c></span><span class="bottom" data-v-e5dd9c1c></span></span></button></div></div></div></div><div class="divider" data-v-6aa21345><div class="divider-line" data-v-6aa21345></div></div></div><!----></header><div class="VPLocalNav has-sidebar empty" data-v-5d98c3a5 data-v-a6f0e41e><div class="container" data-v-a6f0e41e><button class="menu" aria-expanded="false" aria-controls="VPSidebarNav" data-v-a6f0e41e><span class="vpi-align-left menu-icon" data-v-a6f0e41e></span><span class="menu-text" data-v-a6f0e41e>Menu</span></button><div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-a6f0e41e data-v-8a42e2b4><button data-v-8a42e2b4>Return to top</button><!----></div></div></div><aside class="VPSidebar" data-v-5d98c3a5 data-v-319d5ca6><div class="curtain" data-v-319d5ca6></div><nav class="nav" id="VPSidebarNav" aria-labelledby="sidebar-aria-label" tabindex="-1" data-v-319d5ca6><span class="visually-hidden" id="sidebar-aria-label" data-v-319d5ca6> Sidebar Navigation </span><!--[--><!--]--><!--[--><div class="no-transition group" data-v-c40bc020><section class="VPSidebarItem level-0 has-active" data-v-c40bc020 data-v-b3fd67f8><div class="item" role="button" tabindex="0" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><h2 class="text" data-v-b3fd67f8>Guide</h2><!----></div><div class="items" data-v-b3fd67f8><!--[--><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/getting-started" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Getting started</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/persistence-manager" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>The PersistenceManager</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/querying" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Querying</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/saving" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Saving</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/security" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Security</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/metadata" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Metadata</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/guide/error-handling" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>Error handling</p><!--]--></a><!----></div><!----></div><!--]--></div></section></div><div class="no-transition group" data-v-c40bc020><section class="VPSidebarItem level-0" data-v-c40bc020 data-v-b3fd67f8><div class="item" role="button" tabindex="0" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><h2 class="text" data-v-b3fd67f8>Reference</h2><!----></div><div class="items" data-v-b3fd67f8><!--[--><div class="VPSidebarItem level-1 is-link" data-v-b3fd67f8><div class="item" data-v-b3fd67f8><div class="indicator" data-v-b3fd67f8></div><a class="VPLink link link" href="/breeze-server-v3/api/" target="_self" data-v-b3fd67f8><!--[--><p class="text" data-v-b3fd67f8>.NET API reference</p><!--]--></a><!----></div><!----></div><!--]--></div></section></div><!--]--><!--[--><!--]--></nav></aside><div class="VPContent has-sidebar" id="VPContent" data-v-5d98c3a5 data-v-1428d186><div class="VPDoc has-sidebar has-aside" data-v-1428d186 data-v-39a288b8><!--[--><!--]--><div class="container" data-v-39a288b8><div class="aside" data-v-39a288b8><div class="aside-curtain" data-v-39a288b8></div><div class="aside-container" data-v-39a288b8><div class="aside-content" data-v-39a288b8><div class="VPDocAside" data-v-39a288b8 data-v-3f215769><!--[--><!--]--><!--[--><!--]--><nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline" data-v-3f215769 data-v-a5bbad30><div class="content" data-v-a5bbad30><div class="outline-marker" data-v-a5bbad30></div><div aria-level="2" class="outline-title" id="doc-outline-aria-label" role="heading" data-v-a5bbad30>On this page</div><ul class="VPDocOutlineItem root" data-v-a5bbad30 data-v-b933a997><!--[--><!--]--></ul></div></nav><!--[--><!--]--><div class="spacer" data-v-3f215769></div><!--[--><!--]--><!----><!--[--><!--]--><!--[--><!--]--></div></div></div></div><div class="content" data-v-39a288b8><div class="content-container" data-v-39a288b8><!--[--><!--]--><main class="main" data-v-39a288b8><div style="position:relative;" class="vp-doc _breeze-server-v3_guide_persistence-manager" data-v-39a288b8><div><h1 id="the-persistencemanager" tabindex="-1">The PersistenceManager <a class="header-anchor" href="#the-persistencemanager" aria-label="Permalink to &quot;The PersistenceManager&quot;">​</a></h1><p><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html" target="_self"><code>PersistenceManager</code></a> is the server side of Breeze. It does two things a plain <code>DbContext</code> or NHibernate <code>ISession</code> does not:</p><ol><li><strong>Describes the model</strong> — turns your mapping into the JSON metadata document the client builds its entity types from.</li><li><strong>Applies a save bundle</strong> — takes the JSON a client sends, turns it back into entities in the right states, saves them in one transaction, and reports back the server-assigned keys.</li></ol><p>It is abstract. You use the subclass for your ORM.</p><table tabindex="0"><thead><tr><th>ORM</th><th>Class</th><th>Constructed from</th></tr></thead><tbody><tr><td>Entity Framework Core</td><td><a href="/breeze-server-v3/api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html" target="_self"><code>EFPersistenceManager&lt;T&gt;</code></a></td><td>your <code>DbContext</code></td></tr><tr><td>NHibernate</td><td><a href="/breeze-server-v3/api/Breeze.Persistence.NH.NHPersistenceManager.html" target="_self"><code>NHPersistenceManager</code></a></td><td>an <code>ISession</code></td></tr></tbody></table><h2 id="subclassing-it" tabindex="-1">Subclassing it <a class="header-anchor" href="#subclassing-it" aria-label="Permalink to &quot;Subclassing it&quot;">​</a></h2><p>Write one per context. Even with no members it is worth having, because interceptors and metadata overrides go here rather than in the controller:</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">using</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Breeze</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Persistence</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EFCore</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> NorthwindPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EFPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NorthwindContext</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> NorthwindPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NorthwindContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> context</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) : </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">base</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(context) { }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p><a href="/breeze-server-v3/api/Breeze.Persistence.EFCore.EFPersistenceManager-1.html#Breeze_Persistence_EFCore_EFPersistenceManager_1_Context" target="_self"><code>Context</code></a> gives the typed <code>DbContext</code> back, which is what query actions return sets from:</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">HttpGet</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IQueryable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Customer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Customers</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> _pm.Context.Customers;</span></span></code></pre></div><h2 id="lifetime" tabindex="-1">Lifetime <a class="header-anchor" href="#lifetime" aria-label="Permalink to &quot;Lifetime&quot;">​</a></h2><p><strong>Create one per request</strong>, in the controller&#39;s constructor, from a <code>DbContext</code> that DI has already scoped to the request:</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> PersistenceManagerGuideController</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(NorthwindContext context) {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  _pm </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> NorthwindPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(context);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>It wraps a <code>DbContext</code>, so it inherits the <code>DbContext</code>&#39;s rules: not thread-safe, and not meant to outlive the request. Registering one as a singleton shares one change-tracker between every concurrent request.</p><div class="warning custom-block github-alert"><p class="custom-block-title">WARNING</p><p>A <code>PersistenceManager</code> is built for <strong>one save</strong>. It keeps the state of the save in progress, and a second <code>SaveChanges</code> on the same instance rebuilds that state rather than adding to it. This is the ordinary case — one instance, one request, one save — but it is worth knowing before you reach for a longer-lived one.</p></div><p>NHibernate is the same shape with an <code>ISession</code> in place of the <code>DbContext</code>; the test server builds an <code>ISessionFactory</code> once as a singleton and opens a session per request from it.</p><h2 id="what-you-get-without-writing-anything" tabindex="-1">What you get without writing anything <a class="header-anchor" href="#what-you-get-without-writing-anything" aria-label="Permalink to &quot;What you get without writing anything&quot;">​</a></h2><table tabindex="0"><thead><tr><th>Member</th><th>What it does</th></tr></thead><tbody><tr><td><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_Metadata" target="_self"><code>Metadata()</code></a></td><td>the JSON metadata document, built from your mapping</td></tr><tr><td><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChangesAsync_" target="_self"><code>SaveChangesAsync</code></a></td><td>applies a save bundle in a transaction, returns a <a href="/breeze-server-v3/api/Breeze.Persistence.SaveResult.html" target="_self"><code>SaveResult</code></a></td></tr><tr><td><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveChanges_" target="_self"><code>SaveChanges</code></a></td><td>the synchronous form</td></tr><tr><td><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_SaveOptions" target="_self"><code>SaveOptions</code></a></td><td>what the client sent alongside the changes, including its <code>Tag</code></td></tr><tr><td><a href="/breeze-server-v3/api/Breeze.Persistence.PersistenceManager.html#Breeze_Persistence_PersistenceManager_KeyGenerator" target="_self"><code>KeyGenerator</code></a></td><td>how temporary client keys become real ones</td></tr></tbody></table><h2 id="two-ways-to-intercept-a-save" tabindex="-1">Two ways to intercept a save <a class="header-anchor" href="#two-ways-to-intercept-a-save" aria-label="Permalink to &quot;Two ways to intercept a save&quot;">​</a></h2><p>Every hook exists both as a <strong>delegate property</strong>, set per request, and as a <strong>virtual method</strong>, overridden once in your subclass. They do the same work; pick by how widely the rule applies.</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">HttpPost</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Task</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">SaveResult</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">SaveWithAudit</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">FromBody</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">] </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">JObject</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> saveBundle</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  _pm.BeforeSaveEntityDelegate </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> SetAuditFields;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> _pm.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">SaveChangesAsync</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(saveBundle);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>Once, in the subclass — a rule for every save through this manager:</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> AuditedPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EFPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NorthwindContext</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> AuditedPersistenceManager</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">NorthwindContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> context</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) : </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">base</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(context) { }</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  protected</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> override</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> bool</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> BeforeSaveEntity</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EntityInfo</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> entityInfo</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // return false to drop this entity from the save</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> true</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p><a href="./saving">Saving</a> covers what each hook receives and when it runs.</p><h2 id="generated-keys" tabindex="-1">Generated keys <a class="header-anchor" href="#generated-keys" aria-label="Permalink to &quot;Generated keys&quot;">​</a></h2><p>When a client adds an entity it invents a temporary key, and the server has to tell it what the real one turned out to be. For an identity column the ORM already knows, and Breeze reports the mapping back with no help from you — see <a href="./saving#key-mappings">key mappings</a>.</p><p>For a key the database does <em>not</em> generate, set a <a href="/breeze-server-v3/api/Breeze.Persistence.IKeyGenerator.html" target="_self"><code>IKeyGenerator</code></a>. <a href="/breeze-server-v3/api/Breeze.Persistence.NumericKeyGenerator.html" target="_self"><code>NumericKeyGenerator</code></a> is the one that ships, which draws from a <code>NextId</code> table:</p><div class="language-cs vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">cs</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">_pm.KeyGenerator </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> NumericKeyGenerator</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">((</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">DbConnection</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)_pm.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">GetDbConnection</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">());</span></span></code></pre></div><h2 id="metadata-from-somewhere-else" tabindex="-1">Metadata from somewhere else <a class="header-anchor" href="#metadata-from-somewhere-else" aria-label="Permalink to &quot;Metadata from somewhere else&quot;">​</a></h2><p><code>EFPersistenceManager&lt;T&gt;</code> builds metadata from the EF model. To supply your own instead — a hand-written document, or one for types EF does not map — override <code>BuildAltJsonMetadata()</code>; returning <code>null</code>, the default, keeps the generated document. See <a href="./metadata#supplying-your-own">Metadata</a>.</p></div></div></main><footer class="VPDocFooter" data-v-39a288b8 data-v-e257564d><!--[--><!--]--><div class="edit-info" data-v-e257564d><div class="edit-link" data-v-e257564d><a class="VPLink link vp-external-link-icon no-icon edit-link-button" href="https://github.com/Breeze/breeze-server-v3/edit/master/docs/guide/persistence-manager.md" target="_blank" rel="noreferrer" data-v-e257564d><!--[--><span class="vpi-square-pen edit-link-icon" data-v-e257564d></span> Edit this page on GitHub<!--]--></a></div><div class="last-updated" data-v-e257564d><p class="VPLastUpdated" data-v-e257564d data-v-e98dd255>Last updated: <time datetime="2026-10-01T05:14:23.000Z" data-v-e98dd255></time></p></div></div><nav class="prev-next" aria-labelledby="doc-footer-aria-label" data-v-e257564d><span class="visually-hidden" id="doc-footer-aria-label" data-v-e257564d>Pager</span><div class="pager" data-v-e257564d><a class="VPLink link pager-link prev" href="/breeze-server-v3/guide/getting-started" data-v-e257564d><!--[--><span class="desc" data-v-e257564d>Previous page</span><span class="title" data-v-e257564d>Getting started</span><!--]--></a></div><div class="pager" data-v-e257564d><a class="VPLink link pager-link next" href="/breeze-server-v3/guide/querying" data-v-e257564d><!--[--><span class="desc" data-v-e257564d>Next page</span><span class="title" data-v-e257564d>Querying</span><!--]--></a></div></nav></footer><!--[--><!--]--></div></div></div><!--[--><!--]--></div></div><footer class="VPFooter has-sidebar" data-v-5d98c3a5 data-v-e315a0ad><div class="container" data-v-e315a0ad><p class="message" data-v-e315a0ad>Released under the MIT License.</p><p class="copyright" data-v-e315a0ad>Copyright © IdeaBlade</p></div></footer><!--[--><!--]--></div></div>
+    <script>window.__VP_HASH_MAP__=JSON.parse("{\"guide_error-handling.md\":\"hrsvsoxF\",\"guide_getting-started.md\":\"Cyt4MVfN\",\"guide_metadata.md\":\"BVqaeaXh\",\"guide_persistence-manager.md\":\"DKf03nom\",\"guide_querying.md\":\"C28-gB2V\",\"guide_saving.md\":\"BZYAUN-C\",\"guide_security.md\":\"By-wgrXn\",\"index.md\":\"CprkDgZT\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"Breeze Server\",\"description\":\"Breeze server-side packages for .NET\",\"base\":\"/breeze-server-v3/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"search\":{\"provider\":\"local\"},\"nav\":[{\"text\":\"Guide\",\"link\":\"/guide/getting-started\"},{\"text\":\"API\",\"link\":\"/api/\",\"target\":\"_self\"},{\"text\":\"Upgrading from 7.x\",\"items\":[{\"text\":\"Upgrading from 7.x\",\"link\":\"https://github.com/Breeze/breeze-server-v3/blob/master/UPGRADE.md\"},{\"text\":\"7.x docs\",\"link\":\"https://breeze.github.io/doc-net/?v2\"}]},{\"text\":\"Client\",\"items\":[{\"text\":\"Breeze client docs\",\"link\":\"https://breeze.github.io/breeze-client-v3/\"},{\"text\":\"Using a Breeze .NET server\",\"link\":\"https://breeze.github.io/breeze-client-v3/server/dotnet\"}]}],\"sidebar\":{\"/guide/\":[{\"text\":\"Guide\",\"items\":[{\"text\":\"Getting started\",\"link\":\"/guide/getting-started\"},{\"text\":\"The PersistenceManager\",\"link\":\"/guide/persistence-manager\"},{\"text\":\"Querying\",\"link\":\"/guide/querying\"},{\"text\":\"Saving\",\"link\":\"/guide/saving\"},{\"text\":\"Security\",\"link\":\"/guide/security\"},{\"text\":\"Metadata\",\"link\":\"/guide/metadata\"},{\"text\":\"Error handling\",\"link\":\"/guide/error-handling\"}]},{\"text\":\"Reference\",\"items\":[{\"text\":\".NET API reference\",\"link\":\"/api/\",\"target\":\"_self\"}]}]},\"socialLinks\":[{\"icon\":\"github\",\"link\":\"https://github.com/Breeze/breeze-server-v3\"}],\"footer\":{\"message\":\"Released under the MIT License.\",\"copyright\":\"Copyright © IdeaBlade\"},\"editLink\":{\"pattern\":\"https://github.com/Breeze/breeze-server-v3/edit/master/docs/:path\",\"text\":\"Edit this page on GitHub\"}},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":true}");</script>
+    
   </body>
 </html>
