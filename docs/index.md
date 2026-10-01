@@ -122,4 +122,5 @@ that each target references the matching major version of Entity Framework Core.
   [breeze-client-v3](https://github.com/Breeze/breeze-client-v3).
 - **Upgrading from 7.x** - [UPGRADE.md](https://github.com/Breeze/breeze-server-v3/blob/master/UPGRADE.md) in
   breeze-server-v3.
-- General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).
+- **Earlier versions** - the 7.x and ASP.NET 4.x documentation is still at
+  [breeze.github.io/doc-net](https://breeze.github.io/doc-net/?v2).

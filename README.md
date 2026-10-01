@@ -30,7 +30,8 @@ A typical EF Core application installs the first two.
 | [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
 | [DOCS.md](./DOCS.md) | Building and viewing the docs - the guide and the .NET API reference (DocFX) |
 
-General Breeze documentation is at [breeze.github.io](http://breeze.github.io/doc-net/).
+The user documentation is at [breeze.github.io/breeze-server-v3](https://breeze.github.io/breeze-server-v3/).
+The 7.x and ASP.NET 4.x documentation is still at [breeze.github.io/doc-net](https://breeze.github.io/doc-net/?v2).
 
 ## Layout
 

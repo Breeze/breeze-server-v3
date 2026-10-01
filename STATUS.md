@@ -150,7 +150,7 @@ dotnet run --project tools/DbScripter -- tests/Databases/BreezeTestDb.sql
 
 A DocFX site documents the five packages in `src/` (net10.0 metadata). `dotnet tool
 restore`, then `dotnet docfx docs/docfx.json --serve` and open http://localhost:8080/. See
-DOCS.md. Not published yet. Every public type and member carries an XML doc comment, so
+DOCS.md. Published at https://breeze.github.io/breeze-server-v3/. Every public type and member carries an XML doc comment, so
 the site has no blank entries.
 
 ## Error responses are RFC 9457 problem details (done)

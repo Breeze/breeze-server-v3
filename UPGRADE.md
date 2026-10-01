@@ -1,11 +1,11 @@
 # Upgrading to Breeze .NET Server 8.0
 
-A running list of everything that affects **applications using the Breeze .NET packages**.
-Kept current as v8 develops. Items marked *planned* are decided but not yet implemented.
+Everything that affects **applications using the Breeze .NET packages**. Items marked *planned*
+are decided but not yet implemented.
 
 For changes that only matter if you work on Breeze itself, see [CHANGES-DEV.md](./CHANGES-DEV.md).
 
-> **Status: 8.0 is in development.** Nothing here is released yet.
+> **Status: 8.0.0 is released** on NuGet, under the same package IDs as 7.x.
 
 ---
 
