@@ -5,7 +5,8 @@ are decided but not yet implemented.
 
 For changes that only matter if you work on Breeze itself, see [CHANGES-DEV.md](./CHANGES-DEV.md).
 
-> **Status: 8.0.0 is released** on NuGet, under the same package IDs as 7.x.
+> **Status: 8.0.1 is the current release** on NuGet, under the same package IDs as 7.x;
+> [RELEASE-NOTES.md](./RELEASE-NOTES.md) lists what changed since 8.0.0.
 
 ---
 
@@ -242,7 +243,9 @@ No attach step, no file-permission workaround, and no one-way file upgrade.
 `appsettings.json` now has one connection string named `BreezeTestDb` in place of the three
 named `InheritanceContext`, `NorthwindIB_CF` and `ProduceTPH`.
 
-## 6. After 8.0.0 (unreleased)
+## 6. In 8.0.1
+
+Also in [RELEASE-NOTES.md](./RELEASE-NOTES.md), with a workaround for each on 8.0.0.
 
 ### `expand` works from the first request
 

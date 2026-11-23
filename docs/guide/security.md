@@ -233,7 +233,7 @@ explicitly.
 > [!WARNING]
 > Up to 8.0.0, an attribute's unset limit meant *unlimited* even under a global filter, so a
 > bare `[BreezeQueryFilter]` on a controller lifted the global limits for every query that
-> carried one. If you are on 8.0.0, give every attribute both limits explicitly.
+> carried one. Upgrade to 8.0.1, or on 8.0.0 give every attribute both limits explicitly.
 
 ### Declare which navigations may be expanded
 

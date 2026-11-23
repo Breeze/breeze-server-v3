@@ -25,6 +25,7 @@ A typical EF Core application installs the first two.
 | | |
 |---|---|
 | [docs/guide/](./docs/guide/) | **Using Breeze on the server** - getting started, querying, saving, metadata, errors |
+| [RELEASE-NOTES.md](./RELEASE-NOTES.md) | **What changed in each 8.x release** - fixes and changes since 8.0.0 |
 | [UPGRADE.md](./UPGRADE.md) | **Upgrading an app from 7.x** - every consumer-facing change |
 | [CHANGES-DEV.md](./CHANGES-DEV.md) | Structural changes, for people working on Breeze itself |
 | [STATUS.md](./STATUS.md) | What is done, what is in flight, what is next |
