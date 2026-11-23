@@ -22,9 +22,7 @@ namespace Breeze.Persistence.NH {
     private static readonly object _metadataLock = new object();
 
     static NHPersistenceManager() {
-      EntityQuery.NeedsExecution = NHQueryHelper.NeedsExecution;
-      EntityQuery.ApplyCustomLogic = (eq, iq, type) => iq.Provider.CreateQuery(iq.Expression);
-      EntityQuery.AfterExecution = NHQueryHelper.PostExecuteQuery;
+      NHQueryHooks.Install();
     }
 
     /// <summary>

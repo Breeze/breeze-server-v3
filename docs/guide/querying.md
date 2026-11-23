@@ -54,8 +54,11 @@ A query arrives from a browser, so it is user input. Two properties bound it.
 
 <<< @/snippets/QueryingSnippets.cs#MaxTakeAttribute
 
-Adds `Take(1000)` when the client asked for more, or for nothing at all. Default `-1`, unlimited —
-which means a client that forgets `.take()` selects the whole table.
+Adds `Take(1000)` when the client asked for more, or for nothing at all. Left unset, it comes from
+a Breeze query filter at a wider scope - the controller's, or one registered globally (see
+[Make the query limits global](security.md#make-the-query-limits-global-not-per-controller)). With
+none, it is unlimited, which means a client that forgets `.take()` selects the whole table. `-1`
+sets unlimited explicitly.
 
 This is not the same as a `Take()` in the action: `MaxTake` is applied **after** the client's
 `where` and `orderBy`, so it caps the page rather than the candidate set.
@@ -69,7 +72,8 @@ This is not the same as a `Take()` in the action: `MaxTake` is applied **after**
 <<< @/snippets/QueryingSnippets.cs#MaxDepthAttribute
 
 Caps how far `select` and `expand` may reach, and returns **400 Bad Request** when a query goes
-deeper. Default `-1`, unlimited.
+deeper. Left unset, it comes from a filter at a wider scope, as `MaxTake` does; with none, it is
+unlimited. `-1` sets unlimited explicitly.
 
 On `IQueryable<Customer>`:
 

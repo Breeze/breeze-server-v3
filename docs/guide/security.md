@@ -221,8 +221,19 @@ Register the filter once instead and forgetting means *limited*:
 <<< @/snippets/MultiTenancySnippets.cs#GlobalQueryLimits
 
 This is safe to apply globally: an action that does not return a queryable falls out of the
-filter immediately. Controllers that genuinely need different limits still carry their own
-attribute.
+filter immediately.
+
+A controller or action that needs different limits carries its own attribute, and sets only what
+differs. The filter nearest the action runs the query, and a limit it leaves unset comes from the
+nearest Breeze query filter at a wider scope - the controller's, then the global one. So
+`[BreezeQueryFilter(MaxDepth = 0)]` on a lookups controller keeps the global `MaxTake`, and a bare
+`[BreezeQueryFilter]` left on a controller from before keeps both. To lift a limit, set it to `-1`
+explicitly.
+
+> [!WARNING]
+> Up to 8.0.0, an attribute's unset limit meant *unlimited* even under a global filter, so a
+> bare `[BreezeQueryFilter]` on a controller lifted the global limits for every query that
+> carried one. If you are on 8.0.0, give every attribute both limits explicitly.
 
 ### Declare which navigations may be expanded
 
@@ -386,7 +397,7 @@ is exactly the mistake that review misses.
 | | |
 |---|---|
 | Every query action returns a set the current user may see, filtered server-side | [above](#the-iqueryable-you-return-is-the-boundary) |
-| `MaxTake` and `MaxDepth` set on every `[BreezeQueryFilter]` | [above](#bound-what-a-query-may-cost) |
+| `MaxTake` and `MaxDepth` bounding every query action, globally or on its filter | [above](#bound-what-a-query-may-cost) |
 | Nothing sensitive reachable by a `where`, even if never selected | [above](#filtering-sees-what-projection-hides) |
 | A save hook that decides which types may be saved | [above](#the-type-name-is-the-client-s-too) |
 | A save hook that checks ownership against stored values | [above](#beforesaveentity-is-the-authorization-point) |

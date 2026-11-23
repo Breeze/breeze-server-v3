@@ -113,3 +113,21 @@ are missing and filling them in is its own task. Every other doc warning stays v
 because those indicate *malformed* docs rather than absent ones. About 52 unique warnings
 remain, all pre-existing; two invalid `<see cref="http://...">` URLs in
 `NhQueryableInclude.cs` are already fixed.
+
+## Server tests: tests/Breeze.AspNetCore.Tests
+
+The client suite in breeze-client-v3 covers the server end to end, against the shared test host.
+Two things it cannot test reliably got an xUnit project of their own, in-process (an ASP.NET
+Core `TestServer` over the EF Core in-memory provider, no database):
+
+- **The query hooks before any persistence manager.** `EntityQuery`'s hooks are process-wide
+  statics, and the shared test host creates persistence managers on every Metadata request, so
+  whether a test sees the hooks installed depends on what ran before it. This project never
+  creates a persistence manager, and resets the hooks where a test needs a fresh process. Tests
+  run one at a time (`DisableTestParallelization`) for that reason.
+- **How the query filters' limits combine across scopes** (global, controller, action; sync and
+  async). Every query in those tests carries a `where`: the nearest filter answers only if the
+  query changes the queryable, and one it leaves unchanged is passed on to the next filter out,
+  which would apply its own limits and let a test pass for the wrong reason.
+
+`dotnet test tests/Breeze.AspNetCore.Tests`.
