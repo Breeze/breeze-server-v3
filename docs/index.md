@@ -31,7 +31,7 @@ features:
 
 This site documents the .NET server-side packages of **Breeze**, a library from
 [IdeaBlade](https://www.ideablade.com/) that helps you manage data in rich client applications.
-It covers version 8.0.0, which targets .NET 8, 9 and 10 on ASP.NET Core.
+It covers version 8.0.1, which targets .NET 8, 9 and 10 on ASP.NET Core.
 
 > [!TIP]
 > **Looking for the client?** The Breeze client documentation - guides and the TypeScript API reference - is at
