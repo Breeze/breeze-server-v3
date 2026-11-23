@@ -2479,12 +2479,6 @@ references:
   isSpec: "True"
   fullName: Breeze.Core.FnBlock.ToExpression
   nameWithType: FnBlock.ToExpression
-- uid: Breeze.Core.IEntityType
-  name: IEntityType
-  href: api/Breeze.Core.IEntityType.html
-  commentId: T:Breeze.Core.IEntityType
-  fullName: Breeze.Core.IEntityType
-  nameWithType: IEntityType
 - uid: Breeze.Core.JsonHelper
   name: JsonHelper
   href: api/Breeze.Core.JsonHelper.html
@@ -3347,6 +3341,28 @@ references:
   fullName.vb: Breeze.Core.QueryBuilder.BuildIQueryableFunc(Of TArg)(System.Type, System.Reflection.MethodInfo, TArg, System.Type)
   nameWithType: QueryBuilder.BuildIQueryableFunc<TArg>(Type, MethodInfo, TArg, Type?)
   nameWithType.vb: QueryBuilder.BuildIQueryableFunc(Of TArg)(Type, MethodInfo, TArg, Type)
+- uid: Breeze.Core.QueryProviderHooks
+  name: QueryProviderHooks
+  href: api/Breeze.Core.QueryProviderHooks.html
+  commentId: T:Breeze.Core.QueryProviderHooks
+  fullName: Breeze.Core.QueryProviderHooks
+  nameWithType: QueryProviderHooks
+- uid: Breeze.Core.QueryProviderHooks.EnsureInstalled(System.Linq.IQueryable)
+  name: EnsureInstalled(IQueryable?)
+  href: api/Breeze.Core.QueryProviderHooks.html#Breeze_Core_QueryProviderHooks_EnsureInstalled_System_Linq_IQueryable_
+  commentId: M:Breeze.Core.QueryProviderHooks.EnsureInstalled(System.Linq.IQueryable)
+  name.vb: EnsureInstalled(IQueryable)
+  fullName: Breeze.Core.QueryProviderHooks.EnsureInstalled(System.Linq.IQueryable?)
+  fullName.vb: Breeze.Core.QueryProviderHooks.EnsureInstalled(System.Linq.IQueryable)
+  nameWithType: QueryProviderHooks.EnsureInstalled(IQueryable?)
+  nameWithType.vb: QueryProviderHooks.EnsureInstalled(IQueryable)
+- uid: Breeze.Core.QueryProviderHooks.EnsureInstalled*
+  name: EnsureInstalled
+  href: api/Breeze.Core.QueryProviderHooks.html#Breeze_Core_QueryProviderHooks_EnsureInstalled_
+  commentId: Overload:Breeze.Core.QueryProviderHooks.EnsureInstalled
+  isSpec: "True"
+  fullName: Breeze.Core.QueryProviderHooks.EnsureInstalled
+  nameWithType: QueryProviderHooks.EnsureInstalled
 - uid: Breeze.Core.QueryResult
   name: QueryResult
   href: api/Breeze.Core.QueryResult.html
@@ -5109,6 +5125,25 @@ references:
   isSpec: "True"
   fullName: Breeze.Persistence.EFCore.EFQueryBuilder.ApplyExpand
   nameWithType: EFQueryBuilder.ApplyExpand
+- uid: Breeze.Persistence.EFCore.EFQueryHooks
+  name: EFQueryHooks
+  href: api/Breeze.Persistence.EFCore.EFQueryHooks.html
+  commentId: T:Breeze.Persistence.EFCore.EFQueryHooks
+  fullName: Breeze.Persistence.EFCore.EFQueryHooks
+  nameWithType: EFQueryHooks
+- uid: Breeze.Persistence.EFCore.EFQueryHooks.Install
+  name: Install()
+  href: api/Breeze.Persistence.EFCore.EFQueryHooks.html#Breeze_Persistence_EFCore_EFQueryHooks_Install
+  commentId: M:Breeze.Persistence.EFCore.EFQueryHooks.Install
+  fullName: Breeze.Persistence.EFCore.EFQueryHooks.Install()
+  nameWithType: EFQueryHooks.Install()
+- uid: Breeze.Persistence.EFCore.EFQueryHooks.Install*
+  name: Install
+  href: api/Breeze.Persistence.EFCore.EFQueryHooks.html#Breeze_Persistence_EFCore_EFQueryHooks_Install_
+  commentId: Overload:Breeze.Persistence.EFCore.EFQueryHooks.Install
+  isSpec: "True"
+  fullName: Breeze.Persistence.EFCore.EFQueryHooks.Install
+  nameWithType: EFQueryHooks.Install
 - uid: Breeze.Persistence.EFCore.IEFContextProvider
   name: IEFContextProvider
   href: api/Breeze.Persistence.EFCore.IEFContextProvider.html
@@ -7147,6 +7182,25 @@ references:
   isSpec: "True"
   fullName: Breeze.Persistence.NH.NHQueryHelper.PostExecuteQuery
   nameWithType: NHQueryHelper.PostExecuteQuery
+- uid: Breeze.Persistence.NH.NHQueryHooks
+  name: NHQueryHooks
+  href: api/Breeze.Persistence.NH.NHQueryHooks.html
+  commentId: T:Breeze.Persistence.NH.NHQueryHooks
+  fullName: Breeze.Persistence.NH.NHQueryHooks
+  nameWithType: NHQueryHooks
+- uid: Breeze.Persistence.NH.NHQueryHooks.Install
+  name: Install()
+  href: api/Breeze.Persistence.NH.NHQueryHooks.html#Breeze_Persistence_NH_NHQueryHooks_Install
+  commentId: M:Breeze.Persistence.NH.NHQueryHooks.Install
+  fullName: Breeze.Persistence.NH.NHQueryHooks.Install()
+  nameWithType: NHQueryHooks.Install()
+- uid: Breeze.Persistence.NH.NHQueryHooks.Install*
+  name: Install
+  href: api/Breeze.Persistence.NH.NHQueryHooks.html#Breeze_Persistence_NH_NHQueryHooks_Install_
+  commentId: Overload:Breeze.Persistence.NH.NHQueryHooks.Install
+  isSpec: "True"
+  fullName: Breeze.Persistence.NH.NHQueryHooks.Install
+  nameWithType: NHQueryHooks.Install
 - uid: Breeze.Persistence.NH.NHQueryProvider
   name: NHQueryProvider
   href: api/Breeze.Persistence.NH.NHQueryProvider.html

@@ -1,5 +1,5 @@
 {
-  "source_base_path": "C:/GitHub/breeze-server-v3/docs",
+  "source_base_path": "C:/Workspace/Frameworks/breeze-server-v3/docs",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -372,20 +372,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Breeze.Core.IEntityType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Breeze.Core.IEntityType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Breeze.Core.IEntityType",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Breeze.Core.JsonHelper.yml",
       "output": {
         ".html": {
@@ -537,6 +523,20 @@
       "IsMRef": true,
       "Title": "Breeze.Core.QueryBuilder",
       "Summary": "<p sourcefile=\"api/Breeze.Core.QueryBuilder.yml\" sourcestartlinenumber=\"1\">Used to build up a Queryable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Core.QueryProviderHooks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Core.QueryProviderHooks.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Core.QueryProviderHooks",
+      "Summary": "<p sourcefile=\"api/Breeze.Core.QueryProviderHooks.yml\" sourcestartlinenumber=\"1\">Installs a persistence package's query steps (<xref href=\"Breeze.Core.EntityQuery.ApplyExpand\" data-throw-if-not-resolved=\"false\"></xref> and the\nother pluggable hooks) for the provider a queryable comes from, before the query filters use\nthem.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -803,6 +803,20 @@
       "IsMRef": true,
       "Title": "Breeze.Persistence.EFCore.EFQueryBuilder",
       "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFQueryBuilder.yml\" sourcestartlinenumber=\"1\">Builds the EF query operators for an element type that is only known at runtime.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.EFCore.EFQueryHooks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.EFCore.EFQueryHooks.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.EFCore.EFQueryHooks",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.EFCore.EFQueryHooks.yml\" sourcestartlinenumber=\"1\">Plugs Entity Framework's query steps into <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref>'s static hooks.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1223,6 +1237,20 @@
       "IsMRef": true,
       "Title": "Breeze.Persistence.NH.NHQueryHelper",
       "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHQueryHelper.yml\" sourcestartlinenumber=\"1\">Query helpers for NHibernate: an Include operator, and the hooks Breeze calls around query execution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.NH.NHQueryHooks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.NH.NHQueryHooks.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.NH.NHQueryHooks",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.NH.NHQueryHooks.yml\" sourcestartlinenumber=\"1\">Plugs NHibernate's query steps into <xref href=\"Breeze.Core.EntityQuery\" data-throw-if-not-resolved=\"false\"></xref>'s static hooks.</p>\n"
     },
     {
       "type": "ManagedReference",

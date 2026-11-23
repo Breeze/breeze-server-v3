@@ -89,7 +89,7 @@
 
 
   <h1 id="Breeze_AspNetCore_BreezeQueryFilterAttribute" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute" class="text-break">
-Class BreezeQueryFilterAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class BreezeQueryFilterAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -286,6 +286,11 @@ and execution to each method that returns an IQueryable or IEnumerable.</p>
    <p></p>
 <p>You might want to use this class instead of [BreezeAsyncQueryFilter] because of <a href="https://github.com/dotnet/efcore/issues/18221">https://github.com/dotnet/efcore/issues/18221</a></p>
    <p></p>
+<p>Register one globally (<code>options.Filters.Add(new BreezeQueryFilterAttribute { MaxTake = 1000, MaxDepth = 2 })</code>)
+to bound every query action, and put one on a controller or action to change the limits there.
+The filter nearest the action runs the query; a limit it leaves unset comes from the nearest
+Breeze query filter at a wider scope (see <a class="xref" href="Breeze.AspNetCore.BreezeQueryFilterAttribute.html#Breeze_AspNetCore_BreezeQueryFilterAttribute_MaxTake">MaxTake</a>).</p>
+   <p></p>
 <p>See <a href="https://breeze.github.io/doc-net/webapi-controller-core#breezequeryfilterattribute">https://breeze.github.io/doc-net/webapi-controller-core#breezequeryfilterattribute</a></p>
 </div>
 
@@ -298,12 +303,14 @@ and execution to each method that returns an IQueryable or IEnumerable.</p>
 
   <h3 id="Breeze_AspNetCore_BreezeQueryFilterAttribute_MaxDepth" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute.MaxDepth">
   MaxDepth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets max depth for Select and Expand clauses.<br>
 Set to 0 to disallow Selects and Expands requested by the client.<br>
-Set to -1 (the default) to allow unlimited depth.<br>
+Set to -1 to allow unlimited depth.<br>
+Left unset, it comes from the nearest Breeze query filter at a wider scope (the controller's, or
+one registered globally), and is unlimited if there is none. It reads -1 while unset.<br>
 Returns 400 Bad Request if MaxDepth is violated. <br>
 MaxDepth = 1 on IQueryable&lt;Customer&gt; will allow Expand = &quot;Orders&quot; but not &quot;Orders.OrderDetails&quot; <br>
 MaxDepth = 0 on IQueryable&lt;Customer&gt; will allow Select = &quot;Name&quot; but not Select = &quot;Orders&quot; or Expand = &quot;Orders&quot;</p>
@@ -335,13 +342,15 @@ MaxDepth = 0 on IQueryable&lt;Customer&gt; will allow Select = &quot;Name&quot; 
 
   <h3 id="Breeze_AspNetCore_BreezeQueryFilterAttribute_MaxTake" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute.MaxTake">
   MaxTake
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets max rows allowed; adds Take(MaxTake) to query if Take is unspecified or if Take &gt; MaxTake.<br>
 Set to 100 to allow max of 100 rows on any query.<br>
-Set to -1 (the default) to allow unlimited rows.<br>
+Set to -1 to allow unlimited rows.<br>
 Set to 0 to not return any rows (but why would you do that?).<br>
+Left unset, it comes from the nearest Breeze query filter at a wider scope (the controller's, or
+one registered globally), and is unlimited if there is none. It reads -1 while unset.<br>
 NOTE: MaxTake does not affect Expand/Include subqueries, nor non-EF results (arrays, Lists, etc.)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -367,6 +376,11 @@ NOTE: MaxTake does not affect Expand/Include subqueries, nor non-EF results (arr
   <div class="markdown level1 remarks"><p>MaxTake can be used to limit result size if the client accidently (or maliciously) does not apply any filtering.<br>
 MaxTake is not the same as adding a Take() clause in the controller method, because MaxTake is applied after any
 Where and OrderBy provided in the request.</p>
+<p>
+The filter nearest the action runs the query, so a wider filter's limits never reach it on
+their own. Before, an attribute that left a limit unset meant "unlimited" even under a global
+filter, and a bare <code>[BreezeQueryFilter]</code> lifted both limits; it now keeps the wider ones.
+</p>
 </div>
 
 
@@ -376,7 +390,7 @@ Where and OrderBy provided in the request.</p>
 
   <h3 id="Breeze_AspNetCore_BreezeQueryFilterAttribute_UsePost" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute.UsePost">
   UsePost
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>If true and request is POST, then attempt to extract the Breeze query from the request body.</p>
@@ -416,7 +430,7 @@ If the request body has already been read (for example, due to model binding), i
 
   <h3 id="Breeze_AspNetCore_BreezeQueryFilterAttribute_OnActionExecuted_Microsoft_AspNetCore_Mvc_Filters_ActionExecutedContext_" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
   OnActionExecuted(ActionExecutedContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Extract the IQueryable from the context, apply the query, and execute it.</p>
@@ -448,7 +462,7 @@ If the request body has already been read (for example, due to model binding), i
 
   <h3 id="Breeze_AspNetCore_BreezeQueryFilterAttribute_OnActionExecuting_Microsoft_AspNetCore_Mvc_Filters_ActionExecutingContext_" data-uid="Breeze.AspNetCore.BreezeQueryFilterAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
   OnActionExecuting(ActionExecutingContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Breeze/breeze-server-v3/blob/master/src/Breeze.AspNetCore.NetCore/BreezeQueryFilter.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Check if context.ModelState is valid</p>
@@ -493,7 +507,7 @@ If the request body has already been read (for example, due to model binding), i
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Breeze Server 8.0.0 - Copyright &copy; IdeaBlade 2012-2026
+          Breeze Server 8.0.1 - Copyright &copy; IdeaBlade 2012-2026
         </div>
       </div>
     </footer>
