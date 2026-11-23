@@ -6,6 +6,22 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Breeze.Persistence.NH {
+  /// <summary> Plugs NHibernate's query steps into <see cref="EntityQuery"/>'s static hooks. </summary>
+  /// <remarks>
+  /// The query filters do this on the first query over an NHibernate queryable
+  /// (<see cref="QueryProviderHooks.EnsureInstalled"/>), and <c>NHPersistenceManager</c> on its first
+  /// use, so an <c>expand</c> works whichever comes first. Call it yourself only to restore the hooks
+  /// after replacing them.
+  /// </remarks>
+  public static class NHQueryHooks {
+    /// <summary> Set <see cref="EntityQuery.NeedsExecution"/>, <see cref="EntityQuery.ApplyCustomLogic"/> and <see cref="EntityQuery.AfterExecution"/> to NHibernate's. </summary>
+    public static void Install() {
+      EntityQuery.NeedsExecution = NHQueryHelper.NeedsExecution;
+      EntityQuery.ApplyCustomLogic = (eq, iq, type) => iq.Provider.CreateQuery(iq.Expression);
+      EntityQuery.AfterExecution = NHQueryHelper.PostExecuteQuery;
+    }
+  }
+
   /// <summary> Query helpers for NHibernate: an Include operator, and the hooks Breeze calls around query execution. </summary>
   public static class NHQueryHelper {
 

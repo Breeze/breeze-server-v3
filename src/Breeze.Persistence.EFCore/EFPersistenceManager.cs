@@ -38,8 +38,7 @@ namespace Breeze.Persistence.EFCore {
     private T? _context;
 
     static EFPersistenceManager() {
-      EntityQuery.ApplyExpand = EFExtensions.ApplyExpand;
-      EntityQuery.ApplyCustomLogic = EFExtensions.ApplyAsNoTracking;
+      EFQueryHooks.Install();
     }
 
     /// <summary> Create a manager with no context. </summary>

@@ -8,8 +8,23 @@ using System.Text;
 namespace Breeze.Persistence.EFCore {
 
 
+  /// <summary> Plugs Entity Framework's query steps into <see cref="EntityQuery"/>'s static hooks. </summary>
+  /// <remarks>
+  /// The query filters do this on the first query over an EF queryable
+  /// (<see cref="QueryProviderHooks.EnsureInstalled"/>), and <c>EFPersistenceManager</c> on its first
+  /// use, so an <c>expand</c> works whichever comes first. Call it yourself only to restore the hooks
+  /// after replacing them.
+  /// </remarks>
+  public static class EFQueryHooks {
+    /// <summary> Set <see cref="EntityQuery.ApplyExpand"/> to EF's <c>Include</c>, and <see cref="EntityQuery.ApplyCustomLogic"/> to <see cref="EFExtensions.ApplyAsNoTracking"/>. </summary>
+    public static void Install() {
+      EntityQuery.ApplyExpand = EFExtensions.ApplyExpand;
+      EntityQuery.ApplyCustomLogic = EFExtensions.ApplyAsNoTracking;
+    }
+  }
+
   /// <summary> The Entity Framework implementations of the query steps <see cref="EntityQuery"/> leaves to the persistence layer. </summary>
-  /// <remarks> <c>EFPersistenceManager</c> plugs these in through EntityQuery's static hooks. </remarks>
+  /// <remarks> <see cref="EFQueryHooks"/> plugs these in through EntityQuery's static hooks. </remarks>
   public static class EFExtensions {
 
     /// <summary> Apply the query's expand clause as EF Include calls. </summary>

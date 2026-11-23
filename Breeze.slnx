@@ -7,6 +7,7 @@
     <Project Path="src/Breeze.Persistence/Breeze.Persistence.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Breeze.AspNetCore.Tests/Breeze.AspNetCore.Tests.csproj" />
     <Project Path="tests/Model_Inheritance.EFCore/Model_Inheritance.EFCore.csproj" />
     <Project Path="tests/Model_Inheritance_NH/Model_Inheritance_NH.csproj" />
     <Project Path="tests/Model_NorthwindIB_CF.EFCore/Model_NorthwindIB_CF.EFCore.csproj" />

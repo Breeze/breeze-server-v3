@@ -241,3 +241,34 @@ No attach step, no file-permission workaround, and no one-way file upgrade.
 
 `appsettings.json` now has one connection string named `BreezeTestDb` in place of the three
 named `InheritanceContext`, `NorthwindIB_CF` and `ProduceTPH`.
+
+## 6. After 8.0.0 (unreleased)
+
+### `expand` works from the first request
+
+**Fixed.** An `expand` was silently ignored until the first persistence manager had been created,
+by a Metadata request or a save: the query answered 200, with every expanded navigation empty.
+`EntityQuery.ApplyExpand` is a no-op until a persistence package plugs in its own, and
+`EFPersistenceManager` (and `NHPersistenceManager`, for its query hooks) did that only in its
+static constructor. A Breeze client fetches metadata first and never noticed; another first
+caller after a restart did (a script, Swagger UI, a test host).
+
+The query filters now install the provider's hooks themselves, on the first query over that
+provider's queryable (`QueryProviderHooks.EnsureInstalled`). The installers are public, as
+`EFQueryHooks.Install()` and `NHQueryHooks.Install()`. If you worked around this by creating a
+persistence manager or running its static constructor at startup, that is no longer needed, and
+harmless.
+
+### A query filter attribute keeps the limits of a wider one
+
+**Changed.** The filter nearest the action runs the query, so a global
+`BreezeQueryFilterAttribute { MaxTake = 1000, MaxDepth = 2 }` never reached an action whose
+controller or method carried its own `[BreezeQueryFilter]` - and that attribute's unset limits
+meant *unlimited*. A bare `[BreezeQueryFilter]` on a controller lifted the global limits for every
+query with a query string.
+
+A limit an attribute leaves unset now comes from the nearest Breeze query filter at a wider scope
+(the controller's, then a global one), for `[BreezeQueryFilter]` and `[BreezeAsyncQueryFilter]`
+alike. With no wider filter nothing changes. An explicit `-1` still means unlimited.
+
+If you relied on a bare attribute to lift a global limit, set that limit to `-1` on it.
