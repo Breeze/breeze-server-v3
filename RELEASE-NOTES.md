@@ -5,6 +5,29 @@ application from 7.x is covered in [UPGRADE.md](./UPGRADE.md).
 
 ---
 
+## 8.0.2 — 2026-11-27
+
+### Fixed
+
+**`[Required(AllowEmptyStrings = true)]` did not reach the client.**
+
+The EF Core metadata builder published a plain `required` validator for every non-nullable data
+property and ignored `RequiredAttribute.AllowEmptyStrings`. A string declared
+`[Required(AllowEmptyStrings = true)]` - not null, but `''` is a value - failed validation on the
+client when empty, although the server's data annotations accepted it. A model over a schema whose
+non-nullable string columns hold empty strings saw every untouched empty field on a form fail.
+
+*Fix, in 8.0.2.* Such a property gets `{ "name": "required", "allowEmptyStrings": true }`, which the
+client's `Validator.required` already honours. Every other `required` is unchanged, and so is the
+NHibernate builder. New API: a `MetaDataProperty.AddValidators(Type, MemberInfo?)` overload and
+`RequiredMetaValidator`. See [Metadata](https://breeze.github.io/breeze-server-v3/guide/metadata).
+
+*Workaround on 8.0.1.* Override `BuildJsonMetadata` in your persistence manager and add
+`"allowEmptyStrings": true` to the `required` validator of those properties. Remove the override
+once you upgrade.
+
+---
+
 ## 8.0.1 — 2026-11-23
 
 ### Fixed
