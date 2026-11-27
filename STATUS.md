@@ -24,7 +24,7 @@ Companion repo: **`breeze-client-v3`**. The client test suite runs against the s
   `AssemblyInfo.cs` and the build fails with duplicate assembly attributes. They also must
   not share an `obj/` — a common `project.assets.json` means whichever restored last wins
   and the other loses its package references.
-- Version 8.0.1. `GeneratePackageOnBuild` is off; pack explicitly with `dotnet pack`.
+- Version 8.0.2. `GeneratePackageOnBuild` is off; pack explicitly with `dotnet pack`.
 - The test server references the **local projects**, not the published 7.5.x NuGet
   packages, so the suite exercises the code in this repo.
 - `Breeze.slnx` builds all 14 projects, **0 errors**. The NHibernate host now builds

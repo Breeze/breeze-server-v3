@@ -23,9 +23,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Version">
-    <Version>8.0.1</Version>
-    <AssemblyVersion>8.0.1</AssemblyVersion>
-    <FileVersion>8.0.1</FileVersion>
+    <Version>8.0.2</Version>
+    <AssemblyVersion>8.0.2</AssemblyVersion>
+    <FileVersion>8.0.2</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Packaging">
@@ -47,7 +47,7 @@
     <PackageIcon>BreezeLogo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Breeze BreezeJs AspNetCore DotNet Net8 Net9 Net10 JavaScript</PackageTags>
-    <PackageReleaseNotes>8.0.1: expand works from the first request, and a query filter attribute keeps the limits of a wider one. See https://github.com/Breeze/breeze-server-v3/blob/master/RELEASE-NOTES.md</PackageReleaseNotes>
+    <PackageReleaseNotes>8.0.2: [Required(AllowEmptyStrings = true)] reaches the client as required with allowEmptyStrings. See https://github.com/Breeze/breeze-server-v3/blob/master/RELEASE-NOTES.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

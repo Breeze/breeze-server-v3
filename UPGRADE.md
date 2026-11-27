@@ -5,7 +5,7 @@ are decided but not yet implemented.
 
 For changes that only matter if you work on Breeze itself, see [CHANGES-DEV.md](./CHANGES-DEV.md).
 
-> **Status: 8.0.1 is the current release** on NuGet, under the same package IDs as 7.x;
+> **Status: 8.0.2 is the current release** on NuGet, under the same package IDs as 7.x;
 > [RELEASE-NOTES.md](./RELEASE-NOTES.md) lists what changed since 8.0.0.
 
 ---
@@ -276,7 +276,9 @@ alike. With no wider filter nothing changes. An explicit `-1` still means unlimi
 
 If you relied on a bare attribute to lift a global limit, set that limit to `-1` on it.
 
-## 7. After 8.0.1 (unreleased)
+## 7. In 8.0.2
+
+Also in [RELEASE-NOTES.md](./RELEASE-NOTES.md), with a workaround on 8.0.1.
 
 ### `[Required(AllowEmptyStrings = true)]` reaches the client
 
