@@ -130,4 +130,8 @@ Core `TestServer` over the EF Core in-memory provider, no database):
   query changes the queryable, and one it leaves unchanged is passed on to the next filter out,
   which would apply its own limits and let a test pass for the wrong reason.
 
+It also holds `MetadataTests`: the validators the EF Core metadata builder publishes (`required`
+with and without `allowEmptyStrings`), built with `MetadataBuilder` and serialized as
+`EFPersistenceManager` does, again without creating a persistence manager.
+
 `dotnet test tests/Breeze.AspNetCore.Tests`.

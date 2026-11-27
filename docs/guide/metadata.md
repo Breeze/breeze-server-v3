@@ -29,6 +29,11 @@ A data property carries the things a client needs in order to validate before it
 server: `dataType`, `isPartOfKey`, `isNullable`, `maxLength`, `defaultValue`, `concurrencyMode`, and
 any `validators`.
 
+A property that is not nullable gets the client's `required` validator, which refuses an empty
+string. With EF Core, a property declared `[Required(AllowEmptyStrings = true)]` gets
+`{ "name": "required", "allowEmptyStrings": true }` instead, so the client accepts `''` as the
+server's data annotations do.
+
 ## How it is generated
 
 For EF Core, from the `DbContext`'s model — the same mapping EF itself uses, so it already reflects

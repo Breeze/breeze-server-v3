@@ -1,6 +1,8 @@
 using Breeze.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text;
 
 namespace Breeze.Persistence {
@@ -104,8 +106,22 @@ namespace Breeze.Persistence {
     public bool IsIdentityColumn;
     /// <summary> Add validator names to the property; these match validators on the client </summary>
     public void AddValidators(Type clrType) {
+      AddValidators(clrType, null);
+    }
+
+    /// <summary> Add validator names to the property; these match validators on the client </summary>
+    /// <param name="clrType">The property's type.</param>
+    /// <param name="member">
+    /// The property or field on the entity class, if any. A <see cref="RequiredAttribute"/> on it with
+    /// <see cref="RequiredAttribute.AllowEmptyStrings"/> set makes the <c>required</c> validator accept
+    /// an empty string, as the attribute does on the server.
+    /// </param>
+    public void AddValidators(Type clrType, MemberInfo? member) {
       if (!(this.IsNullable ?? false)) {
-        Validators.Add(MetaValidator.Required);
+        var required = member?.GetCustomAttribute<RequiredAttribute>(true);
+        Validators.Add(required != null && required.AllowEmptyStrings
+          ? RequiredMetaValidator.AllowingEmptyStrings
+          : MetaValidator.Required);
       }
       if (this.MaxLength != null && this.MaxLength.Value >= 0) {
         Validators.Add(new MaxLengthMetaValidator(this.MaxLength.Value));
@@ -164,6 +180,18 @@ namespace Breeze.Persistence {
     }
     /// <summary> Name of the validator </summary>
     public string Name { get; set; }
+  }
+
+  /// <summary> The <c>required</c> validator with options </summary>
+  public class RequiredMetaValidator : MetaValidator {
+    /// <summary> <c>required</c> that accepts an empty string, from <c>[Required(AllowEmptyStrings = true)]</c> </summary>
+    public static readonly RequiredMetaValidator AllowingEmptyStrings = new RequiredMetaValidator { AllowEmptyStrings = true };
+
+    /// <summary> Create a <c>required</c> validator </summary>
+    public RequiredMetaValidator() : base("required") { }
+
+    /// <summary> Whether an empty string satisfies it; written to the metadata only when set </summary>
+    public bool? AllowEmptyStrings { get; set; }
   }
 
   /// <summary> Validator for the maximum length of a string </summary>

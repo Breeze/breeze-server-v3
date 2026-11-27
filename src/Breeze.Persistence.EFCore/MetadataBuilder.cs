@@ -175,7 +175,7 @@ namespace Breeze.Persistence.EFCore {
         }
         // dp.DefaultValue = // get default value for p.ClrType datatype
       }
-      dp.AddValidators(p.ClrType);
+      dp.AddValidators(p.ClrType, p.PropertyInfo ?? (MemberInfo?)p.FieldInfo);
       return dp;
     }
 
