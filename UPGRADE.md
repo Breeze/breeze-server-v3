@@ -275,3 +275,19 @@ A limit an attribute leaves unset now comes from the nearest Breeze query filter
 alike. With no wider filter nothing changes. An explicit `-1` still means unlimited.
 
 If you relied on a bare attribute to lift a global limit, set that limit to `-1` on it.
+
+## 7. After 8.0.1 (unreleased)
+
+### `[Required(AllowEmptyStrings = true)]` reaches the client
+
+**Fixed.** The EF Core metadata builder published a plain `required` validator for every
+non-nullable data property and ignored `RequiredAttribute.AllowEmptyStrings`. A string declared
+`[Required(AllowEmptyStrings = true)]` - "not null, but `''` is a value" - was refused on the
+client when empty, although the server's data annotations accepted it.
+
+Such a property now gets `{ "name": "required", "allowEmptyStrings": true }`, which the client's
+`Validator.required` already honours. Every other `required` is unchanged. If you worked around
+this by overriding `BuildJsonMetadata` to add `allowEmptyStrings`, the override can go.
+`MetaDataProperty.AddValidators` has a new overload taking the property's `MemberInfo`, and
+`RequiredMetaValidator` is the `required` validator with that option. The NHibernate builder is
+unchanged.

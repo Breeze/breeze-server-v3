@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Server-side tests of the query filters, in-process: an ASP.NET Core TestServer over the EF
+    <!-- Server-side tests of the query filters and the EF Core metadata, in-process: an ASP.NET Core TestServer over the EF
          Core in-memory provider. No database, no client. The client suite in breeze-client-v3
          still covers the wire format end to end against tests/Test.AspNetCore.EFCore. -->
     <TargetFramework>net10.0</TargetFramework>
