@@ -5661,6 +5661,15 @@ references:
   commentId: M:Breeze.Persistence.MetaDataProperty.AddValidators(System.Type)
   fullName: Breeze.Persistence.MetaDataProperty.AddValidators(System.Type)
   nameWithType: MetaDataProperty.AddValidators(Type)
+- uid: Breeze.Persistence.MetaDataProperty.AddValidators(System.Type,System.Reflection.MemberInfo)
+  name: AddValidators(Type, MemberInfo?)
+  href: api/Breeze.Persistence.MetaDataProperty.html#Breeze_Persistence_MetaDataProperty_AddValidators_System_Type_System_Reflection_MemberInfo_
+  commentId: M:Breeze.Persistence.MetaDataProperty.AddValidators(System.Type,System.Reflection.MemberInfo)
+  name.vb: AddValidators(Type, MemberInfo)
+  fullName: Breeze.Persistence.MetaDataProperty.AddValidators(System.Type, System.Reflection.MemberInfo?)
+  fullName.vb: Breeze.Persistence.MetaDataProperty.AddValidators(System.Type, System.Reflection.MemberInfo)
+  nameWithType: MetaDataProperty.AddValidators(Type, MemberInfo?)
+  nameWithType.vb: MetaDataProperty.AddValidators(Type, MemberInfo)
 - uid: Breeze.Persistence.MetaDataProperty.AddValidators*
   name: AddValidators
   href: api/Breeze.Persistence.MetaDataProperty.html#Breeze_Persistence_MetaDataProperty_AddValidators_
@@ -8182,6 +8191,50 @@ references:
   isSpec: "True"
   fullName: Breeze.Persistence.PersistenceManager.XDocToJson
   nameWithType: PersistenceManager.XDocToJson
+- uid: Breeze.Persistence.RequiredMetaValidator
+  name: RequiredMetaValidator
+  href: api/Breeze.Persistence.RequiredMetaValidator.html
+  commentId: T:Breeze.Persistence.RequiredMetaValidator
+  fullName: Breeze.Persistence.RequiredMetaValidator
+  nameWithType: RequiredMetaValidator
+- uid: Breeze.Persistence.RequiredMetaValidator.#ctor
+  name: RequiredMetaValidator()
+  href: api/Breeze.Persistence.RequiredMetaValidator.html#Breeze_Persistence_RequiredMetaValidator__ctor
+  commentId: M:Breeze.Persistence.RequiredMetaValidator.#ctor
+  name.vb: New()
+  fullName: Breeze.Persistence.RequiredMetaValidator.RequiredMetaValidator()
+  fullName.vb: Breeze.Persistence.RequiredMetaValidator.New()
+  nameWithType: RequiredMetaValidator.RequiredMetaValidator()
+  nameWithType.vb: RequiredMetaValidator.New()
+- uid: Breeze.Persistence.RequiredMetaValidator.#ctor*
+  name: RequiredMetaValidator
+  href: api/Breeze.Persistence.RequiredMetaValidator.html#Breeze_Persistence_RequiredMetaValidator__ctor_
+  commentId: Overload:Breeze.Persistence.RequiredMetaValidator.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Breeze.Persistence.RequiredMetaValidator.RequiredMetaValidator
+  fullName.vb: Breeze.Persistence.RequiredMetaValidator.New
+  nameWithType: RequiredMetaValidator.RequiredMetaValidator
+  nameWithType.vb: RequiredMetaValidator.New
+- uid: Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings
+  name: AllowEmptyStrings
+  href: api/Breeze.Persistence.RequiredMetaValidator.html#Breeze_Persistence_RequiredMetaValidator_AllowEmptyStrings
+  commentId: P:Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings
+  fullName: Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings
+  nameWithType: RequiredMetaValidator.AllowEmptyStrings
+- uid: Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings*
+  name: AllowEmptyStrings
+  href: api/Breeze.Persistence.RequiredMetaValidator.html#Breeze_Persistence_RequiredMetaValidator_AllowEmptyStrings_
+  commentId: Overload:Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings
+  isSpec: "True"
+  fullName: Breeze.Persistence.RequiredMetaValidator.AllowEmptyStrings
+  nameWithType: RequiredMetaValidator.AllowEmptyStrings
+- uid: Breeze.Persistence.RequiredMetaValidator.AllowingEmptyStrings
+  name: AllowingEmptyStrings
+  href: api/Breeze.Persistence.RequiredMetaValidator.html#Breeze_Persistence_RequiredMetaValidator_AllowingEmptyStrings
+  commentId: F:Breeze.Persistence.RequiredMetaValidator.AllowingEmptyStrings
+  fullName: Breeze.Persistence.RequiredMetaValidator.AllowingEmptyStrings
+  nameWithType: RequiredMetaValidator.AllowingEmptyStrings
 - uid: Breeze.Persistence.SaveOptions
   name: SaveOptions
   href: api/Breeze.Persistence.SaveOptions.html

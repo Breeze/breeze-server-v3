@@ -1394,6 +1394,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Breeze.Persistence.RequiredMetaValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Breeze.Persistence.RequiredMetaValidator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Breeze.Persistence.RequiredMetaValidator",
+      "Summary": "<p sourcefile=\"api/Breeze.Persistence.RequiredMetaValidator.yml\" sourcestartlinenumber=\"1\">The <code>required</code> validator with options</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Breeze.Persistence.SaveOptions.yml",
       "output": {
         ".html": {
